@@ -1,5 +1,5 @@
 """
-Django settings for clouddj project.
+Django settings for cdj_proj project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd=kipef$u0_29it3jn%pvt%+0+pq)9_*hxj2*9h3b5o+f(g@e%'
+SECRET_KEY = '91q&ig52##jp-!ato4xp&uoxp81l=943y_=45ke)fu^@7gje&w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'clouddj.urls'
+ROOT_URLCONF = 'cdj_proj.urls'
 
-WSGI_APPLICATION = 'clouddj.wsgi.application'
+WSGI_APPLICATION = 'cdj_proj.wsgi.application'
 
 
 # Database

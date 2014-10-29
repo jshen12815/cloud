@@ -1,5 +1,5 @@
 """
-WSGI config for clouddj project.
+WSGI config for cdj_proj project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 """
 
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "clouddj.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cdj_proj.settings")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
