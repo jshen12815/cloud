@@ -1,76 +1,146 @@
-<!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-<head>
+{% extends "grumblr/base.html" %}
 
-	<!-- Basic Page Needs
-  ================================================== -->
-	<meta charset="utf-8">
-	<title>Your Page Title Here :)</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-3 sidebar">
+          <ul class="profile">
+            <a href = /grumblr/edit>
+              <div class = "edit">
+              <img src="{{ STATIC_URL }}grumblr/images/edit.png" width = "20"> </a>
+            </div>
+            <div class = "profile-image">
 
-	<!-- Mobile Specific Metas
-  ================================================== -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+              {% if profile.picture %}
+              <img src="{% url 'photo' profile.user.id %}" alt="{{ STATIC_URL }}media/thumbnails/default.png" width="120px">
+              {% endif %}
 
-	<!-- CSS
-  ================================================== -->
-	<link rel="stylesheet" href="stylesheets/base.css">
-	<link rel="stylesheet" href="stylesheets/skeleton.css">
-	<link rel="stylesheet" href="stylesheets/layout.css">
+            </div>
+            <div class = "profile-name">
+            
+              {{user.username}}
 
-	<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
+            </div>
+            <table class="stats">
+                <tbody>
+                  <tr>
+                    <td colspan="6" class="social"><b>Your Profile</b><br/>such sad</td>
+                    
+                  </tr>
+                </tbody>
+            </table>
 
-	<!-- Favicons
-	================================================== -->
-	<link rel="shortcut icon" href="images/favicon.ico">
-	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+          </ul>
 
-</head>
-<body>
-
-
-
-	<!-- Primary Page Layout
-	================================================== -->
-
-	<!-- Delete everything in this .container and get started on your own site! -->
-
-	<div class="container">
-		<div class="sixteen columns">
-			<h1 class="remove-bottom" style="margin-top: 40px">Skeleton</h1>
-			<h5>Version 1.2</h5>
-			<hr />
-		</div>
-		<div class="one-third column">
-			<h3>About Skeleton?</h3>
-			<p>Skeleton is a small collection of well-organized CSS files that can help you rapidly develop sites that look beautiful at any size, be it a 17" laptop screen or an iPhone. It's based on a responsive grid, but also provides very basic CSS for typography, buttons, forms and media queries. Go ahead, resize this super basic page to see the grid in action.</p>
-		</div>
-		<div class="one-third column">
-			<h3>Three Core Principles</h3>
-			<p>Skeleton is built on three core principles:</p>
-			<ul class="square">
-				<li><strong>A Responsive Grid Down To Mobile</strong>: Elegant scaling from a browser to tablets to mobile.</li>
-				<li><strong>Fast to Start</strong>: It's a tool for rapid development with best practices</li>
-				<li><strong>Style Agnostic</strong>: It provides the most basic, beautiful styles, but is meant to be overwritten.</li>
-			</ul>
-		</div>
-		<div class="one-third column">
-			<h3>Docs &amp; Support</h3>
-			<p>The easiest way to really get started with Skeleton is to check out the full docs and info at <a href="http://www.getskeleton.com">www.getskeleton.com.</a>. Skeleton is also open-source and has a <a href="https://github.com/dhgamache/skeleton">project on git</a>, so check that out if you want to report bugs or create a pull request. If you have any questions, thoughts, concerns or feedback, please don't hesitate to email me at <a href="mailto:hi@getskeleton.com">hi@getskeleton.com</a>.</p>
-		</div>
-
-	</div><!-- container -->
+        </div>
+        
+        <div class="col-sm-9 col-sm-offset-2 col-md-9 col-md-offset-3 main">
+    
 
 
-<!-- End Document
-================================================== -->
-</body>
-</html>
+
+
+             <div class="news-feeds display-inline-block">
+            <div class="up-arrow-dark">&#9650;</div>
+              <div class="up-arrow-white">&#9650;</div>
+              
+
+
+
+            {% block grumblrpost %}
+                    <form class="update-status-box" action="{% url 'add_grumble' %}" method="post" enctype="multipart/form-data">
+                        <div class="input" name = "grumbleadder">
+                        {{form}}
+
+                        </div>
+                      </br>
+                        <div class="func">
+                              <input type="submit" class="btn btn-primary btn-xs send_btn" text="publish" value="Post grumble" />
+                        </div>
+
+                        {% csrf_token %}
+                        
+                     </form>
+             {% endblock %}
+        
+
+            {% csrf_token %}
+            </form> 
+        {% for error in errors %}
+        <p style="color:red">
+        {{error}}
+        </p>
+        {% endfor %}
+            </div>
+        <p>
+
+
+        <div id = "grumbleloop">
+        {% for grumble in grumbles %}
+
+          <div class = "grumble-block">
+              {% if profile.picture %}
+              <img class = "feedpic" src="{% url 'photo' grumble.user.id %}" alt="{{ STATIC_URL }}media/thumbnails/default.png" >
+              {% endif %}
+              <a class = "name" href= "/grumblr/home"> {{user.username}} </a>
+              <br/>
+              <br/>
+
+             {{grumble}} 
+
+              {% if grumble.thumbnail %}
+                </br>
+                  <img src="{% url 'grumbleimage' grumble.id %}" alt="{{ STATIC_URL }}media/thumbnails/default.png" width = 500px style="PADDING-LEFT: 90px" >
+              {% endif %}
+
+               </br>
+              <img class = "liked" src="{{ STATIC_URL }}/grumblr/images/heart.png" >
+              <a class = "commands" href="/grumblr/dislike/{{grumble.id}}/">{{grumble.date_created}} </a>
+              <a class = "commands" href="/grumblr/dislike/{{grumble.id}}/">{{grumble.dislikes}} DISLIKES</a>
+              <a class = "commands" href="/grumblr/delete-grumble/{{grumble.id}}">DELETE</a>
+
+
+
+              </br>
+             <div  class = "comments">
+                {% for comment in grumble.comment_set.all %}
+                
+
+                <a class = "commentername" href= "/grumblr/profile/{{grumble.user.id}}"> {{comment.user.username}} </a>
+
+                 {{comment}} 
+
+                {% if comment.user.username = user.username %}
+                <form method = "post" class = "commands" action = "/grumblr/delete-comment/"> <input type = "hidden" value = "/grumblr/followers/" name = "redirect">
+                 <input type="submit" value="delete">
+                  <input type = "hidden" value = "{{comment.id}}" name = "comment_id">
+                  {% csrf_token %}
+                </form>
+
+                {% endif %}
+                </br>
+                {% endfor %}
+                <div name = "commentList"></div>
+
+
+
+    <form class = "commentformpost" action="{% url 'add_comment' %}" method="post">
+          <input type="text" class = "update-comment-box" name="comment" placeholder= "comment">
+                       <input class = "postComment" type="submit" value ="comment" data-item-id = {{grumble.id}}>
+
+                       <input type = "hidden" name = "grumbleID" value = {{grumble.id}}>
+             {% csrf_token %}
+                                  </form>
+                </div>
+        </div>
+          
+
+          {% endfor %}
+        </div>
+        </p>
+
+        </div>
+
+
+</div>
+{% endblock %}
