@@ -1,0 +1,241 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  background-color: #ECECEC;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+.navbar-default .navbar-brand {
+
+  font-family: 'Avenir', serif;
+        font-size: 25px;
+        font-weight: lighter;
+        color: #6FE1D5
+;
+}
+
+
+
+
+
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+        position: fixed;
+    top:70px;
+
+}
+@media (min-width: 768px) {
+  .sidebar {
+    margin-right: -10px;
+    padding: 0;
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #343232;
+    border-right: 1px solid #eee;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+.description {
+  color: #fff;
+  text-align: center;
+  font-weight: lighter;
+  font-size: 12px;
+  padding: 10px;
+
+}
+
+.sideicons {
+  width: 20px;
+}
+.sideoptions {
+  color: white;
+  padding: 15px;
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.smalltext {
+  font-size: 10px;
+  font-weight: lighter;
+}
+
+
+.baractions {
+  color: black;
+  padding: 20px;
+  font-size: 14px;
+
+
+}
+
+.mynavbar {
+  padding-top: 25px;
+  height: 60px;
+}
+
+.clouddj {
+  margin-top: -17px;
+}
+
+.addpad {
+  padding-right: 20px;
+}
+
+.searchbox {
+  margin-top: -2px;
+  padding-left: 5px;
+  width: 200px;
+  margin-right: 20px;
+  border-radius: 20px;
+  background-image:  url("../images/search.png") no-repeat;
+  background-position: right top;
+  /*-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+  box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+*/
+
+}
+
+.details {
+  margin: 30px 50px;
+}
+.mainpic {
+  width: 100%;
+
+}
+
+body {
+  background-color: #FFFFFF;
+}
+.signupbody {
+    background-image: url("../images/backgroundsignin.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.form-signin {  
+  font-family: 'Avenir', serif;
+        font-size: 25px;
+        font-weight: 100;
+        color: #FFFFFF;
+  margin-top: 150px;  
+  margin-left: auto;
+    margin-right: auto;
+  width: 300px;
+}
+
+.form-control {
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.white {
+  margin-left: 110px;
+  color: #FFFFFF;
+  font-size: 18px;
+}
+
+.signup {
+  margin: 15px;
+  border-radius: 8px;
+  background: rgba(80,226,193,0.20);
+  border: 1px solid #979797;
+
+}
+
+.playbutton {
+  margin-right: 3px;
+  margin-left: 3px;
+  width :40px;
+}
+
+.playbar {
+  margin: -25px 20px 0px -25px;
+  width : 300px;
+  padding: 10px 70px;
+  background: linear-gradient(#7EFEF7, #3BBEB7);
+}
+
+.sidebar {
+  width : 290px;
+}
+
+.propic {
+  width : 100%;
+
+}
+.profile {
+  margin-left: -40px;
+}
+
