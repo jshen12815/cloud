@@ -97,10 +97,18 @@ body {
 
 .sideicons {
   width: 20px;
+  margin-right: 50px;
 }
 .sideoptions {
+  text-align: left;
+  background-color: black;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #282828 ;
   color: white;
   padding: 15px;
+  padding-right: 50px;
+  padding-left: 50px;
 }
 
 
@@ -237,5 +245,23 @@ body {
 }
 .profile {
   margin-left: -40px;
+  color: white;
 }
 
+.yourfavorites {
+  padding: 20px;
+}
+.favoriteicons {
+  width: 40px;
+  margin-right: 30px;
+}
+.favorite {
+  text-align: left;
+  padding: 10px;
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+.currentsong {
+  width: 100%;
+}
