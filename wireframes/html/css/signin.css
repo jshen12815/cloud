@@ -192,6 +192,12 @@ body {
     background-repeat: no-repeat;
 }
 
+.editbody{
+    background-image: url("../images/dj.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
 .form-signin {  
   font-family: 'Avenir', serif;
         font-size: 25px;
@@ -263,5 +269,12 @@ body {
 }
 
 .currentsong {
+  margin-top: -10px;
   width: 100%;
+}
+
+.white2 {
+  margin: 110px;
+  color: #FFFFFF;
+  font-size: 18px;
 }
