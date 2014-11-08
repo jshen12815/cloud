@@ -8,5 +8,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^clouddj/', include('clouddj.urls')),
-    url(r'^$', 'clouddj.views.home'),
+    url(r'^$', include('clouddj.urls')),
 )
