@@ -13,6 +13,7 @@
 *.swp
 .idea
 *.*~
+*~
 local_settings.py
 *.py[cod]
 migrations
