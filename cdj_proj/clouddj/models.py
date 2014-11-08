@@ -10,15 +10,21 @@ class Profile(models.Model):
     def __unicode__(self):
          return self.user.username
 
+
 class Hashtag(models.Model): 
     text = models.CharField(max_length=200)
+
+
+class Song(models.Model):
+    file = models.FileField(upload_to="music")
+
 
 class Post(models.Model):
     profile = models.ForeignKey(Profile)
     text = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
-    photo = models.ImageField(upload_to='album-art', default='album-art/randompic.jpg')
-    song = models.FileField(upload_to="music")
+    photo = models.ImageField(upload_to='album-art', default='album-art/default.jpg')
+    song = models.OneToOneField(Song)
     plays = models.IntegerField(default=0)
     genre = models.CharField(max_length=255)
     hashtags = models.ManyToManyField(Hashtag, related_name='posts')
@@ -43,8 +49,6 @@ class Rating(models.Model):
     rating = models.IntegerField()
 
 
-
 class Playlist(models.Model):
     posts = models.ManyToManyField(Post, related_name="playlist")
     profile = models.ForeignKey(Profile)
-
