@@ -5,15 +5,15 @@
 {% block body %}
      <div class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
          {{block.super}}
-         <form  action = "home.html" class="form-signin" role="form">
+         <form  action = "{% url 'register' %}" method="post" class="form-signin" role="form">
             <h2 class="form-signin-heading">Sign up for cloudDj</h2>
-            <input type="username" class="form-control" placeholder="Name" required="" autofocus="">
-            <input type="username" class="form-control" placeholder="Username" required="" autofocus="">
-            <input type="email" class="form-control" placeholder="Email address" required="" autofocus="">
-            <input type="password1" class="form-control" placeholder="Password" required="" autofocus="">
-            <input type="password" class="form-control" placeholder="Confirm Password" required="">
-            <a class = "white" href = "index.html">cancel</a>
-            <button class="btn btn-lg btn-primary signup" href = "index.html" type="submit">sign up</button>
+            <input type="text" name="username1" class="form-control" placeholder="Name" required="" autofocus="">
+            <input type="text" name="username2" class="form-control" placeholder="Username" required="" autofocus="">
+            <input type="email" name="email" class="form-control" placeholder="Email address" required="" autofocus="">
+            <input type="password" name="password1" class="form-control" placeholder="Password" required="" autofocus="">
+            <input type="password" name="password2" class="form-control" placeholder="Confirm Password" required="">
+            <a class = "white" href = "{% url 'home' %}">cancel</a>
+            <input type="submit" class="btn btn-lg btn-primary signup" value="sign up">
             {% csrf_token %}
          </form>
      </div>

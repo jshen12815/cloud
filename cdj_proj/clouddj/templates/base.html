@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -11,10 +12,10 @@
     <title>{% block title %}CloudDj{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/signin.css" rel="stylesheet">
+    <link href="{%  static 'css/signin.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bookman+Old+Style">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -37,18 +38,20 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand clouddj" href="#">CloudDj</a>
+                    <a class="navbar-brand clouddj" href="{% url 'home' %}">CloudDj</a>
                 </div>
-                <div class = "nav navbar-nav navbar-left " action="home.html">
-                    <a class= "baractions" href = "index.html">home</a>
-                    <a class= "baractions" href = "explore.html">explore</a>
+                <div class = "nav navbar-nav navbar-left ">
+                    <a class= "baractions" href = "{% url 'home' %}">home</a>
+                    <a class= "baractions" href = "{% url 'stream' %}">explore</a>
                 </div>
-                <div class = "nav navbar-nav navbar-right addpad" action="home.html">
-                    <a class= "baractions" href = "login.html">login</a>
-                    <a class= "baractions" href = "signup.html">signup</a>
+                {% if not logged_in %}
+                <div class = "nav navbar-nav navbar-right addpad">
+                    <a class= "baractions" href = "{% url 'login' %}">login</a>
+                    <a class= "baractions" href = "{% url 'register' %}">signup</a>
                 </div>
-                <div class = "nav navbar-nav navbar-right" action="home.html">
-                    <form class="searchbox">
+                {% endif %}
+                <div class = "nav navbar-nav navbar-right">
+                    <form class="searchbox" method="get" action="{% url 'search' %}">
                         <input type="text" class="searchbox" name = "searchbar" placeholder="Search...">
                         {% csrf_token %}
                     </form>
@@ -60,10 +63,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 </html>
