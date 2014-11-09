@@ -11,10 +11,10 @@
     <title>{% block title %}CloudDj{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/signin.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/signin.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bookman+Old+Style">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -40,12 +40,12 @@
                     <a class="navbar-brand clouddj" href="#">CloudDj</a>
                 </div>
                 <div class = "nav navbar-nav navbar-left " action="home.html">
-                    <a class= "baractions" href = "index.html">home</a>
-                    <a class= "baractions" href = "explore.html">explore</a>
+                    <a class= "baractions" href = "{{ STATIC_URL }}index.html">home</a>
+                    <a class= "baractions" href = "{{ STATIC_URL }}explore.html">explore</a>
                 </div>
                 <div class = "nav navbar-nav navbar-right addpad" action="home.html">
-                    <a class= "baractions" href = "login.html">login</a>
-                    <a class= "baractions" href = "signup.html">signup</a>
+                    <a class= "baractions" href = "{{ STATIC_URL }}login.html">login</a>
+                    <a class= "baractions" href = "{{ STATIC_URL }}signup.html">signup</a>
                 </div>
                 <div class = "nav navbar-nav navbar-right" action="home.html">
                     <form class="searchbox">

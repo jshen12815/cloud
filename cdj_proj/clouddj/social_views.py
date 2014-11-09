@@ -1,5 +1,6 @@
 # Social actions for clouddj
-
+from django.shortcuts import render
 
 def home(request):
-    return None
+    return render(request, 'index.html', {})
+
