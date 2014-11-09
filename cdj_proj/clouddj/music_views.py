@@ -6,7 +6,6 @@ from django.core.files import File
 from pydub import AudioSegment
 from mimetypes import guess_type
 
-from clouddj.models import *
 from clouddj.forms import *
 
 
@@ -27,10 +26,38 @@ def upload(request):
 
     render(request, 'upload.html', {'form': form})
 
+
+@login_required
+def save_edit(request, song_id):
+    #save latest edit
+    song = Song.objects.filter(id=song_id)
+    project = song.project
+    filepath = list(project.song_set.filter(edit_number=0))[0].file.path
+    ext = get_ext(song.file.name)
+    audio_seg = song_to_audioseg(song)
+    audio_seg.export(filepath, format=ext[1:])
+
+    #create new file object
+    with open(filepath, 'w') as f:
+        myfile = File(f)
+
+    #delete all temp files - ** user cannot undo edits from a previous session **
+    for edit in project.song_set.all():
+        os.remove(edit.file.path)
+        edit.delete()
+
+    #create new and final song object
+    new_song = Song(file=myfile, edit_number=0, project=project)
+    new_song.save()
+
+    render(request, 'home.html', {})
+
+
+
+
 ###################################
 ### Music Editing Functionality ###
 ###################################
-
 @login_required
 def x_filter(request, song_id):
     song = Song.objects.filter(id=song_id)
