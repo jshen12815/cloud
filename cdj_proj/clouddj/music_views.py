@@ -1,12 +1,13 @@
 # Music editing-related actions
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from pydub import AudioSegment
 from mimetypes import guess_type
 
 from clouddj.models import *
 from clouddj.forms import *
 
-
+@login_required
 def upload(request):
     if request.method == 'GET':
         form = UploadMusicForm()
