@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -11,10 +12,17 @@
     <title>{% block title %}CloudDj{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
+<<<<<<< HEAD
     <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="{{ STATIC_URL }}css/signin.css" rel="stylesheet">
+=======
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/signin.css' %}" rel="stylesheet">
+>>>>>>> 6c02501dba17d77949d939b5c50c9fc86b14c276
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bookman+Old+Style">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,6 +35,7 @@
 </head>
 <body>
 
+<<<<<<< HEAD
     {% block body %}
         <div class="navbar navbar-default navbar-fixed-top mynavbar" role="navigation">
             <div class="container-fluid">
@@ -52,18 +61,48 @@
                         <input type="text" class="searchbox" name = "searchbar" placeholder="Search...">
                         {% csrf_token %}
                     </form>
+=======
+{% block body %}
+    <div class="navbar navbar-default navbar-fixed-top mynavbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand clouddj" href="{% url 'home' %}">CloudDj</a>
+            </div>
+            <div class="nav navbar-nav navbar-left ">
+                <a class="baractions" href="{% url 'home' %}">home</a>
+                <a class="baractions" href="{% url 'stream' %}">explore</a>
+                {% if request.user.is_authenticated %}
+                    <a class="baractions" href="{% url 'upload' %}">upload</a>
+                {% endif %}
+            </div>
+            {% if not request.user.is_authenticated %}
+                <div class="nav navbar-nav navbar-right addpad">
+                    <a class="baractions" href="{% url 'login' %}">login</a>
+                    <a class="baractions" href="{% url 'register' %}">signup</a>
+>>>>>>> 6c02501dba17d77949d939b5c50c9fc86b14c276
                 </div>
+            {% endif %}
+            <div class="nav navbar-nav navbar-right">
+                <form class="searchbox" method="get" action="{% url 'search' %}">
+                    <input type="text" class="searchbox" name="searchbar" placeholder="Search...">
+                    {% csrf_token %}
+                </form>
             </div>
         </div>
-    {% endblock body %}
+    </div>
+{% endblock body %}
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 </html>

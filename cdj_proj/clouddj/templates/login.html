@@ -5,12 +5,12 @@
 {% block body %}
      <div class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
          {{block.super}}
-         <form action = "home.html" class="form-signin" role="form">
+         <form method="post" action = "{% url 'login' %}" class="form-signin" role="form">
             <h2 class="form-signin-heading">Login to cloudDj</h2>
-            <input type="username" class="form-control" placeholder="Username" required="" autofocus="">
-            <input type="password" class="form-control" placeholder="Password" required="">
-            <a class = "white" href = "index.html">cancel</a>
-            <button class="btn btn-lg btn-primary signup" href = "index.html" >login</button>
+            <input type="text" name="username" class="form-control" placeholder="Username" required autofocus="">
+            <input type="password" name ="password" class="form-control" placeholder="Password" required>
+            <a class = "white" href = "{% url 'home' %}">cancel</a>
+            <input type="submit" value="login" class="btn btn-lg btn-primary signup">
             {% csrf_token %}
          </form>
      </div>

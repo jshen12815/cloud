@@ -81,6 +81,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_URL = '/clouddj/login'
+LOGIN_REDIRECT_URL = '/'
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
