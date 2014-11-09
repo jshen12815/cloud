@@ -8,15 +8,22 @@ class Profile(models.Model):
     followers = models.ManyToManyField('self', symmetrical=False, related_name="following")
 
     def __unicode__(self):
-         return self.user.username
+        return self.user.username
 
 
 class Hashtag(models.Model): 
     text = models.CharField(max_length=200)
 
 
+class Project(models.Model):
+    profile = models.ForeignKey(Profile)
+    status = models.CharField(max_length=255)  # in_progress vs. complete
+
+
 class Song(models.Model):
     file = models.FileField(upload_to="music")
+    edit_number = models.IntegerField(default=0)
+    project = models.ForeignKey(Project)
 
 
 class Post(models.Model):
