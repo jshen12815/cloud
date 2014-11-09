@@ -1,175 +1,64 @@
-<!DOCTYPE html>
+{% extends "base_loggedin.html" %}
 
-<html lang="en"><head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+{% load staticfiles %}
 
-    <title>Dashboard Template for Bootstrap</title>
+{% block body %}
+    <div data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+        {{block.super}}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-3 sidebar">
+                    <ul class="profile">
+                        <img class = "propic" src="images/propic.png" >
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+                        <div class="sideoptions">
+                            <img class = "sideicons" src="images/icon.png" >
+                            your music
+                        </div>
+                        <div class="sideoptions">
+                            <img class = "sideicons" src="images/icon.png" >
+                            playlists
+                        </div>
+                        <div class="sideoptions">
+                            <img class = "sideicons" src="images/icon.png" >
+                            following
+                        </div>
+                        <div class="sideoptions">
+                            <img class = "sideicons" src="images/icon.png" >
+                            stream
+                        </div>
+                        <div class="yourfavorites">
+                            your favorites
+                            <div class = "favorite">
+                                <img class = "favoriteicons" src="images/icon.png" >
+                                name here
+                            </div>
+                            <div class = "favorite">
+                                <img class = "favoriteicons" src="images/icon.png" >
+                                name here
+                            </div>
+                            <div class = "favorite">
+                                <img class = "favoriteicons" src="images/icon.png" >
+                                name here
+                            </div>
+                            <div class = "favorite">
+                                <img class = "favoriteicons" src="images/icon.png" >
+                                name here
+                            </div>
+                        </div>
+                    </ul>
+                </div>
 
-    <!-- Custom styles for this template -->
-
-
-
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bookman+Old+Style">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  <style id="holderjs-style" type="text/css"></style>
-
-    <link href="css/signin.css" rel="stylesheet">
-</head>
-
-  <body data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
-
-    <div class="navbar navbar-default navbar-fixed-top mynavbar" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-         <div class = "nav navbar-nav navbar-left " action="home.html">
-          <div class = "playbar">
-               <a href = "#"><img  class = "playbutton"  src="images/back.png" > </a>
-
-               <a href = "#"><img  class = "playbutton"  src="images/play.png" href = "#"> </a>
-
-               <a href = "#"><img  class = "playbutton"  src="images/forward.png" href = "#"></a> 
+                <div class="col-sm-10 col-md-offset-2 main">
+                    <img class="currentsong" src="images/next.png">
+                    <img class="currentsong" src="images/next1.png">
+                    <img class="currentsong" src="images/next.png">
+                    <img class="currentsong" src="images/next1.png">
+                    <img class="currentsong" src="images/next.png">
+                    <img class="currentsong" src="images/next1.png">
+                    <img class="currentsong" src="images/next.png">
+                </div>
             </div>
-          </div>
-          <a class="navbar-brand clouddj" href="#">CloudDj</a>
         </div>
-
-
-
-        <div class = "nav navbar-nav navbar-left " action="home.html">
-          <a class= "baractions" href = "index.html">home</a>
-          <a class= "baractions" href = "explore.html">explore</a>
-          <a class= "baractions" href = "upload.html">upload</a>
-
-
-
-
-        </div>
-
-
-
-
-                <div class = "nav navbar-nav navbar-right" action="home.html">
-          <form class="searchbox">
-            <input type="text" class="searchbox" name = "searchbar" placeholder="Search..."></form>
-          </div>
-
-
-          </ul>
-        </div>
-      </div>
-          </div>
-
-
-
-
-
-
-
-
-
-
- <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-3 sidebar">
-          <ul class="profile">
-
-              <img class = "propic" src="images/propic.png" >
-   
-          <div class = "sideoptions"> 
-            <img class = "sideicons" src="images/icon.png" >
-            your music 
-          </div>
-              <div class = "sideoptions"> 
-            <img class = "sideicons" src="images/icon.png" >
-            playlists 
-          </div>
-          <div class = "sideoptions"> 
-            <img class = "sideicons" src="images/icon.png" >
-            following
-          </div>
-          <div class = "sideoptions"> 
-            <img class = "sideicons" src="images/icon.png" >
-            stream
-          </div>
-          <div class = "yourfavorites">
-            your favorites
-            <div class = "favorite"> 
-            <img class = "favoriteicons" src="images/icon.png" >
-            name here
-          </div>
-
-            <div class = "favorite"> 
-            <img class = "favoriteicons" src="images/icon.png" >
-            name here
-          </div>
-            <div class = "favorite"> 
-            <img class = "favoriteicons" src="images/icon.png" >
-            name here
-          </div>
-
-            <div class = "favorite"> 
-            <img class = "favoriteicons" src="images/icon.png" >
-            name here
-          </div>
-           </div>
-
-
-          </ul>
-
-
-        </div>
-        
-        <div class="col-sm-10 col-md-offset-2 main">
-
-          <img class = "currentsong" src = "images/next.png">
-
-          <img class = "currentsong" src = "images/next1.png">
-
-          <img class = "currentsong" src = "images/next.png">
-
-          <img class = "currentsong" src = "images/next1.png">
-
-          <img class = "currentsong" src = "images/next.png">
-
-          <img class = "currentsong" src = "images/next1.png">
-
-          <img class = "currentsong" src = "images/next.png">
-
-        </div>
-
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  
-
-<div id="global-zeroclipboard-html-bridge" class="global-zeroclipboard-container" style="position: absolute; left: 0px; top: -9999px; width: 15px; height: 15px; z-index: 999999999;" title="" data-original-title="Copy to clipboard">      <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" id="global-zeroclipboard-flash-bridge" width="100%" height="100%">         <param name="movie" value="/assets/flash/ZeroClipboard.swf?noCache=1409940395074">         <param name="allowScriptAccess" value="sameDomain">         <param name="scale" value="exactfit">         <param name="loop" value="false">         <param name="menu" value="false">         <param name="quality" value="best">         <param name="bgcolor" value="#ffffff">         <param name="wmode" value="transparent">         <param name="flashvars" value="trustedOrigins=getbootstrap.com%2C%2F%2Fgetbootstrap.com%2Chttp%3A%2F%2Fgetbootstrap.com">         <embed src="/assets/flash/ZeroClipboard.swf?noCache=1409940395074" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="100%" height="100%" name="global-zeroclipboard-flash-bridge" allowscriptaccess="sameDomain" allowfullscreen="false" type="application/x-shockwave-flash" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="trustedOrigins=getbootstrap.com%2C%2F%2Fgetbootstrap.com%2Chttp%3A%2F%2Fgetbootstrap.com" scale="exactfit">                </object></div><span style="height: 20px; width: 40px; min-height: 20px; min-width: 40px; position: absolute; opacity: 0.85; z-index: 8675309; display: none; cursor: pointer; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAUCAYAAAD/Rn+7AAADU0lEQVR42s2WXUhTYRjHz0VEVPRFUGmtVEaFUZFhHxBhsotCU5JwBWEf1EWEEVHQx4UfFWYkFa2biPJiXbUta33OXFtuUXMzJ4bK3Nqay7m5NeZq6h/tPQ+xU20zugjOxR/+7/O8539+5znnwMtNTExwJtMb3L/fiLv3botCSmUjeCaejTOb39AiFothfHxcFIrHY8RksZjBsckJcOIRMfFsHD/SsbExUYpnI8DR0dGUGjSb0byhEJp5Uqg5CTSzc2CQleJbMEj9/ywBcGRkJEk9DQqouEVQT1sK444yWI9UonmTjGqauVLEIlHa9x8lAMbj8SSpp0rwKGMVvg8P46vbg0C7na8z8JsMcgHe7jlEa+edRhiLy8n/TUMfu6EvLElk+U0WtGwrTrdfAGQf5J8iiK4LVzDU28t8JtMSocf8E+l68myaNFXm/6rXslLK7ay5TOunuRvZWpJuvwAYjUaTpOIWoquuAZ219RTaxKYp9BbjycoN5FvL9qH9TBX5rvoGdJythvXYSTxdtRnWylO/ZdqrLsGwszzhWQ593z2KlAwCYCQSSZJ6ehZ0W7bD9VBLgN0NCqr3qR7R2rBrL3pu3Sb/7nDlz2uy6cG0OXk0GTbZXzNp8trsPAQdTj6frlWzN2DcXZGKQQAMh8NJ6rpyHe+PnkCr/CAFdZyvpfpjuvkifLF9wIt1Wwlo0OHie1RvWrKa93RjzfzliTzPKz3ltB0/Tevmwp14wGUgHAzSOoUEwFAolFaaBSuhnslPRkJexUJtZ6v5HtUeLswl33n1BgEY5fvhs9sJ3FAiT+QYyyvoAQJuD0KBAFRTJNAuz5/s3gJgMBhMJwrVFRThM5tY5zUF/A4X1f2fvQTRLCuBreoim0YmAbqNJryvPEXeeq46kaNdkQ/1HCncbJKPs9ZSv2VHGfWsZ2hfkhKAfr8/pdxWKx4wwD69PmVfNSOL+lr2w+gYqHpWDtXt1xQ8AMlWU0e1lqLd/APRHoP8AJqWrQG9gYxcPMsvSJUvAA4MDKTUJ7MZLaVy8v+qT21tcDx/OemePr0RTkNrur4A6PP5xCgBsL+/X4wiQDpuuVxOeL1eMYmYeDY6sOp0z+B0OuHxeEQhxkJMFosJiSO/UinOI/8Pc+l7KKArAT8AAAAASUVORK5CYII=);"></span></body></html>
+    </div>
+{% endblock body %}

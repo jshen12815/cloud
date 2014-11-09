@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+
+{% block body %}
+    <div class="navbar navbar-default navbar-fixed-top mynavbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class = "nav navbar-nav navbar-left " action="home.html">
+                    <div class = "playbar">
+                        <a href = "#"><img  class = "playbutton"  src="images/back.png" > </a>
+                        <a href = "#"><img  class = "playbutton"  src="images/play.png" href = "#"> </a>
+                        <a href = "#"><img  class = "playbutton"  src="images/forward.png" href = "#"></a>
+                    </div>
+                </div>
+                <a class="navbar-brand clouddj" href="#">CloudDj</a>
+            </div>
+            <div class = "nav navbar-nav navbar-left " action="home.html">
+                <a class= "baractions" href = "index.html">home</a>
+                <a class= "baractions" href = "explore.html">explore</a>
+                <a class= "baractions" href = "upload.html">upload</a>
+            </div>
+            <div class = "nav navbar-nav navbar-right" action="home.html">
+                <form class="searchbox">
+                    <input type="text" class="searchbox" name = "searchbar" placeholder="Search...">
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
