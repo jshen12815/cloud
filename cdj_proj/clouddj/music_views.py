@@ -124,12 +124,12 @@ def x_filter(request, song_id):
 
     if request.method == 'POST':
         form = FilterForm(request.POST)
-        if not form.is_valid:
+        if not form.is_valid():
             return
-        if form.cleaned_data['high_cutoff']:
+        if 'high_cutoff' in form.cleaned_data and form.cleaned_data['high_cutoff']:
             modified = True
             seg = seg.high_pass_filter(int(form.cleaned_data['high_cutoff']))
-        if form.cleaned_data['low_cutoff']:
+        if 'low_cutoff' in form.cleaned_data and form.cleaned_data['low_cutoff']:
             modified = True
             seg = seg.high_pass_filter(int(form.cleaned_data['low_cutoff']))
 
@@ -159,7 +159,7 @@ def fade_out(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    milliseconds = int(form.seconds)
+    milliseconds = int(form.cleaned_data['seconds'])
     new_seg = seg.fade_out(milliseconds * 1000)
     new_song = export_edit(new_seg, song)
     context['song'] = new_song
@@ -186,7 +186,7 @@ def fade_in(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    milliseconds = int(form.seconds)
+    milliseconds = int(form.cleaned_data['seconds'])
     new_seg = seg.fade_in(milliseconds * 1000)
     new_song = export_edit(new_seg, song)
     context['song'] = new_song
@@ -213,9 +213,9 @@ def repeat(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    start = int(form.start) * 1000
-    end = int(form.end) * 1000
-    iters = int(form.iters)
+    start = int(form.cleaned_data['start']) * 1000
+    end = int(form.cleaned_data['end']) * 1000
+    iters = int(form.cleaned_data['iters'])
 
     lower_seg = seg[:start]
     upper_seg = seg[-end:]
