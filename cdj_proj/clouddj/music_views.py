@@ -20,6 +20,7 @@ def add_empty_forms(context):
     context['speedup_form'] = SpeedupForm()
     context['reverse_form'] = ReverseForm()
     context['slice_form'] = SliceForm()
+    context['amplify_form'] = AmplifyForm()
 
 
 #@login_required
@@ -320,8 +321,11 @@ def slice(request, song_id):
 #@login_required
 def amplify(request, song_id):
     context = {}
-    song = Song.objects.filter(id=song_id)
+    song = Song.objects.get(id=song_id)
     sound = song_to_audioseg(song)
+
+    add_empty_forms(context)
+
     if request.method == 'GET':
         context['amplify_form'] = AmplifyForm()
         return render(request, 'edit.html', context)
@@ -338,7 +342,9 @@ def amplify(request, song_id):
     else:
         sound += amp
     new_song = export_edit(sound, song)
-    return render(request, 'edit.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
+    context['song'] = new_song
+    context['type'] = get_content_type(new_song.file.name)
+    return render(request, 'studio.html', context)
 
 ########################
 ### Helper Functions ###
