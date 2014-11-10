@@ -17,3 +17,8 @@ class UploadMusicForm(forms.ModelForm):
             raise forms.ValidationError("Invalid file type.")
 
         return form_file
+
+
+class FilterForm(forms.Form):
+    high_cutoff = models.IntegerField(blank=True)
+    low_cutoff = models.IntegerField(blank=True)
