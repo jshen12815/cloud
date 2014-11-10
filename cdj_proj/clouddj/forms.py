@@ -46,12 +46,12 @@ class SpeedupForm(forms.Form):
 
         return mult
 
-<<<<<<< HEAD
+
 class ReverseForm(forms.Form):
     start = forms.IntegerField()
     end = forms.IntegerField()
 
-=======
+
 class CreatePlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
@@ -63,4 +63,8 @@ class CreatePlaylistForm(forms.ModelForm):
             raise forms.ValidationError("Playlist name cannot be empty")
 
         return name
->>>>>>> aba891c85e96aeb336e7159ee8dc5bf66c1b61ff
+
+
+class SliceForm(forms.Form):
+    start = forms.IntegerField()
+    end = forms.IntegerField()
