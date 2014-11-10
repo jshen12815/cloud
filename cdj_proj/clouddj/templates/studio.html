@@ -71,9 +71,15 @@
       <td> 
               <div class = "typelabel"> Edit Clip</div>    
         <br>
+          <form action="{% url 'repeat' song.id %}" method="post">
        <div class="inputnum"> <div class = "shadowtext"> Repeat &nbsp;</div>
-        <button type="button" href="/clouddj/repeat/{{song.id}}/"> apply </button>
+        <input class = "edittext" type="text" name="start">
+        <input class = "edittext" type="text" name="end">
+        <input class = "edittext" type="text" name="iters">
+        <button type="submit"> apply </button>
         </div>
+        {% csrf_token %}
+        </form>
       </td>
       
      </tr>
@@ -81,7 +87,7 @@
         <form action="{% url 'reverse' song.id %}" method="post">
       <td><div class="inputnum"> <div class = "shadowtext"> Reverse &nbsp; </div>
         <input class = "edittext" type="text" name="start">
-         <input class = "edittext" type="text" name="end">
+        <input class = "edittext" type="text" name="end">
         <button type="submit" > apply </button>
         </div></td>
         {% csrf_token %}
