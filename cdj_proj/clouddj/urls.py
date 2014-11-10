@@ -12,5 +12,6 @@ urlpatterns = [
     #music urls
     url(r'^upload$', 'clouddj.music_views.upload', name='upload'),
     url(r'^song/(?P<id>\d+)/$', 'clouddj.music_views.get_song', name='get_song'),
+    url(r'^fade_out/(?P<id>\d+)/$', 'clouddj.music_views.fade_out', name='fade_out')
 
 ]
