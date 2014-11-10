@@ -378,11 +378,10 @@ def export_edit(audio_seg, old_song):
     audio_seg.export(new_file_path, format=ext[1:])
 
     #create new file object
-    with open(new_file_path, 'w') as f:
+    with open(new_file_path, 'r+') as f:
         myfile = File(f)
-
-    new_song = Song(file=myfile, edit_number=new_edit_number, project=old_song.project)
-    new_song.save()
+        new_song = Song(file=myfile, edit_number=new_edit_number, project=old_song.project)
+        new_song.save()
 
     return new_song
 
