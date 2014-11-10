@@ -331,8 +331,8 @@ def amplify(request, song_id):
     if request.method == 'GET':
         context['amplify_form'] = AmplifyForm()
         return render(request, 'edit.html', context)
-    amplify_form = AmplifyForm(request.POST)
-    context['amplify_form'] = amplify_form
+    form = AmplifyForm(request.POST)
+    context['amplify_form'] = form
     amp = int(form.cleaned_data['amplify'])
     # handle amplification
     if 'beginning' in request.GET and 'end' in request.GET:
