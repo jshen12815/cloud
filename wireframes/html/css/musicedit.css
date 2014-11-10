@@ -1,0 +1,87 @@
+html
+  background: #eee
+
+body
+  background: linear-gradient(#ffffff, #ebe7e6)
+  width: 450px
+  height: 180px
+  margin: 0 auto
+  padding: 50px 70px
+  box-shadow: 0 0 10px #999
+  border-radius: 0 0 5px 5px
+   
+
+input
+  &[type="range"]
+    background: #e0dbda
+    appearance: none
+    height: 5px
+    margin: 80px 0 0 -50px
+    display: inline
+    position: relative
+    transform: rotate(90deg)
+    border-radius: 5px
+    box-shadow: 0 0 3px #444444 inset
+  &[type='range']::-webkit-slider-thumb
+    background: #ffffff
+    appearance: none
+    width: 30px
+    height: 30px
+    border-radius: 20px
+    box-shadow: 0 0 2px #444444 inset, 5px 0 10px #666666
+  cursor: pointer  
+
+input[type='range']:before
+  background: linear-gradient(90deg, #eeeeee 1%, transparent 2%, transparent 34%, #eeeeee 35%, transparent 35%, transparent 67%, #eeeeee 68%, transparent 68%, transparent 98%, #eeeeee 99%)
+  content: ""
+  width: 15px
+  height: 128px
+  position: absolute
+  left: 58px
+  bottom: -95px
+  transform: rotate(90deg)
+
+.knob
+  background: #ffffff
+  width: 60px
+  height: 60px
+  position: absolute
+  float: left
+  margin: 50px 0 0 -20px
+  border-radius: 50px
+  box-shadow: 0 0 5px #444444, 0 0 30px #ebe7e6 inset, 0 0 0 15px #f5f3f2, 0 0 3px 15px #444444
+  &:before
+    background: #cccccc
+    content: ""
+    width: 5px
+    height: 5px
+    position: absolute
+    bottom: 10px
+    left: 15px
+    border-radius: 5px
+  &:hover
+    transition: 2s ease
+    transform: rotate(250deg)
+
+.controls
+  float: right
+  label
+    width: 350px
+    margin-top: 25px
+    word-spacing: 40px
+    margin-left: -20px     
+
+.top
+  width: 400px
+  top: 0
+  margin-left: -10px
+  word-spacing: 195px !important
+
+label
+  color: #cccccc
+  width: 150px
+  font-family: Arial, sans-serif
+  word-spacing: 50px
+  position: absolute
+  top: 180px
+  margin-left: -43px
