@@ -35,7 +35,7 @@ def upload(request):
 @login_required
 def save_edit(request, song_id):
     #save latest edit
-    song = Song.objects.filter(id=song_id)
+    song = Song.objects.get(id=song_id)
     project = song.project
     filepath = list(project.song_set.filter(edit_number=0))[0].file.path
     ext = get_ext(song.file.name)
@@ -65,7 +65,7 @@ def save_edit(request, song_id):
 ###################################
 @login_required
 def x_filter(request, song_id):
-    song = Song.objects.filter(id=song_id)
+    song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
     modified = False
 
@@ -90,7 +90,7 @@ def x_filter(request, song_id):
 
 @login_required
 def fade_out(request, song_id):
-    song = Song.objects.filter(id=song_id)
+    song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -117,7 +117,7 @@ def fade_out(request, song_id):
 
 @login_required
 def fade_in(request, song_id):
-    song = Song.objects.filter(id=song_id)
+    song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -144,7 +144,7 @@ def fade_in(request, song_id):
 
 @login_required
 def repeat(request, song_id):
-    song = Song.objects.filter(id=song_id)
+    song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
