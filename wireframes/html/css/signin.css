@@ -36,6 +36,17 @@ body {
 }
 
 
+#musiceditor {
+  background-color: black;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  /*height: 650px;*/
+  background: #8B8888;
+  -moz-box-shadow:    inset 0px 3px 5px 0px rgba(0,0,0,0.50);
+  box-shadow:         inset 0px 3px 5px 0px rgba(0,0,0,0.50);
+}
+
 
 
 
@@ -277,4 +288,204 @@ body {
   margin: 110px;
   color: #FFFFFF;
   font-size: 18px;
+}
+.songpic { 
+  display: inline-block;
+  width:1100px;
+}
+
+
+
+
+
+
+
+
+.editingoptions {
+  padding: 20px;
+  background-color: #565656;
+
+}
+
+.typelabel {
+  display: inline-block;
+  color: #C3C3C3;
+  font-weight: bolder;
+
+
+}
+/* Number slider ------------------- */
+
+.slider {
+  display: inline-block;
+    background-color: #E3E3E3;
+    padding: 15px 20px 0px 20px;
+    height: 70px;
+    vertical-align: middle;
+    width:175px;
+    margin: 1px;
+    /*border: solid;
+    border-width: 1px;*/
+   /* border-color: #565656;*/
+    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
+
+
+}
+
+.inputnum{
+  display: inline-block;
+    background-color: #E3E3E3;
+    padding: 5px 20px 20px 20px;
+    height: 42px;
+    text-align: right;
+    width:200px;
+    margin: 1px;
+    /*border: solid;
+    border-width: 1px;*/
+   /* border-color: #565656;*/
+    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
+
+
+}
+
+
+
+.inputdouble{
+  display: inline-block;
+    background-color: #E3E3E3;
+    padding: 5px 20px 20px 20px;
+    height: 42px;
+    text-align: right;
+    width:250px;
+    margin: 1px;
+    /*border: solid;
+    border-width: 1px;*/
+   /* border-color: #565656;*/
+    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
+
+
+}
+
+#filterpitch{
+  margin-top: -20px;
+}
+
+.edittext {
+    appearance: none;
+    display: inline-block;
+    vertical-align: middle;
+    width: 70px;
+    margin-left: 5px;
+    background: hsl(0,0%,100%);
+    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
+    overflow: hidden;
+
+}
+
+.edittable{
+  margin-right: 30px;
+  display: inline-block;
+}
+
+.shadowtext{
+
+  display: inline-block;
+  font-weight: bolder;
+  background-color: #565656;
+  color: transparent;
+  text-shadow: 0px 2px 3px rgba(255,255,255,0.5);
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+}
+
+
+/* Label ------------------- */
+
+.slider-label {
+    position: absolute;
+    z-index: 1;
+    top: 4px;
+    font-size: 11px;
+    color: hsla(0,0%,0%,0);
+    pointer-events: none;
+    transition: transform .2s cubic-bezier(.26,.08,.15,1), color .6s .6s ease-out;
+}
+
+.slider-label.isRight {
+    right: 50%;
+    margin-right: -20px;
+    left: auto;
+    transform: translateX(20px);
+}
+.slider-label.isLeft {
+    right: auto;
+    margin-left: -20px;
+    left: 50%;
+    transform: translate(-20px);
+}
+
+.slider:active .slider-label {
+    color: hsla(0,0%,0%,.7);
+    transition-delay: 0;
+}
+
+
+/* Input ------------------- */
+
+.slider-input {
+    appearance: none;
+    position: relative;
+    vertical-align: middle;
+    width: 100px;
+    border-radius: 20px;
+    background: hsl(0,0%,80%);
+    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
+    overflow: hidden;
+}
+
+.slider-input::-webkit-slider-thumb,
+.slider-input::slider-thumb {
+    appearance: none;
+    border-radius: 20px;
+    width: 20px;
+    height: 20px;
+    border: 5px solid hsl(0,0%,80%);
+    cursor: pointer;
+    background: hsl(0,0%,40%);
+    box-shadow: inset 0 1px 2px hsla(0,0%,0%,.4);
+    transition: border-width .2s cubic-bezier(.26, .08, .15, 1);
+}
+
+.slider-input:active::-webkit-slider-thumb,
+.slider-input:active::slider-thumb {
+    border: 0px solid hsl(0,0%,80%);
+    transition-duration: .1;
+}
+
+
+
+body {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  display: flex;
+  flex-direction: column;
+  flex-orient: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 50px;
+  box-sizing: border-box;
+  background: hsl(0,0%,90%);
+}
+html {
+ height: 100%; 
+}
+
+#savebutton {
+  color: black;
+  background-color: white;
+  margin-top: -20px;
 }
