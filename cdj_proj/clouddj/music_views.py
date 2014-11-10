@@ -61,12 +61,25 @@ def save_edit(request, song_id):
 @login_required
 def x_filter(request, song_id):
     song = Song.objects.filter(id=song_id)
-    sound = song_to_audioseg(song)
+    seg = song_to_audioseg(song)
+    modified = False
 
-    # handle filtering
+    if request.method == 'POST':
+        form = FilterForm(request.POST)
+        if not form.is_valid:
+            return
+        if form.cleaned_data['high_cutoff']:
+            modified = True
+            seg = seg.high_pass_filter(int(form.cleaned_data['high_cutoff']))
+        if form.cleaned_data['low_cutoff']:
+            modified = True
+            seg = seg.high_pass_filter(int(form.cleaned_data['low_cutoff']))
 
     #export new song
-    new_song = export_edit(sound, song)
+    if modified:
+        new_song = export_edit(seg, song)
+    else:
+        new_song = song
     return render(request, 'edit.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
 
