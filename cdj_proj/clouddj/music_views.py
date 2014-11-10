@@ -66,6 +66,7 @@ def save_edit(request, song_id):
     render(request, 'home.html', {})
 
 
+"""
 @login_required
 def record(request):
     if request.method == 'POST':
@@ -107,7 +108,7 @@ def record(request):
         wf.setframerate(rate)
         wf.writeframes(b''.join(frames))
         wf.close()
-
+"""
 
 ###################################
 ### Music Editing Functionality ###
