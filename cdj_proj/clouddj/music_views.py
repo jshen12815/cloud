@@ -188,7 +188,7 @@ def speedup(request, song_id):
         context['type'] = get_content_type(song.file.name)
         return render(request, 'edit.html', context)
 
-    form = SpeedupForm(crequest.POST)
+    form = SpeedupForm(request.POST)
     context['speedup_form'] = form
     if not form.is_valid():
         return render(request, 'edit.html', context)
@@ -200,6 +200,41 @@ def speedup(request, song_id):
     context['type'] = get_content_type(song.file.name)
 
     return render(request, 'edit.html', context)
+
+
+@login_required
+def reverse(request, song_id):
+    song = Song.objects.get(id=song_id)
+    seg = song_to_audioseg(song)
+    context = {}
+
+    add_empty_forms(context)
+
+    if request.method == 'GET':
+        context['song'] = song
+        context['type'] = get_content_type(song.file.name)
+        return render(request, 'edit.html', context)
+
+    form = ReverseForm(request.POST)
+    context['reverse_form'] = form
+    if not form.is_valid():
+        return render(request, 'edit.html', context)
+
+    start = int(form.cleaned_data['start'])
+    end = int(form.cleaned_data['end'])
+
+    lower_seg = seg[:start]
+    upper_seg = seg[-end:]
+    middle_seg = seg[start:end]
+
+    new_seg = lower_seg + middle_seg.reverse() + upper_seg
+    new_song = export_edit(new_seg, song)
+    context['song'] = new_song
+    context['type'] = get_content_type(song.file.name)
+
+    return render(request, 'edit.html', context)
+
+
 
 ########################
 ### Helper Functions ###
