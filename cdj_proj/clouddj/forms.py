@@ -41,7 +41,19 @@ class SpeedupForm(forms.Form):
 
     def clean_multiplier(self):
         mult = self.cleaned_data.get('clean_multiplier')
-        if mult <= 0:
+        if mult <= 0.0:
             raise forms.ValidationError("Multiplier must be nonnegative")
 
         return mult
+
+class CreatePlaylistForm(forms.ModelForm):
+    class Meta:
+        model = Playlist
+        fields = ('name')
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if not name:
+            raise forms.ValidationError("Playlist name cannot be empty")
+
+        return name
