@@ -12,13 +12,13 @@ urlpatterns = [
     #music urls
     url(r'^upload$', 'clouddj.music_views.upload', name='upload'),
     url(r'^song/(?P<id>\d+)/$', 'clouddj.music_views.get_song', name='get_song'),
-    url(r'^fade_out/(?P<id>\d+)/$', 'clouddj.music_views.fade_out', name='fade_out'),
-    url(r'^fade_in/(?P<id>\d+)/$', 'clouddj.music_views.fade_in', name='fade_in'),
-    url(r'^slice/(?P<id>\d+)/$', 'clouddj.music_views.slice', name='slice'),
-    url(r'^repeat/(?P<id>\d+)/$', 'clouddj.music_views.repeat', name='repeat'),
-    url(r'^reverse/(?P<id>\d+)/$', 'clouddj.music_views.reverse', name='reverse'),
-    url(r'^amplify/(?P<id>\d+)/$', 'clouddj.music_views.amplify', name='amplify'),
-    url(r'^speedup/(?P<id>\d+)/$', 'clouddj.music_views.speedup', name='speedup'),
+    url(r'^fade_out/(?P<song_id>\d+)/$', 'clouddj.music_views.fade_out', name='fade_out'),
+    url(r'^fade_in/(?P<song_id>\d+)/$', 'clouddj.music_views.fade_in', name='fade_in'),
+    url(r'^slice/(?P<song_id>\d+)/$', 'clouddj.music_views.slice', name='slice'),
+    url(r'^repeat/(?P<song_id>\d+)/$', 'clouddj.music_views.repeat', name='repeat'),
+    url(r'^reverse/(?P<song_id>\d+)/$', 'clouddj.music_views.reverse', name='reverse'),
+    url(r'^amplify/(?P<song_id>\d+)/$', 'clouddj.music_views.amplify', name='amplify'),
+    url(r'^speedup/(?P<song_id>\d+)/$', 'clouddj.music_views.speedup', name='speedup'),
     url(r'^filter/(?P<song_id>\d+)/$', 'clouddj.music_views.x_filter', name='filter'),
 
 ]
