@@ -3,6 +3,7 @@
 {% load staticfiles %}
 
 {% block body %}
+{{block.super}}
 <div class = "container-fluid" id = "musiceditor">
  
 <div class = "songedit">
@@ -71,23 +72,39 @@
       <td> 
               <div class = "typelabel"> Edit Clip</div>    
         <br>
+          <form action="{% url 'repeat' song.id %}" method="post">
        <div class="inputnum"> <div class = "shadowtext"> Repeat &nbsp;</div>
-        <button type="button" href="/clouddj/repeat/{{song.id}}/"> apply </button>
+        <input class = "edittext" type="text" name="start">
+        <input class = "edittext" type="text" name="end">
+        <input class = "edittext" type="text" name="iters">
+        <button type="submit"> apply </button>
         </div>
+        {% csrf_token %}
+        </form>
       </td>
       
      </tr>
     <tr>
+        <form action="{% url 'reverse' song.id %}" method="post">
       <td><div class="inputnum"> <div class = "shadowtext"> Reverse &nbsp; </div>
-        <button type="button" href="/clouddj/reverse/{{song.id}}/"> apply </button>
+        <input class = "edittext" type="text" name="start">
+        <input class = "edittext" type="text" name="end">
+        <button type="submit" > apply </button>
         </div></td>
-
+        {% csrf_token %}
+        </form>
       </tr>
+
       <tr>
+      <form action="{% url 'slice' song.id %}" method="post">
       <td><div class="inputnum"> <div class = "shadowtext"> Delete &nbsp; </div>
-        <button type="button" > apply </button>
+         <input class = "edittext" type="text" name="start">
+         <input class = "edittext" type="text" name="end">
+        <button type="submit" > apply </button>
         </div></td>
     <td></td>
+      {% csrf_token %}
+      </form>
       </tr>
 
       <tr>
@@ -109,14 +126,14 @@
   <table class = "edittable" id = "filterpitch">
 
       <tbody>
+      <form action="{% url 'filter' song.id %}" method="post">
       <tr>
-
       <td> 
               <div class = "typelabel"> Filters</div>    
         <br>
        <div class="inputdouble"> <div class = "shadowtext"> High Pass </div>
-        <input class = "edittext" type="text" >
-                <button type="button" > apply </button>
+        <input class = "edittext" type="text" name="high_cutoff" placeholder="ex. 1000 Hz">
+                <input type="submit" value="apply">
 
 
         </div>
@@ -125,29 +142,38 @@
      </tr>
     <tr>
       <td><div class="inputdouble"> <div class = "shadowtext"> Low Pass </div>
-        <input  class = "edittext" type="text" >
-                <button type="button" > apply </button>
-        </div></td>
+        <input  class = "edittext" type="text" name="low_cutoff" placeholder="ex. 1000 Hz">
+                <input type="submit" value="apply">
+        </div>
+      </td>
     <td></td>
       </tr>
-
+          {%  csrf_token %}
+</form>
 
       <tr>
       <td>  
       <br>   
 <div class = "typelabel"> Fade </div><br>
+       <form action="{% url 'fade_in' song.id %}" method="post">
        <div class="inputnum"> <div class = "shadowtext"> In &nbsp;</div>
-        <button type="button" > apply </button>
+        <input class = "edittext" type="text" name="seconds">
+        <button type="submit" > apply </button>
         </div>
+           {% csrf_token %}
+        </form>
       </td>
-      
+
      </tr>
     <tr>
+      <form action="{% url 'fade_out' song.id %}" method="post">
       <td><div class="inputnum"> <div class = "shadowtext"> Out &nbsp; </div>
-        <button type="button" > apply </button>
+        <input class = "edittext" type="text" name="seconds">
+        <button type="submit" > apply </button>
         </div>
       </td>
-      
+        {% csrf_token %}
+      </form>
      </tr>
     
     </tbody>

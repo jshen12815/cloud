@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from pydub import AudioSegment
-import pyaudio
-import wave
+#import pyaudio
+#import wave
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
@@ -53,21 +53,21 @@ def save_edit(request, song_id):
     audio_seg.export(filepath, format=ext[1:])
 
     #create new file object
-    with open(filepath, 'w') as f:
+    with open(filepath, 'r+') as f:
         myfile = File(f)
+         #create new and final song object
+        new_song = Song(file=myfile, edit_number=0, project=project)
+        new_song.save()
 
     #delete all temp files - ** user cannot undo edits from a previous session **
     for edit in project.song_set.all():
         os.remove(edit.file.path)
         edit.delete()
 
-    #create new and final song object
-    new_song = Song(file=myfile, edit_number=0, project=project)
-    new_song.save()
-
     render(request, 'home.html', {})
 
 
+"""
 @login_required
 def record(request):
     if request.method == 'POST':
@@ -109,6 +109,7 @@ def record(request):
         wf.setframerate(rate)
         wf.writeframes(b''.join(frames))
         wf.close()
+"""
 
 
 ###################################
@@ -122,12 +123,12 @@ def x_filter(request, song_id):
 
     if request.method == 'POST':
         form = FilterForm(request.POST)
-        if not form.is_valid:
+        if not form.is_valid():
             return
-        if form.cleaned_data['high_cutoff']:
+        if 'high_cutoff' in form.cleaned_data and form.cleaned_data['high_cutoff']:
             modified = True
             seg = seg.high_pass_filter(int(form.cleaned_data['high_cutoff']))
-        if form.cleaned_data['low_cutoff']:
+        if 'low_cutoff' in form.cleaned_data and form.cleaned_data['low_cutoff']:
             modified = True
             seg = seg.high_pass_filter(int(form.cleaned_data['low_cutoff']))
 
@@ -157,7 +158,7 @@ def fade_out(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    milliseconds = int(form.seconds)
+    milliseconds = int(form.cleaned_data['seconds'])
     new_seg = seg.fade_out(milliseconds * 1000)
     new_song = export_edit(new_seg, song)
     context['song'] = new_song
@@ -184,7 +185,7 @@ def fade_in(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    milliseconds = int(form.seconds)
+    milliseconds = int(form.cleaned_data['seconds'])
     new_seg = seg.fade_in(milliseconds * 1000)
     new_song = export_edit(new_seg, song)
     context['song'] = new_song
@@ -211,9 +212,9 @@ def repeat(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    start = int(form.start) * 1000
-    end = int(form.end) * 1000
-    iters = int(form.iters)
+    start = int(form.cleaned_data['start']) * 1000
+    end = int(form.cleaned_data['end']) * 1000
+    iters = int(form.cleaned_data['iters'])
 
     lower_seg = seg[:start]
     upper_seg = seg[-end:]
@@ -361,7 +362,6 @@ def get_song(request, id):
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
-
     return AudioSegment.from_file(song.file.path, format=ext[1:])
 
 
@@ -377,11 +377,10 @@ def export_edit(audio_seg, old_song):
     audio_seg.export(new_file_path, format=ext[1:])
 
     #create new file object
-    with open(new_file_path, 'w') as f:
+    with open(new_file_path, 'r+') as f:
         myfile = File(f)
-
-    new_song = Song(file=myfile, edit_number=new_edit_number, project=old_song.project)
-    new_song.save()
+        new_song = Song(file=myfile, edit_number=new_edit_number, project=old_song.project)
+        new_song.save()
 
     return new_song
 
