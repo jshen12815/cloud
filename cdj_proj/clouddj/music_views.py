@@ -53,17 +53,16 @@ def save_edit(request, song_id):
     audio_seg.export(filepath, format=ext[1:])
 
     #create new file object
-    with open(filepath, 'w') as f:
+    with open(filepath, 'r+') as f:
         myfile = File(f)
+         #create new and final song object
+        new_song = Song(file=myfile, edit_number=0, project=project)
+        new_song.save()
 
     #delete all temp files - ** user cannot undo edits from a previous session **
     for edit in project.song_set.all():
         os.remove(edit.file.path)
         edit.delete()
-
-    #create new and final song object
-    new_song = Song(file=myfile, edit_number=0, project=project)
-    new_song.save()
 
     render(request, 'home.html', {})
 
