@@ -109,14 +109,14 @@
   <table class = "edittable" id = "filterpitch">
 
       <tbody>
+      <form action="{% url 'filter' song.id %}" method="post">
       <tr>
-
       <td> 
               <div class = "typelabel"> Filters</div>    
         <br>
        <div class="inputdouble"> <div class = "shadowtext"> High Pass </div>
-        <input class = "edittext" type="text" >
-                <button type="button" > apply </button>
+        <input class = "edittext" type="text" name="high_cutoff" placeholder="ex. 1000 Hz">
+                <input type="submit" value="apply">
 
 
         </div>
@@ -125,12 +125,14 @@
      </tr>
     <tr>
       <td><div class="inputdouble"> <div class = "shadowtext"> Low Pass </div>
-        <input  class = "edittext" type="text" >
-                <button type="button" > apply </button>
-        </div></td>
+        <input  class = "edittext" type="text" name="low_cutoff" placeholder="ex. 1000 Hz">
+                <input type="submit" value="apply">
+        </div>
+      </td>
     <td></td>
       </tr>
-
+          {%  csrf_token %}
+</form>
 
       <tr>
       <td>  

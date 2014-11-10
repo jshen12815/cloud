@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from pydub import AudioSegment
-import pyaudio
-import wave
+#import pyaudio
+#import wave
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
@@ -110,6 +110,7 @@ def record(request):
         wf.writeframes(b''.join(frames))
         wf.close()
 """
+
 
 ###################################
 ### Music Editing Functionality ###
@@ -334,7 +335,6 @@ def get_song(request, id):
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
-
     return AudioSegment.from_file(song.file.path, format=ext[1:])
 
 
