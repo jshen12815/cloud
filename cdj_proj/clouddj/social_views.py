@@ -22,3 +22,6 @@ def create_playlist(request):
 
 	# THIS TOO
 	render(request, 'home.html', {})
+
+def stream(request):
+	return render(request, 'home.html', {})

@@ -2,8 +2,11 @@
 
 {% load staticfiles %}
 
+{% block bodytag %}
+<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
 {% block body %}
-     <div class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
          {{block.super}}
          <form  action = "{% url 'register' %}" method="post" class="form-signin" role="form">
             <h2 class="form-signin-heading">Sign up for cloudDj</h2>
@@ -16,5 +19,4 @@
             <input type="submit" class="btn btn-lg btn-primary signup" value="sign up">
             {% csrf_token %}
          </form>
-     </div>
 {% endblock body %}

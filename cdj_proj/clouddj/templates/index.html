@@ -2,8 +2,11 @@
 
 {% load staticfiles %}
 
+{% block bodytag %}
+<body data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
 {% block body %}
-     <div class="editbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
          {{block.super}}
          <img  class = "mainpic"  src="{% static 'images/clouddj.jpg' %}">
          <div class = "details">
@@ -17,5 +20,4 @@
                 <img  class = "mainpic"  src="{% static 'images/createown.jpg' %}">
             </div>
          </div>
-     </div>
 {% endblock body %}

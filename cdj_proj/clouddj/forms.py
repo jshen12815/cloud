@@ -1,17 +1,21 @@
 from django import forms
 
 from clouddj.models import *
-from clouddj.music_views import get_ext
+from clouddj.music_views import *
 
 
-class UploadMusicForm(forms.ModelForm):
+class UploadMusicForm(forms.Form):
     class Meta:
         model = Song
         fields = ('file',)
+        exclude = ('edit_number', 'project',)
 
     def clean_file(self):
         form_file = self.cleaned_data.get('file')
         ext = get_ext(form_file.name)
+        print ext
+        print "HIIII\n" 
+        print form_file
         valid_extentions = ['.mp3', '.wav', '.ogg']
         if not ext in valid_extentions:
             raise forms.ValidationError("Invalid file type.")
@@ -20,8 +24,8 @@ class UploadMusicForm(forms.ModelForm):
 
 
 class FilterForm(forms.Form):
-    high_cutoff = models.IntegerField(blank=True)
-    low_cutoff = models.IntegerField(blank=True)
+    high_cutoff = models.IntegerField()
+    low_cutoff = models.IntegerField()
 
 
 class FadeInForm(forms.Form):
@@ -39,7 +43,7 @@ class RepeatForm(forms.Form):
 
 
 class SpeedupForm(forms.Form):
-    multiplier = forms.DecimalField(blank=False, max_digits=5, decimal_places=3)
+    multiplier = forms.DecimalField(required=False, max_digits=5, decimal_places=3)
 
     def clean_multiplier(self):
         mult = self.cleaned_data.get('clean_multiplier')

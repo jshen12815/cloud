@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
-
+{% block bodytag %}
+<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
 {% block body %}
-     <div class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+     
          {{block.super}}
          <form action = "{% url 'upload' %}" method="post" enctype="multipart/form-data" class="form-signin" role="form">
             <h2 class="form-signin-heading">upload music</h2>
-            <input type="file" class="form-control" placeholder="upload file" required="" autofocus="">
-            <a class = "white" href = "{% url 'stream' %}">cancel</a>
+            <input type="file" name="file" class="form-control" placeholder="upload file" required="" autofocus="">
+            <!--<a class = "white" href = "{% url 'stream' %}">cancel</a>-->
             <input type="submit" class="btn btn-lg btn-primary signup" value="upload" >
             {% csrf_token %}
          </form>
-     </div>
+    
 {% endblock body %}

@@ -19,7 +19,7 @@ def add_empty_forms(context):
     context['slice_form'] = SliceForm()
 
 
-@login_required
+#@login_required
 def upload(request):
     if request.method == 'GET':
         form = UploadMusicForm()
@@ -32,12 +32,13 @@ def upload(request):
             song = form.save()
             song.project = new_project
             song.save()
-            return render(request, 'edit.html', {'song': song, 'type': get_content_type(song.file.name)})
+            return render(request, 'studio.html', {'song': song, 'type': get_content_type(song.file.name)})
 
-    render(request, 'upload.html', {'form': form})
+    print form.errors
+    return render(request, 'upload.html', {'form': form})
 
 
-@login_required
+#@login_required
 def save_edit(request, song_id):
     #save latest edit
     song = Song.objects.get(id=song_id)
@@ -66,7 +67,7 @@ def save_edit(request, song_id):
 ###################################
 ### Music Editing Functionality ###
 ###################################
-@login_required
+#@login_required
 def x_filter(request, song_id):
     song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
@@ -88,10 +89,10 @@ def x_filter(request, song_id):
         new_song = export_edit(seg, song)
     else:
         new_song = song
-    return render(request, 'edit.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
+    return render(request, 'studio.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
 
-@login_required
+#@login_required
 def fade_out(request, song_id):
     song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
@@ -102,12 +103,12 @@ def fade_out(request, song_id):
     if request.method == 'GET':
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     form = FadeOutForm(request.POST)
     context['fade_out_form'] = form
     if not form.is_valid():
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     milliseconds = int(form.seconds)
     new_seg = seg.fade_out(milliseconds * 1000)
@@ -115,10 +116,10 @@ def fade_out(request, song_id):
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
 
-    return render(request, 'edit.html', context)
+    return render(request, 'studio.html', context)
 
 
-@login_required
+#@login_required
 def fade_in(request, song_id):
     song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
@@ -129,12 +130,12 @@ def fade_in(request, song_id):
     if request.method == 'GET':
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     form = FadeInForm(request.POST)
     context['fade_in_form'] = form
     if not form.is_valid():
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     milliseconds = int(form.seconds)
     new_seg = seg.fade_in(milliseconds * 1000)
@@ -142,10 +143,10 @@ def fade_in(request, song_id):
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
 
-    return render(request, 'edit.html', context)
+    return render(request, 'studio.html', context)
 
 
-@login_required
+#@login_required
 def repeat(request, song_id):
     song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
@@ -156,12 +157,12 @@ def repeat(request, song_id):
     if request.method == 'GET':
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     form = RepeatForm(request.POST)
     context['repeat_form'] = form
     if not form.is_valid():
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     start = int(form.start)
     end = int(form.end)
@@ -176,10 +177,10 @@ def repeat(request, song_id):
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
 
-    return render(request, 'edit.html', context)
+    return render(request, 'studio.html', context)
 
 
-@login_required
+#@login_required
 def speedup(request, song_id):
     song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
@@ -190,12 +191,12 @@ def speedup(request, song_id):
     if request.method == 'GET':
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     form = SpeedupForm(request.POST)
     context['speedup_form'] = form
     if not form.is_valid():
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     changed = seg.speedup(form.cleaned_data['multiplier'])
 
@@ -203,10 +204,10 @@ def speedup(request, song_id):
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
 
-    return render(request, 'edit.html', context)
+    return render(request, 'studio.html', context)
 
 
-@login_required
+#@login_required
 def reverse(request, song_id):
     song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
@@ -217,12 +218,12 @@ def reverse(request, song_id):
     if request.method == 'GET':
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     form = ReverseForm(request.POST)
     context['reverse_form'] = form
     if not form.is_valid():
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     start = int(form.cleaned_data['start'])
     end = int(form.cleaned_data['end'])
@@ -236,10 +237,10 @@ def reverse(request, song_id):
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
 
-    return render(request, 'edit.html', context)
+    return render(request, 'studio.html', context)
 
 
-@login_required
+#@login_required
 def slice(request, song_id):
     song = Song.objects.get(id=song_id)
     seg = song_to_audioseg(song)
@@ -250,12 +251,12 @@ def slice(request, song_id):
     if request.method == 'GET':
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     form = ReverseForm(request.POST)
     context['slice_form'] = form
     if not form.is_valid():
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
 
     start = int(form.cleaned_data['start'])
     end = int(form.cleaned_data['end'])
@@ -268,7 +269,7 @@ def slice(request, song_id):
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
 
-    return render(request, 'edit.html', context)
+    return render(request, 'studio.html', context)
 
 
 ########################
