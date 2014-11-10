@@ -74,3 +74,8 @@ class CreatePlaylistForm(forms.ModelForm):
 class SliceForm(forms.Form):
     start = forms.IntegerField()
     end = forms.IntegerField()
+
+
+class RecordForm(forms.Form):
+    secs = models.IntegerField()
+    filename = models.CharField(max_length=255)
