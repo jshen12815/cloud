@@ -210,8 +210,8 @@ def repeat(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    start = int(form.start)
-    end = int(form.end)
+    start = int(form.start) * 1000
+    end = int(form.end) * 1000
     iters = int(form.iters)
 
     lower_seg = seg[:start]
@@ -271,8 +271,8 @@ def reverse(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    start = int(form.cleaned_data['start'])
-    end = int(form.cleaned_data['end'])
+    start = int(form.cleaned_data['start']) * 1000
+    end = int(form.cleaned_data['end']) * 1000
 
     lower_seg = seg[:start]
     upper_seg = seg[-end:]
@@ -304,8 +304,8 @@ def slice(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    start = int(form.cleaned_data['start'])
-    end = int(form.cleaned_data['end'])
+    start = int(form.cleaned_data['start']) * 1000
+    end = int(form.cleaned_data['end']) * 1000
 
     lower_seg = seg[:start]
     upper_seg = seg[-end:]
