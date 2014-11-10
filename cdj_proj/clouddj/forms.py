@@ -4,7 +4,7 @@ from clouddj.models import *
 from clouddj.music_views import *
 
 
-class UploadMusicForm(forms.Form):
+class UploadMusicForm(forms.ModelForm):
     class Meta:
         model = Song
         fields = ('file',)
@@ -12,10 +12,9 @@ class UploadMusicForm(forms.Form):
 
     def clean_file(self):
         form_file = self.cleaned_data.get('file')
-        ext = get_ext(form_file.name)
-        print ext
-        print "HIIII\n" 
-        print form_file
+        #ext = get_ext(form_file.name)
+        ext = os.path.splitext(form_file.name)[1]
+
         valid_extentions = ['.mp3', '.wav', '.ogg']
         if not ext in valid_extentions:
             raise forms.ValidationError("Invalid file type.")

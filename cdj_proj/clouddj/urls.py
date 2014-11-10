@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),
 
     #music urls
-    url(r'^upload$', 'clouddj.music_views.upload', name='upload')
+    url(r'^upload$', 'clouddj.music_views.upload', name='upload'),
+    url(r'^song/(?P<id>\d+)/$', 'clouddj.music_views.get_song', name='get_song'),
 
 ]

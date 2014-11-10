@@ -7,6 +7,7 @@ from pydub import AudioSegment
 import pyaudio
 import wave
 from mimetypes import guess_type
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 from clouddj.forms import *
 
@@ -26,17 +27,17 @@ def upload(request):
     if request.method == 'GET':
         form = UploadMusicForm()
     else:
-        form = UploadMusicForm(request.POST, request.FILES)
-        if form.is_valid():
-            new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
-            new_project.save()
+        #new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
+        new_project = Project(status="in_progress")
+        new_project.save()
 
+        song = Song(project=new_project)
+
+        form = UploadMusicForm(request.POST, request.FILES, instance=song)
+        if form.is_valid():
             song = form.save()
-            song.project = new_project
-            song.save()
             return render(request, 'studio.html', {'song': song, 'type': get_content_type(song.file.name)})
 
-    print form.errors
     return render(request, 'upload.html', {'form': form})
 
 
@@ -321,6 +322,15 @@ def slice(request, song_id):
 ########################
 ### Helper Functions ###
 ########################
+#@login_required
+def get_song(request, id):
+    song = get_object_or_404(Song, id=id)
+    if not song.file:
+        raise Http404
+        
+    content_type = guess_type(song.file.name)
+    return HttpResponse(song.file, content_type=content_type)
+
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
