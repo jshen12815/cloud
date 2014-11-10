@@ -328,19 +328,19 @@ def amplify(request, song_id):
 
     if request.method == 'GET':
         context['amplify_form'] = AmplifyForm()
-        return render(request, 'edit.html', context)
+        return render(request, 'studio.html', context)
     amplify_form = AmplifyForm(request.POST)
     context['amplify_form'] = amplify_form
     amp = int(form.cleaned_data['amplify'])
     # handle amplification
-    if 'beginning' in request.GET and 'end' in request.GET:
-        beginning = int(form.cleaned_data['beginning'])
-        end = int(form.cleaned_data['end'])
-        portion = sound[beginning:end]
-        portion += amp
-        sound = sound[:beginning] + portion + sound[end:]
-    else:
-        sound += amp
+    # if 'beginning' in request.GET and 'end' in request.GET:
+    #     beginning = int(form.cleaned_data['beginning'])
+    #     end = int(form.cleaned_data['end'])
+    #     portion = sound[beginning:end]
+    #     portion += amp
+    #     sound = sound[:beginning] + portion + sound[end:]
+    # else:
+    sound += amp
     new_song = export_edit(sound, song)
     context['song'] = new_song
     context['type'] = get_content_type(new_song.file.name)
