@@ -317,6 +317,28 @@ def slice(request, song_id):
 
     return render(request, 'studio.html', context)
 
+#@login_required
+def amplify(request, song_id):
+    context = {}
+    song = Song.objects.filter(id=song_id)
+    sound = song_to_audioseg(song)
+    if request.method == 'GET':
+        context['amplify_form'] = AmplifyForm()
+        return render(request, 'edit.html', context)
+    amplify_form = AmplifyForm(request.POST)
+    context['amplify_form'] = amplify_form
+    amp = int(form.cleaned_data['amplify'])
+    # handle amplification
+    if 'beginning' in request.GET and 'end' in request.GET:
+        beginning = int(form.cleaned_data['beginning'])
+        end = int(form.cleaned_data['end'])
+        portion = sound[beginning:end]
+        portion += amp
+        sound = sound[:beginning] + portion + sound[end:]
+    else:
+        sound += amp
+    new_song = export_edit(sound, song)
+    return render(request, 'edit.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
 ########################
 ### Helper Functions ###
