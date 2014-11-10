@@ -79,9 +79,6 @@ class RecordForm(forms.Form):
     filename = models.CharField(max_length=255)
 
 class AmplifyForm(forms.Form):
-    amplify = forms.IntegerField(label = 'Amplify',
-                                widget = forms.TextInput(attrs = {"input type": "number"}))
-    beginning = forms.IntegerField(label = 'Beginning',
-                                widget = forms.TextInput(attrs = {"input type": "number"}))
-    end = forms.IntegerField(label = 'End',
-                            widget = forms.TextInput(attrs = {"input type": "number"}))
+    amplify = forms.IntegerField()
+    beginning = forms.IntegerField()
+    end = forms.IntegerField()

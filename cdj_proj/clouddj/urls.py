@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^upload$', 'clouddj.music_views.upload', name='upload'),
     url(r'^song/(?P<id>\d+)/$', 'clouddj.music_views.get_song', name='get_song'),
     url(r'^amplify/(?P<id>\d+)/$', 'clouddj.music_views.amplify', name='amplify'),
+    url(r'^speedup/(?P<id>\d+)/$', 'clouddj.music_views.speedup', name='speedup'),
 ]
