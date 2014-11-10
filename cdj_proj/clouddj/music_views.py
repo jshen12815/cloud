@@ -175,6 +175,31 @@ def repeat(request, song_id):
 
     return render(request, 'edit.html', context)
 
+@login_required
+def speedup(request, song_id):
+    song = Song.objects.get(id=song_id)
+    seg = song_to_audioseg(song)
+    context = {}
+
+    add_empty_forms(context)
+
+    if request.method == 'GET':
+        context['song'] = song
+        context['type'] = get_content_type(song.file.name)
+        return render(request, 'edit.html', context)
+
+    form = SpeedupForm(crequest.POST)
+    context['speedup_form'] = form
+    if not form.is_valid():
+        return render(request, 'edit.html', context)
+
+    changed = seg.speedup(form.cleaned_data['multiplier'])
+
+    new_song = export_edit(changed, song)
+    context['song'] = new_song
+    context['type'] = get_content_type(song.file.name)
+
+    return render(request, 'edit.html', context)
 
 ########################
 ### Helper Functions ###

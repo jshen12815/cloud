@@ -37,4 +37,11 @@ class RepeatForm(forms.Form):
     iters = forms.IntegerField()
 
 class SpeedupForm(forms.Form):
-    multiplier = forms.DecimalField()
+    multiplier = forms.DecimalField(blank=False, max_digits=5, decimal_places=3)
+
+    def clean_multiplier(self):
+        mult = self.cleaned_data.get('clean_multiplier')
+        if mult <= 0:
+            raise forms.ValidationError("Multiplier must be nonnegative")
+
+        return mult
