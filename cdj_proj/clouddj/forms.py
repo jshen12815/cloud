@@ -36,3 +36,5 @@ class RepeatForm(forms.Form):
     end = forms.IntegerField()
     iters = forms.IntegerField()
 
+class SpeedupForm(forms.Form):
+    multiplier = forms.DecimalField()

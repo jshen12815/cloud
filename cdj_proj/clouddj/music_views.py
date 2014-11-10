@@ -8,6 +8,11 @@ from mimetypes import guess_type
 
 from clouddj.forms import *
 
+def add_empty_forms(context):
+    context['fade_out_form'] = FadeOutForm()
+    context['fade_in_form'] = FadeInForm()
+    context['repeat_form'] = RepeatForm()
+    context['speedup_form'] = SpeedupForm()
 
 @login_required
 def upload(request):
@@ -89,8 +94,9 @@ def fade_out(request, song_id):
     seg = song_to_audioseg(song)
     context = {}
 
+    add_empty_forms(context)
+
     if request.method == 'GET':
-        context['fade_out_form'] = FadeOutForm()
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
         return render(request, 'edit.html', context)
@@ -115,8 +121,9 @@ def fade_in(request, song_id):
     seg = song_to_audioseg(song)
     context = {}
 
+    add_empty_forms(context)
+
     if request.method == 'GET':
-        context['fade_in_form'] = FadeInForm()
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
         return render(request, 'edit.html', context)
@@ -141,8 +148,9 @@ def repeat(request, song_id):
     seg = song_to_audioseg(song)
     context = {}
 
+    add_empty_forms(context)
+
     if request.method == 'GET':
-        context['repeat_form'] = RepeatForm()
         context['song'] = song
         context['type'] = get_content_type(song.file.name)
         return render(request, 'edit.html', context)
@@ -166,6 +174,7 @@ def repeat(request, song_id):
     context['type'] = get_content_type(song.file.name)
 
     return render(request, 'edit.html', context)
+
 
 ########################
 ### Helper Functions ###
