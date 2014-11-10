@@ -19,6 +19,20 @@ class UploadMusicForm(forms.ModelForm):
         return form_file
 
 
+
 class FilterForm(forms.Form):
     high_cutoff = models.IntegerField(blank=True)
     low_cutoff = models.IntegerField(blank=True)
+
+class FadeInForm(forms.Form):
+    seconds = forms.IntegerField()
+
+
+class FadeOutForm(forms.Form):
+    seconds = forms.IntegerField()
+
+class RepeatForm(forms.Form):
+    start = forms.IntegerField()
+    end = forms.IntegerField()
+    iters = forms.IntegerField()
+
