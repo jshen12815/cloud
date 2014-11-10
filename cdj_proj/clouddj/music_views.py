@@ -295,7 +295,7 @@ def export_edit(audio_seg, old_song):
     with open(new_file_path, 'w') as f:
         myfile = File(f)
 
-    new_song = Song(file=myfile, edit_number=new_edit_number, project=song.project)
+    new_song = Song(file=myfile, edit_number=new_edit_number, project=old_song.project)
     new_song.save()
 
     return new_song
