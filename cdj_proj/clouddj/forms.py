@@ -17,3 +17,16 @@ class UploadMusicForm(forms.ModelForm):
             raise forms.ValidationError("Invalid file type.")
 
         return form_file
+
+
+class FadeInForm(forms.Form):
+    seconds = forms.IntegerField()
+
+
+class FadeOutForm(forms.Form):
+    seconds = forms.IntegerField()
+
+class RepeatForm(forms.Form):
+    start = forms.IntegerField()
+    end = forms.IntegerField()
+    iters = forms.IntegerField()

@@ -70,6 +70,90 @@ def x_filter(request, song_id):
     return render(request, 'edit.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
 
+@login_required
+def fade_out(request, song_id):
+    song = Song.objects.filter(id=song_id)
+    seg = song_to_audioseg(song)
+    context = {}
+
+    if request.method == 'GET':
+        context['fade_out_form'] = FadeOutForm()
+        context['song'] = song
+        context['type'] = get_content_type(song.file.name)
+        return render(request, 'edit.html', context)
+
+    form = FadeOutForm(request.POST)
+    context['fade_out_form'] = form
+    if not form.is_valid():
+        return render(request, 'edit.html', context)
+
+    milliseconds = int(form.seconds)
+    new_seg = seg.fade_out(milliseconds * 1000)
+    new_song = export_edit(new_seg, song)
+    context['song'] = new_song
+    context['type'] = get_content_type(song.file.name)
+
+    return render(request, 'edit.html', context)
+
+
+@login_required
+def fade_in(request, song_id):
+    song = Song.objects.filter(id=song_id)
+    seg = song_to_audioseg(song)
+    context = {}
+
+    if request.method == 'GET':
+        context['fade_in_form'] = FadeInForm()
+        context['song'] = song
+        context['type'] = get_content_type(song.file.name)
+        return render(request, 'edit.html', context)
+
+    form = FadeInForm(request.POST)
+    context['fade_in_form'] = form
+    if not form.is_valid():
+        return render(request, 'edit.html', context)
+
+    milliseconds = int(form.seconds)
+    new_seg = seg.fade_in(milliseconds * 1000)
+    new_song = export_edit(new_seg, song)
+    context['song'] = new_song
+    context['type'] = get_content_type(song.file.name)
+
+    return render(request, 'edit.html', context)
+
+
+@login_required
+def repeat(request, song_id):
+    song = Song.objects.filter(id=song_id)
+    seg = song_to_audioseg(song)
+    context = {}
+
+    if request.method == 'GET':
+        context['repeat_form'] = RepeatForm()
+        context['song'] = song
+        context['type'] = get_content_type(song.file.name)
+        return render(request, 'edit.html', context)
+
+    form = RepeatForm(request.POST)
+    context['repeat_form'] = form
+    if not form.is_valid():
+        return render(request, 'edit.html', context)
+
+    start = int(form.start)
+    end = int(form.end)
+    iters = int(form.iters)
+
+    lower_seg = seg[:start]
+    upper_seg = seg[-end:]
+    middle_seg = seg[start:end]
+
+    new_seg = lower_seg + middle_seg*iters + upper_seg
+    new_song = export_edit(new_seg, song)
+    context['song'] = new_song
+    context['type'] = get_content_type(song.file.name)
+
+    return render(request, 'edit.html', context)
+
 ########################
 ### Helper Functions ###
 ########################
@@ -80,12 +164,12 @@ def song_to_audioseg(song):
     return AudioSegment.from_file(song.file.path, format=ext[1:])
 
 
-def export_edit(audio_seg, song):
-    new_edit_number = song.edit_number+1
-    ext = get_ext(song.file.name)
-    root = get_root(song.file.path)
-    if song.edit_number > 0:
-        root = root.replace("-"+str(song.edit_number), "")
+def export_edit(audio_seg, old_song):
+    new_edit_number = old_song.edit_number+1
+    ext = get_ext(old_song.file.name)
+    root = get_root(old_song.file.path)
+    if old_song.edit_number > 0:
+        root = root.replace("-"+str(old_song.edit_number), "")
     new_file_path = root + "-" + str(new_edit_number) + ext
 
     #export song to new file
