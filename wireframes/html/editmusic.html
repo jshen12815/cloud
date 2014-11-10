@@ -17,11 +17,6 @@
     <script type="text/javascript" src="js/jquery-1.8.0.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-    $(".dropdown-toggle").dropdown('toggle');
-});  
-</script>
 
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Bookman+Old+Style">
 
@@ -69,99 +64,49 @@ $(document).ready(function(){
         </div>
         <br>
         <br>
-<div class = "container" id = "musiceditor">
-
-<!-- Single button -->
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    File <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href="#">upload</a></li>
-    <li><a href="#">add music</a></li>
-    <li class="divider"></li>
-    <li><a href="#">save file</a></li>
-  </ul>
+<div class = "container-fluid" id = "musiceditor">
+  <div class="col-sm-3 col-md-3 sidebar">
+  hello
 </div>
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Amplify <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href="#">Bass</a></li>
-    <li><a href="#">Trebel</a></li>
-    <li class="divider"></li>
-    <li><a href="#">All</a></li>
-  </ul>
-</div>
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Filters <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href="#">High Pass</a></li>
-    <li><a href="#">Low Pass</a></li>
-    <li><a href="#">Band Pass</a></li>
-    <li><a href="#">Reverb</a></li>
-  </ul>
-</div>
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Clip edits <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href="#">Fade In</a></li>
-    <li><a href="#">Fade Out</a></li>
-    <li><a href="#">Repeat</a></li>
-    <li><a href="#">Reverse</a></li>
-  </ul>
-</div>
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    Time <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href="#">speed</a></li>
-    <li><a href="#">tempo</a></li>
-  </ul>
-   <a href = "#"><img  class = "playbutton"  src="images/back.png" > </a>
-
-               <a href = "#"><img  class = "playbutton"  src="images/play.png" href = "#"> </a>
-
-               <a href = "#"><img  class = "playbutton"  src="images/forward.png" href = "#"></a> 
-</div>
+<div class = "songedit">
 
 
-
-<div >
-              
-            </div>
-
-
-<div class = "songclip">
-      <div class="slider"> volume
-        <label id="slider-label" class="slider-label isRight"></label>
-        <input id="slider-input" class="slider-input" type="range" min="0" value="0" max="100">
-
-      </div>
-              <img class = "songpic" src="images/next.png" >
-              <a class = "name" href= "/grumblr/home">  </a>
-              <br/>
-              <br/>
-              <audio controls>
+<!--             <audio controls>
   <source src="horse.ogg" type="audio/ogg">
   <source src="horse.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
+
 </audio>
 
-                           
+  <table class = "edittable">
+    <tr>
+      <td>
+               <a href = "#"><img  class = "playbutton"  src="images/play.png" href = "#"> </a>
+               <a href = "#"><img  class = "playbutton"  src="images/play.png" href = "#"> </a>
+               <a href = "#"><img  class = "playbutton"  src="images/play.png" href = "#"> </a>
+             </td>
+           </tr>
+        <tr>
+          <td>                           
 
               
 
                </br>
 
               </br>
+-->
 
+<h1 >
+              NAME OF SONG
+            </h1>
+
+
+<div class = "songclip">
+      
+              <img class = "songpic" src="images/next.png" >
+              <a class = "name" href= "/grumblr/home">  </a>
+              <br/>
+              <br/>
+ 
 
 <div class  = "editingoptions">
 
@@ -222,23 +167,25 @@ Your browser does not support the audio element.
       <td><div class="inputnum"> <div class = "shadowtext"> Reverse &nbsp; </div>
         <button type="button" > apply </button>
         </div></td>
+
+      </tr>
+      <tr>
+      <td><div class="inputnum"> <div class = "shadowtext"> Delete &nbsp; </div>
+        <button type="button" > apply </button>
+        </div></td>
     <td></td>
       </tr>
 
       <tr>
       <td>  
       <br>   
-        <div class = "typelabel"> Fade </div><br>
-       <div class="inputnum"> <div class = "shadowtext"> In &nbsp;</div>
-        <button type="button" > apply </button>
+
+              <div class = "typelabel"> Effects </div><br>
+       <div class="inputdouble"> <div class = "shadowtext"> Reverb</div>
+        <input class = "edittext" type="text" >
+                <button type="button" > apply </button>
         </div>
-      </td>
-      
-     </tr>
-    <tr>
-      <td><div class="inputnum"> <div class = "shadowtext"> Out &nbsp; </div>
-        <button type="button" > apply </button>
-        </div></td>
+        </td>
     <td></td>
       </tr>
     </tbody>
@@ -270,32 +217,42 @@ Your browser does not support the audio element.
     <td></td>
       </tr>
 
+
       <tr>
       <td>  
       <br>   
-        <div class = "typelabel"> Effects </div><br>
-       <div class="inputdouble"> <div class = "shadowtext"> Reverb</div>
-        <input class = "edittext" type="text" >
-                <button type="button" > apply </button>
+<div class = "typelabel"> Fade </div><br>
+       <div class="inputnum"> <div class = "shadowtext"> In &nbsp;</div>
+        <button type="button" > apply </button>
         </div>
       </td>
       
      </tr>
     <tr>
-      <td><div class="inputdouble"> 
-        &nbsp;
-        </div></td>
-    <td></td>
-      </tr>
+      <td><div class="inputnum"> <div class = "shadowtext"> Out &nbsp; </div>
+        <button type="button" > apply </button>
+        </div>
+      </td>
+      
+     </tr>
+    
     </tbody>
   </table>
+  
 
-<input type="submit" id = "savebutton" class="btn btn-primary" value="Cancel">
-<input type="submit" id = "savebutton" class="btn btn-primary" value="Save">
+            <input type="submit" id = "savebutton" class="btn btn-primary" value="Save">
+          </td>
+      <tr>
+            
+  </table>
+              
 
+   
 
  
    
+
+</div>
 
 </div>
     <!-- Bootstrap core JavaScript

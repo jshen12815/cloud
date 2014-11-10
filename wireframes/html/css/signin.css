@@ -338,7 +338,7 @@ body {
     padding: 5px 20px 20px 20px;
     height: 42px;
     text-align: right;
-    width:200px;
+    width:250px;
     margin: 1px;
     /*border: solid;
     border-width: 1px;*/
@@ -489,3 +489,10 @@ html {
   background-color: white;
   margin-top: -20px;
 }
+
+
+.sidebar {
+
+  background-color: black;
+
+  }

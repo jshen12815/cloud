@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block body %}
+<div class = "container-fluid" id = "musiceditor">
+  <div class="col-sm-3 col-md-3 sidebar">
+  hello
+</div>
+<div class = "songedit">
+
+
+<h1 >
+    NAME OF SONG
+            </h1>
+
+
+<div class = "songclip">
+      
+              <img class = "songpic" src="images/next.png" >
+ 
+
+<div class  = "editingoptions">
+
+  <table class = "edittable">
+
+      <tr>
+      <td>     
+      <div class = "typelabel"> Adjust </div>
+      <br>
+       <div class="slider"> <div class = "shadowtext"> Amplify </div>
+        <label id="slider-label" class="slider-label isRight"></label>
+        <input id="slider-input" class="slider-input" type="range" min="-20" value="0" max="100">
+        </div>
+      </td>
+      <td>
+        <br><div class="slider"> <div class = "shadowtext"> Speed </div>
+        <label id="slider-label" class="slider-label isRight"></label>
+        <input id="slider-input" class="slider-input" type="range" min="0" value="0" max="100">
+        </div></td> 
+     </tr>
+    <tr>
+      <td><div class="slider"> <div class = "shadowtext"> Treble </div>
+        <label id="slider-label" class="slider-label isRight"></label>
+        <input id="slider-input" class="slider-input" type="range" min="0" value="0" max="100">
+        </div></td>
+      <td><div class="slider"> <div class = "shadowtext"> Tempo</div>
+        <label id="slider-label" class="slider-label isRight"></label>
+        <input id="slider-input" class="slider-input" type="range" min="0" value="0" max="100">
+        </div></td> 
+    </tr>
+    <tr>
+      <td><div class="slider"> <div class = "shadowtext"> Bass </div>
+        <label id="slider-label" class="slider-label isRight"></label>
+        <input id="slider-input" class="slider-input" type="range" min="0" value="0" max="100">
+        </div></td>
+    <td><div class="slider"> <div class = "shadowtext"> Pitch </div>
+        <label id="slider-label" class="slider-label isRight"></label>
+        <input id="slider-input" class="slider-input" type="range" min="0" value="0" max="100">
+        </div></td>
+      </tr>
+  </table>
+
+<table class = "edittable" id = "filterpitch">
+
+      <tbody>
+      <tr>
+
+      <td> 
+              <div class = "typelabel"> Edit Clip</div>    
+        <br>
+       <div class="inputnum"> <div class = "shadowtext"> Repeat &nbsp;</div>
+        <button type="button" > apply </button>
+        </div>
+      </td>
+      
+     </tr>
+    <tr>
+      <td><div class="inputnum"> <div class = "shadowtext"> Reverse &nbsp; </div>
+        <button type="button" > apply </button>
+        </div></td>
+
+      </tr>
+      <tr>
+      <td><div class="inputnum"> <div class = "shadowtext"> Delete &nbsp; </div>
+        <button type="button" > apply </button>
+        </div></td>
+    <td></td>
+      </tr>
+
+      <tr>
+      <td>  
+      <br>   
+
+              <div class = "typelabel"> Effects </div><br>
+       <div class="inputdouble"> <div class = "shadowtext"> Reverb</div>
+        <input class = "edittext" type="text" >
+                <button type="button" > apply </button>
+        </div>
+        </td>
+    <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <table class = "edittable" id = "filterpitch">
+
+      <tbody>
+      <tr>
+
+      <td> 
+              <div class = "typelabel"> Filters</div>    
+        <br>
+       <div class="inputdouble"> <div class = "shadowtext"> High Pass </div>
+        <input class = "edittext" type="text" >
+                <button type="button" > apply </button>
+
+
+        </div>
+      </td>
+      
+     </tr>
+    <tr>
+      <td><div class="inputdouble"> <div class = "shadowtext"> Low Pass </div>
+        <input  class = "edittext" type="text" >
+                <button type="button" > apply </button>
+        </div></td>
+    <td></td>
+      </tr>
+
+
+      <tr>
+      <td>  
+      <br>   
+<div class = "typelabel"> Fade </div><br>
+       <div class="inputnum"> <div class = "shadowtext"> In &nbsp;</div>
+        <button type="button" > apply </button>
+        </div>
+      </td>
+      
+     </tr>
+    <tr>
+      <td><div class="inputnum"> <div class = "shadowtext"> Out &nbsp; </div>
+        <button type="button" > apply </button>
+        </div>
+      </td>
+      
+     </tr>
+    
+    </tbody>
+  </table>
+  
+
+            <input type="submit" id = "savebutton" class="btn btn-primary" value="Save">
+          </td>
+      <tr>
+            
+  </table>
+              
+
+   
+
+ 
+   
+
+</div>
+
+</div>
+{% endblock body %}
