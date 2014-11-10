@@ -30,3 +30,7 @@ class RepeatForm(forms.Form):
     start = forms.IntegerField()
     end = forms.IntegerField()
     iters = forms.IntegerField()
+
+class ReverseForm(forms.Form):
+    start = forms.IntegerField()
+    end = forms.IntegerField()
