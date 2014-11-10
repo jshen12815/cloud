@@ -78,16 +78,26 @@
       
      </tr>
     <tr>
+        <form action="{% url 'reverse' song.id %}" method="post">
       <td><div class="inputnum"> <div class = "shadowtext"> Reverse &nbsp; </div>
-        <button type="button" href="/clouddj/reverse/{{song.id}}/"> apply </button>
+        <input class = "edittext" type="text" name="start">
+         <input class = "edittext" type="text" name="end">
+        <button type="submit" > apply </button>
         </div></td>
-
+        {% csrf_token %}
+        </form>
       </tr>
+
       <tr>
+      <form action="{% url 'slice' song.id %}" method="post">
       <td><div class="inputnum"> <div class = "shadowtext"> Delete &nbsp; </div>
-        <button type="button" > apply </button>
+         <input class = "edittext" type="text" name="start">
+         <input class = "edittext" type="text" name="end">
+        <button type="submit" > apply </button>
         </div></td>
     <td></td>
+      {% csrf_token %}
+      </form>
       </tr>
 
       <tr>
@@ -138,18 +148,25 @@
       <td>  
       <br>   
 <div class = "typelabel"> Fade </div><br>
+       <form action="{% url 'fade_in' song.id %}" method="post">
        <div class="inputnum"> <div class = "shadowtext"> In &nbsp;</div>
-        <button type="button" > apply </button>
+        <input class = "edittext" type="text" name="seconds">
+        <button type="submit" > apply </button>
         </div>
+           {% csrf_token %}
+        </form>
       </td>
-      
+
      </tr>
     <tr>
+      <form action="{% url 'fade_out' song.id %}" method="post">
       <td><div class="inputnum"> <div class = "shadowtext"> Out &nbsp; </div>
-        <button type="button" > apply </button>
+        <input class = "edittext" type="text" name="seconds">
+        <button type="submit" > apply </button>
         </div>
       </td>
-      
+        {% csrf_token %}
+      </form>
      </tr>
     
     </tbody>
