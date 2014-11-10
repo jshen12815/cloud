@@ -7,6 +7,7 @@ from pydub import AudioSegment
 import pyaudio
 import wave
 from mimetypes import guess_type
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 from clouddj.forms import *
 
@@ -320,6 +321,15 @@ def slice(request, song_id):
 ########################
 ### Helper Functions ###
 ########################
+#@login_required
+def get_song(request, id):
+    song = get_object_or_404(Song, id=id)
+    if not song.file:
+        raise Http404
+        
+    content_type = guess_type(song.file.name)
+    return HttpResponse(song.file, content_type=content_type)
+
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
