@@ -16,7 +16,7 @@ class Hashtag(models.Model):
 
 
 class Project(models.Model):
-    profile = models.ForeignKey(Profile)
+    #profile = models.ForeignKey(Profile)
     status = models.CharField(max_length=255)  # in_progress vs. complete
 
 

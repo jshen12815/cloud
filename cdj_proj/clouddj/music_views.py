@@ -26,17 +26,17 @@ def upload(request):
     if request.method == 'GET':
         form = UploadMusicForm()
     else:
-        form = UploadMusicForm(request.POST, request.FILES)
-        if form.is_valid():
-            new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
-            new_project.save()
+        #new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
+        new_project = Project(status="in_progress")
+        new_project.save()
 
+        song = Song(project=new_project)
+
+        form = UploadMusicForm(request.POST, request.FILES, instance=song)
+        if form.is_valid():
             song = form.save()
-            song.project = new_project
-            song.save()
             return render(request, 'studio.html', {'song': song, 'type': get_content_type(song.file.name)})
 
-    print form.errors
     return render(request, 'upload.html', {'form': form})
 
 
