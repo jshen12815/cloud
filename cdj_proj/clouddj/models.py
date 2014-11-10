@@ -59,3 +59,5 @@ class Rating(models.Model):
 class Playlist(models.Model):
     posts = models.ManyToManyField(Post, related_name="playlist")
     profile = models.ForeignKey(Profile)
+    name = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
