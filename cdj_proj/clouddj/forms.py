@@ -19,10 +19,10 @@ class UploadMusicForm(forms.ModelForm):
         return form_file
 
 
-
 class FilterForm(forms.Form):
     high_cutoff = models.IntegerField(blank=True)
     low_cutoff = models.IntegerField(blank=True)
+
 
 class FadeInForm(forms.Form):
     seconds = forms.IntegerField()
@@ -31,10 +31,12 @@ class FadeInForm(forms.Form):
 class FadeOutForm(forms.Form):
     seconds = forms.IntegerField()
 
+
 class RepeatForm(forms.Form):
     start = forms.IntegerField()
     end = forms.IntegerField()
     iters = forms.IntegerField()
+
 
 class SpeedupForm(forms.Form):
     multiplier = forms.DecimalField(blank=False, max_digits=5, decimal_places=3)
@@ -55,7 +57,7 @@ class ReverseForm(forms.Form):
 class CreatePlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
-        fields = ('name')
+        fields = ('name',)
 
     def clean_name(self):
         name = self.cleaned_data.get('name')

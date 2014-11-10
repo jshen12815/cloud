@@ -8,13 +8,16 @@ from mimetypes import guess_type
 
 from clouddj.forms import *
 
+
 def add_empty_forms(context):
+    context['filter_form'] = FilterForm()
     context['fade_out_form'] = FadeOutForm()
     context['fade_in_form'] = FadeInForm()
     context['repeat_form'] = RepeatForm()
     context['speedup_form'] = SpeedupForm()
     context['reverse_form'] = ReverseForm()
     context['slice_form'] = SliceForm()
+
 
 @login_required
 def upload(request):
@@ -58,8 +61,6 @@ def save_edit(request, song_id):
     new_song.save()
 
     render(request, 'home.html', {})
-
-
 
 
 ###################################
@@ -177,6 +178,7 @@ def repeat(request, song_id):
 
     return render(request, 'edit.html', context)
 
+
 @login_required
 def speedup(request, song_id):
     song = Song.objects.get(id=song_id)
@@ -267,7 +269,6 @@ def slice(request, song_id):
     context['type'] = get_content_type(song.file.name)
 
     return render(request, 'edit.html', context)
-
 
 
 ########################
