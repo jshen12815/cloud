@@ -45,3 +45,8 @@ class SpeedupForm(forms.Form):
             raise forms.ValidationError("Multiplier must be nonnegative")
 
         return mult
+
+class ReverseForm(forms.Form):
+    start = forms.IntegerField()
+    end = forms.IntegerField()
+
