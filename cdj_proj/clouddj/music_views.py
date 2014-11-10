@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from pydub import AudioSegment
-import pyaudio
-import wave
+#import pyaudio
+#import wave
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
@@ -20,6 +20,7 @@ def add_empty_forms(context):
     context['speedup_form'] = SpeedupForm()
     context['reverse_form'] = ReverseForm()
     context['slice_form'] = SliceForm()
+    context['amplify_form'] = AmplifyForm()
 
 
 #@login_required
@@ -67,6 +68,7 @@ def save_edit(request, song_id):
     render(request, 'home.html', {})
 
 
+"""
 @login_required
 def record(request):
     if request.method == 'POST':
@@ -108,6 +110,7 @@ def record(request):
         wf.setframerate(rate)
         wf.writeframes(b''.join(frames))
         wf.close()
+"""
 
 
 ###################################
@@ -317,6 +320,33 @@ def slice(request, song_id):
 
     return render(request, 'studio.html', context)
 
+#@login_required
+def amplify(request, song_id):
+    context = {}
+    song = Song.objects.get(id=song_id)
+    sound = song_to_audioseg(song)
+
+    add_empty_forms(context)
+
+    if request.method == 'GET':
+        context['amplify_form'] = AmplifyForm()
+        return render(request, 'edit.html', context)
+    amplify_form = AmplifyForm(request.POST)
+    context['amplify_form'] = amplify_form
+    amp = int(form.cleaned_data['amplify'])
+    # handle amplification
+    if 'beginning' in request.GET and 'end' in request.GET:
+        beginning = int(form.cleaned_data['beginning'])
+        end = int(form.cleaned_data['end'])
+        portion = sound[beginning:end]
+        portion += amp
+        sound = sound[:beginning] + portion + sound[end:]
+    else:
+        sound += amp
+    new_song = export_edit(sound, song)
+    context['song'] = new_song
+    context['type'] = get_content_type(new_song.file.name)
+    return render(request, 'studio.html', context)
 
 ########################
 ### Helper Functions ###
@@ -333,7 +363,6 @@ def get_song(request, id):
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
-
     return AudioSegment.from_file(song.file.path, format=ext[1:])
 
 

@@ -21,7 +21,6 @@ class UploadMusicForm(forms.ModelForm):
 
         return form_file
 
-
 class FilterForm(forms.Form):
     high_cutoff = models.IntegerField()
     low_cutoff = models.IntegerField()
@@ -78,3 +77,8 @@ class SliceForm(forms.Form):
 class RecordForm(forms.Form):
     secs = models.IntegerField()
     filename = models.CharField(max_length=255)
+
+class AmplifyForm(forms.Form):
+    amplify = forms.IntegerField()
+    beginning = forms.IntegerField()
+    end = forms.IntegerField()
