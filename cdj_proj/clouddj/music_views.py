@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from pydub import AudioSegment
-#import pyaudio
+# import pyaudio
 #import wave
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -55,7 +55,7 @@ def save_edit(request, song_id):
     #create new file object
     with open(filepath, 'r+') as f:
         myfile = File(f)
-         #create new and final song object
+        #create new and final song object
         new_song = Song(file=myfile, edit_number=0, project=project)
         new_song.save()
 
@@ -220,7 +220,7 @@ def repeat(request, song_id):
     upper_seg = seg[-end:]
     middle_seg = seg[start:end]
 
-    new_seg = lower_seg + middle_seg*iters + upper_seg
+    new_seg = lower_seg + middle_seg * iters + upper_seg
     new_song = export_edit(new_seg, song)
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
@@ -319,6 +319,7 @@ def slice(request, song_id):
 
     return render(request, 'studio.html', context)
 
+
 #@login_required
 def amplify(request, song_id):
     context = {}
@@ -347,6 +348,7 @@ def amplify(request, song_id):
     context['type'] = get_content_type(new_song.file.name)
     return render(request, 'studio.html', context)
 
+
 ########################
 ### Helper Functions ###
 ########################
@@ -355,9 +357,10 @@ def get_song(request, id):
     song = get_object_or_404(Song, id=id)
     if not song.file:
         raise Http404
-        
+
     content_type = guess_type(song.file.name)
     return HttpResponse(song.file, content_type=content_type)
+
 
 def song_to_audioseg(song):
     filename = song.file.name
@@ -366,21 +369,19 @@ def song_to_audioseg(song):
 
 
 def export_edit(audio_seg, old_song):
-    new_edit_number = old_song.edit_number+1
+    new_edit_number = old_song.edit_number + 1
     ext = get_ext(old_song.file.name)
     root = get_root(old_song.file.path)
     if old_song.edit_number > 0:
-        root = root.replace("-"+str(old_song.edit_number), "")
+        root = root.replace("-" + str(old_song.edit_number), "")
     new_file_path = root + "-" + str(new_edit_number) + ext
 
     #export song to new file
-    audio_seg.export(new_file_path, format=ext[1:])
+    f = audio_seg.export(new_file_path, format=ext[1:])
+    f.close()
 
-    #create new file object
-    with open(new_file_path, 'r+') as f:
-        myfile = File(f)
-        new_song = Song(file=myfile, edit_number=new_edit_number, project=old_song.project)
-        new_song.save()
+    new_song = Song(file=new_file_path, edit_number=new_edit_number, project=old_song.project)
+    new_song.save()
 
     return new_song
 
