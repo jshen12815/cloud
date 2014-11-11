@@ -43,26 +43,24 @@ def upload(request):
 
 
 #@login_required
-def save_edits(request, song_id):
-    #save latest edit
+def save_song(request, song_id):
+    #save latest edit to original file
     song = get_object_or_404(Song, id=song_id)
     project = song.project
-    filepath = get_object_or_404(Song, edit_number=0, project=song.project).file.path
-    ext = get_ext(filepath)
+    final_song = get_object_or_404(Song, edit_number=0, project=project)
+    ext = get_ext(final_song.file.name)
     audio_seg = song_to_audioseg(song)
-    f = audio_seg.export(filepath, format=ext[1:])
+    f = audio_seg.export(final_song.file.path, format=ext[1:])
     f.close()
 
     #delete all temp files - ** user cannot undo edits from a previous session **
-    for edit in project.song_set.all():
-        os.remove(edit.file.path)
-        edit.delete()
+    all_edits = project.song_set.all()
+    for edit in all_edits:
+        if not final_song == edit:
+            os.remove(edit.file.path)
+            edit.delete()
 
-    #create new and final song object
-    new_song = Song(file=filepath, edit_number=0, project=project)
-    new_song.save()
-
-    render(request, 'home.html', {})
+    return render(request, 'home.html', {})
 
 
 """
