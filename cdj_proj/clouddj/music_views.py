@@ -43,26 +43,24 @@ def upload(request):
 
 
 #@login_required
-def save_edit(request, song_id):
+def save_edits(request, song_id):
     #save latest edit
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     project = song.project
-    filepath = list(project.song_set.filter(edit_number=0))[0].file.path
-    ext = get_ext(song.file.name)
+    filepath = get_object_or_404(Song, edit_number=0, project=song.project).file.path
+    ext = get_ext(filepath)
     audio_seg = song_to_audioseg(song)
-    audio_seg.export(filepath, format=ext[1:])
-
-    #create new file object
-    with open(filepath, 'r+') as f:
-        myfile = File(f)
-        #create new and final song object
-        new_song = Song(file=myfile, edit_number=0, project=project)
-        new_song.save()
+    f = audio_seg.export(filepath, format=ext[1:])
+    f.close()
 
     #delete all temp files - ** user cannot undo edits from a previous session **
     for edit in project.song_set.all():
         os.remove(edit.file.path)
         edit.delete()
+
+    #create new and final song object
+    new_song = Song(file=filepath, edit_number=0, project=project)
+    new_song.save()
 
     render(request, 'home.html', {})
 
@@ -116,8 +114,25 @@ def record(request):
 ### Music Editing Functionality ###
 ###################################
 #@login_required
+def undo(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    previous_edit = song.edit_number - 1
+
+    if len(list(song.project.song_set.all())) <= 1:
+        return render(request, 'studio.html', {'song': song, 'type': get_content_type(song.file.name)})
+
+    new_song = get_object_or_404(Song, edit_number=previous_edit, project=song.project)
+
+    #delete undone edit
+    os.remove(song.file.path)
+    song.delete()
+
+    return render(request, 'studio.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
+
+
+#@login_required
 def x_filter(request, song_id):
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     modified = False
 
@@ -142,7 +157,7 @@ def x_filter(request, song_id):
 
 #@login_required
 def fade_out(request, song_id):
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -169,7 +184,7 @@ def fade_out(request, song_id):
 
 #@login_required
 def fade_in(request, song_id):
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -196,7 +211,7 @@ def fade_in(request, song_id):
 
 #@login_required
 def repeat(request, song_id):
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -230,7 +245,7 @@ def repeat(request, song_id):
 
 #@login_required
 def speedup(request, song_id):
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -257,7 +272,7 @@ def speedup(request, song_id):
 
 #@login_required
 def reverse(request, song_id):
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -290,7 +305,7 @@ def reverse(request, song_id):
 
 #@login_required
 def slice(request, song_id):
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     context = {}
 
@@ -323,7 +338,7 @@ def slice(request, song_id):
 #@login_required
 def amplify(request, song_id):
     context = {}
-    song = Song.objects.get(id=song_id)
+    song = get_object_or_404(Song, id=song_id)
     sound = song_to_audioseg(song)
 
     add_empty_forms(context)

@@ -20,5 +20,7 @@ urlpatterns = [
     url(r'^amplify/(?P<song_id>\d+)/$', 'clouddj.music_views.amplify', name='amplify'),
     url(r'^speedup/(?P<song_id>\d+)/$', 'clouddj.music_views.speedup', name='speedup'),
     url(r'^filter/(?P<song_id>\d+)/$', 'clouddj.music_views.x_filter', name='filter'),
+    url(r'^undo/(?P<song_id>\d+)/$', 'clouddj.music_views.undo', name='undo'),
+
 
 ]
