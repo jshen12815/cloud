@@ -13,7 +13,7 @@
                 NAME OF SONG
             </h1>
 
-
+    {{ song.file.path }} <br/>
             <div class="songclip">
                 <!-- <img class = "songpic" src="{% static 'images/next.png' %}" > -->
                 <audio controls>
@@ -171,8 +171,7 @@
 
                                     <div class="inputdouble">
                                         <div class="shadowtext"> High Pass</div>
-                                        <input class="edittext" type="text" name="high_cutoff"
-                                               placeholder="ex. 1000 Hz">
+                                        <input class="edittext" type="text" name="high_cutoff">
                                         <input type="submit" value="apply">
 
 
@@ -184,7 +183,7 @@
                                 <td>
                                     <div class="inputdouble">
                                         <div class="shadowtext"> Low Pass</div>
-                                        <input class="edittext" type="text" name="low_cutoff" placeholder="ex. 1000 Hz">
+                                        <input class="edittext" type="text" name="low_cutoff">
                                         <input type="submit" value="apply">
                                     </div>
                                 </td>

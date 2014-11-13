@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from pydub import AudioSegment
 # import pyaudio
-#import wave
+# import wave
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
@@ -23,7 +23,7 @@ def add_empty_forms(context):
     context['amplify_form'] = AmplifyForm()
 
 
-#@login_required
+# @login_required
 def upload(request):
     if request.method == 'GET':
         form = UploadMusicForm()
@@ -132,24 +132,34 @@ def undo(request, song_id):
 def x_filter(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
+    context = {}
     modified = False
 
-    if request.method == 'POST':
-        form = FilterForm(request.POST)
-        if not form.is_valid():
-            return
-        if 'high_cutoff' in form.cleaned_data and form.cleaned_data['high_cutoff']:
-            modified = True
-            seg = seg.high_pass_filter(int(form.cleaned_data['high_cutoff']))
-        if 'low_cutoff' in form.cleaned_data and form.cleaned_data['low_cutoff']:
-            modified = True
-            seg = seg.high_pass_filter(int(form.cleaned_data['low_cutoff']))
+    add_empty_forms(context)
+
+    if request.method == 'GET':
+        context['song'] = song
+        context['type'] = get_content_type(song.file.name)
+        return render(request, 'studio.html', context)
+
+    form = FilterForm(request.POST)
+    context['filer_form'] = form
+    if not form.is_valid():
+        return render(request, 'studio.html', context)
+
+    if 'high_cutoff' in request.POST and request.POST['high_cutoff']:
+        modified = True
+        seg = seg.high_pass_filter(int(request.POST['high_cutoff']))
+    if 'low_cutoff' in request.POST and request.POST['low_cutoff']:
+        modified = True
+        seg = seg.high_pass_filter(int(request.POST['low_cutoff']))
 
     #export new song
     if modified:
         new_song = export_edit(seg, song)
     else:
         new_song = song
+
     return render(request, 'studio.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
 
