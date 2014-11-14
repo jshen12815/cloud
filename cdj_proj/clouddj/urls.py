@@ -1,12 +1,12 @@
-from django.conf.urls import url
+from django.conf.urls import patterns, include,url
 
 
 urlpatterns = [
     #social urls
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
-    url(r'^register$', 'django.contrib.auth.views.login', name='register'),
+    url(r'^register$', 'clouddj.social_views.register', name='register'),
     url(r'^$', 'clouddj.social_views.home', name='home'),
-    url(r'^search$', 'django.contrib.auth.views.login', name='search'),
+    url(r'^search$', 'clouddj.social_views.stream', name='search'),
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),
 
     #music urls
@@ -20,5 +20,8 @@ urlpatterns = [
     url(r'^amplify/(?P<song_id>\d+)/$', 'clouddj.music_views.amplify', name='amplify'),
     url(r'^speedup/(?P<song_id>\d+)/$', 'clouddj.music_views.speedup', name='speedup'),
     url(r'^filter/(?P<song_id>\d+)/$', 'clouddj.music_views.x_filter', name='filter'),
+    url(r'^undo/(?P<song_id>\d+)/$', 'clouddj.music_views.undo', name='undo'),
+    url(r'^save/(?P<song_id>\d+)/$', 'clouddj.music_views.save_song', name='save_song'),
+
 
 ]
