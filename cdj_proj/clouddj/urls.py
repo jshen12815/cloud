@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include,url
 urlpatterns = [
     #social urls
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
-    url(r'^register$', 'django.contrib.auth.views.register', name='register'),
+    url(r'^register$', 'clouddj.social_views.register', name='register'),
     url(r'^$', 'clouddj.social_views.home', name='home'),
     url(r'^search$', 'clouddj.social_views.stream', name='search'),
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),

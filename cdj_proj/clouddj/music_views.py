@@ -4,12 +4,12 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from pydub import AudioSegment
-# import pyaudio
-# import wave
+import pyaudio
+import wave
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
-from clouddj.forms import *
+from forms import *
 
 
 def add_empty_forms(context):
@@ -63,7 +63,7 @@ def save_song(request, song_id):
     return render(request, 'home.html', {})
 
 
-"""
+
 @login_required
 def record(request):
     if request.method == 'POST':
@@ -105,7 +105,7 @@ def record(request):
         wf.setframerate(rate)
         wf.writeframes(b''.join(frames))
         wf.close()
-"""
+
 
 
 ###################################
