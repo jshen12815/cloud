@@ -7,6 +7,22 @@ var audioInput = null,
     inputPoint = null,
     audioRecorder = null;
 
+$(".music_form").submit(function (event) {
+    var form = $(this);
+    var postData = $(this).serializeArray();
+    var formURL = $(this).attr("action");
+    $.ajax(
+        {
+            url: formURL,
+            type: "POST",
+            data: postData,
+            success: function(data){
+                updatePage(data);
+                form.find("input[type=text], textarea").val("");
+            }
+        });
+    return false;
+});
 
 function toggleRecording(e) {
     if (e.classList.contains("recording")) {
@@ -41,7 +57,10 @@ function handleRecording(blob) {
         data: fd,
         processData: false,
         contentType: false,
-        success: updatePage
+        success: function(data){
+                updatePage(data);
+                form.find("input[type=text], textarea").val("");
+            }
     });
 }
 
@@ -114,7 +133,6 @@ function confirmExit(){
     if (needsConfirmation){
         return "You have not saved! If you made any changes they will be lost."
     }
-
 }
 
 window.addEventListener('load', initAudio);

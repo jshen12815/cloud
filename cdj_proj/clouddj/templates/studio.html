@@ -27,7 +27,7 @@
         {% csrf_token %}
     </form>
 
-    <form method="post" action="{% url 'undo' song.id %}">
+    <form class="music_form" method="post" action="{% url 'undo' song.id %}">
         <input type="submit" value="undo">
         {% csrf_token %}
     </form>
@@ -106,7 +106,7 @@
                 <div class="typelabel"> Edit Clip</div>
                 <br>
 
-                <form action="{% url 'repeat' song.id %}" method="post">
+                <form class="music_form" action="{% url 'repeat' song.id %}" method="post">
                     <div class="inputnum">
                         <div class="shadowtext"> Repeat &nbsp;</div>
                         <input class="edittext" type="text" name="start">
@@ -120,7 +120,7 @@
 
         </tr>
         <tr>
-            <form action="{% url 'reverse' song.id %}" method="post">
+            <form class="music_form" action="{% url 'reverse' song.id %}" method="post">
                 <td>
                     <div class="inputnum">
                         <div class="shadowtext"> Reverse &nbsp; </div>
@@ -134,7 +134,7 @@
         </tr>
 
         <tr>
-            <form action="{% url 'slice' song.id %}" method="post">
+            <form class="music_form" action="{% url 'slice' song.id %}" method="post">
                 <td>
                     <div class="inputnum">
                         <div class="shadowtext"> Delete &nbsp; </div>
@@ -170,7 +170,7 @@
     <table class="edittable" id="filterpitch">
 
         <tbody>
-        <form action="{% url 'filter' song.id %}" method="post">
+        <form class="music_form" action="{% url 'filter' song.id %}" method="post">
             <tr>
                 <td>
                     <div class="typelabel"> Filters</div>
@@ -204,7 +204,7 @@
                 <div class="typelabel"> Fade</div>
                 <br>
 
-                <form action="{% url 'fade_in' song.id %}" method="post">
+                <form class="music_form" action="{% url 'fade_in' song.id %}" method="post">
                     <div class="inputnum">
                         <div class="shadowtext"> In &nbsp;</div>
                         <input class="edittext" type="text" name="seconds">
@@ -216,7 +216,7 @@
 
         </tr>
         <tr>
-            <form action="{% url 'fade_out' song.id %}" method="post">
+            <form class="music_form" action="{% url 'fade_out' song.id %}" method="post">
                 <td>
                     <div class="inputnum">
                         <div class="shadowtext"> Out &nbsp; </div>
