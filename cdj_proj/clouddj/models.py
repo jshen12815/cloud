@@ -33,6 +33,7 @@ class Song(models.Model):
 class Post(models.Model):
     profile = models.ForeignKey(Profile)
     text = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now_add=True)
     photo = models.ImageField(upload_to='album-art', default='album-art/default.jpg')
     song = models.OneToOneField(Song)
@@ -42,6 +43,10 @@ class Post(models.Model):
     
     def __unicode__(self):
         return self.profile.user.username +": "+self.text
+
+    @staticmethod
+    def get_posts_containing(user, query):
+        return Post.objects.filter(text__contains=query).append(Post.objects.filter(title__contains=query))
 
     # once the text is set, parse the hashtags from it and save them
     def setHashtags(self):
