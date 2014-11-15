@@ -1,5 +1,6 @@
 # Music editing-related actions
 import os
+import json
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
@@ -65,16 +66,14 @@ def save_song(request, song_id):
 #@login_required
 def record(request, song_id):
     song = get_object_or_404(Song, id=song_id)
-    context = {'song': song, 'type': song.file.name}
-
-    add_empty_forms(context)
+    response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
 
     if request.method == 'GET':
-        return render(request, 'studio.html', context)
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
 
     form = RecordForm(request.POST)
     if not form.is_valid():
-        return render(request, 'studio.html', context)
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
 
     temp_file = request.FILES['recording']
     seg = song_to_audioseg(song)
@@ -91,9 +90,9 @@ def record(request, song_id):
         seg = seg.overlay(recording, start_time)
 
     new_song = export_edit(seg, song)
-    context['song'] = new_song
-    context['type'] = get_content_type(song.file.name)
-    return render(request, 'studio.html', context)
+    response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
+
+    return HttpResponse(json.dumps(response_text), content_type="application/json")
 
 
 ###################################
