@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
+{% block bodytag %}
+<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
 {% block body %}
 <p class="bold center">
-Thank you for confirming your email address.
+Welcome to cloudDJ.
 Please <a href="{% url 'login' %}">login</a> to access your account.
 </p>
 {% endblock body %}

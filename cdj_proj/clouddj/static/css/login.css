@@ -65,6 +65,6 @@ body {
 }
 
 #signup-btn {
-  float: right;
-  margin-left: 20%;
+  position: relative;
+  left: 1210%;
 }

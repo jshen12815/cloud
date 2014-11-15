@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
+{% block bodytag %}
+<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
 {% block body %}
 <p class="bold center">
 A confirmation email has been sent to {{email}}.  Please click the link
 in that email to confirm your email address and complete your registration for
-your account.
+your cloudDJ.
 </p>
 {% endblock body %}
