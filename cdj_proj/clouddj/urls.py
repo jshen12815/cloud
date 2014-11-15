@@ -5,9 +5,22 @@ urlpatterns = [
     #social urls
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
     url(r'^register$', 'clouddj.social_views.register', name='register'),
+    url(r'^confirm-registration/(?P<username>[a-zA-Z0-9_@\+\-]+)/(?P<token>[a-z0-9\-]+)$',
+        'grumblr.views.confirm_registration', name='confirm'),
     url(r'^$', 'clouddj.social_views.home', name='home'),
     url(r'^search$', 'clouddj.social_views.stream', name='search'),
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),
+    url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset',
+        {'post_reset_redirect': '/grumblrproj/accounts/password_reset/mailed/'}, name="password_reset"),
+    url(r'^accounts/password_reset/mailed/$', 'django.contrib.auth.views.password_reset_done'),
+    url(r'^accounts/password_reset/(?P<uidb64>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        'django.contrib.auth.views.password_reset_confirm',
+        {'post_reset_redirect': 'accounts/password_reset/complete/'}),
+    url(r'^accounts/password_reset/complete/$', 'django.contrib.auth.views.password_reset_complete'),
+    url(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+        'django.contrib.auth.views.password_reset_confirm', name="password_reset_confirm"),
+    url(r'^password_reset_complete/$',
+        'django.contrib.auth.views.password_reset_complete', name="password_reset_complete"),
 
     #music urls
     url(r'^upload$', 'clouddj.music_views.upload', name='upload'),

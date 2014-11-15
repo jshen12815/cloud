@@ -12,8 +12,11 @@ class Profile(models.Model):
 
 
 class Hashtag(models.Model): 
-    text = models.CharField(max_length=200)
+    text = models.CharField(max_length=200, primary_key=True)
 
+    # number of posts with this hashtag in it
+    def numPosts(self):
+        return len(self.posts)
 
 class Project(models.Model):
     #profile = models.ForeignKey(Profile)
@@ -38,6 +41,31 @@ class Post(models.Model):
     
     def __unicode__(self):
         return self.profile.user.username +": "+self.text
+
+    # once the text is set, parse the hashtags from it and save them
+    def setHashtags(self):
+        newhts = set([i[1:] for i in line.split() if i.startswith("#")])
+        curr = set([ht.text for ht in self.hashtags])
+
+        # add new hashtags to old list
+        for hashtag in newhts:
+            if hashtag not in curr:
+                if Hashtag.objects.filter(text=hashtag):
+                    h = Hashtag.objects.get(text=hashtag)
+                else:
+                    h = Hashtag(text=hashtag)
+                    h.save()
+
+                self.hashtags.add(h)
+
+        # remove hashtags from old list that aren't in new hashtags
+        for hashtag in curr:
+            if hashtag not in newhts:
+                # we know that hashtag already exists
+                h = Hashtag.objects.get(text=hashtag)
+                self.hashtags.remove(h)
+
+        self.save()
 
 
 class Comment(models.Model):
