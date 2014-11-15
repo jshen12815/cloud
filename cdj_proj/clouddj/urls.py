@@ -5,6 +5,7 @@ urlpatterns = [
     #social urls
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
     url(r'^register$', 'clouddj.social_views.register', name='register'),
+    url(r'^logout$', 'django.contrib.auth.views.logout_then_login', name='logout'),
     url(r'^confirm-registration/(?P<username>[a-zA-Z0-9_@\+\-]+)/(?P<token>[a-z0-9\-]+)$',
         'clouddj.social_views.confirm_registration', name='confirm'),
     url(r'^$', 'clouddj.social_views.home', name='home'),
