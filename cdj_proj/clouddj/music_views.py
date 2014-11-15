@@ -16,7 +16,7 @@ def studio(request):
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
     if not projects:
-        redirect('/clouddj/upload')
+        return redirect('/clouddj/upload')
     most_recent_proj = projects[0]
     song = get_object_or_404(Song, edit_number=0, project=most_recent_proj)
     context = {'song': song,'type': get_content_type(song.file.name), 'user': request.user}
