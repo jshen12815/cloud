@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
     url(r'^register$', 'clouddj.social_views.register', name='register'),
     url(r'^confirm-registration/(?P<username>[a-zA-Z0-9_@\+\-]+)/(?P<token>[a-z0-9\-]+)$',
-        'grumblr.views.confirm_registration', name='confirm'),
+        'clouddj.social_views.confirm_registration', name='confirm'),
     url(r'^$', 'clouddj.social_views.home', name='home'),
     url(r'^search$', 'clouddj.social_views.stream', name='search'),
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),

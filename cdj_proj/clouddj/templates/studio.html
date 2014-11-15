@@ -6,244 +6,249 @@
     {{ block.super }}
     <div class="container-fluid" id="musiceditor">
 
-        <div class="songedit">
+    <div class="songedit">
 
 
-            <h1>
-                NAME OF SONG
-            </h1>
+    <h1>
+        NAME OF SONG
+    </h1>
 
-            <div class="songclip">
-                <!-- <img class = "songpic" src="{% static 'images/next.png' %}" > -->
-                <audio controls id="audio_control">
-                    <source src="{% url 'get_song' song.id %}" type="{{ type }}">
-                    Your browser does not support the audio element.
-                </audio>
+    <div class="songclip">
+    <!-- <img class = "songpic" src="{% static 'images/next.png' %}" > -->
+    <audio controls id="audio_control">
+        <source src="{% url 'get_song' song.id %}" type="{{ type }}">
+        Your browser does not support the audio element.
+    </audio>
 
-                <form id="record_form" action="{% url 'record' song.id %}">
-                    <input class="edittext" type="text" name="start_min" placeholder="1">
-                    <input class="edittext" type="text" name="start_sec" placeholder="28">
-                    <img id="record" src="{% static 'images/mic128.png' %}" onclick="toggleRecording(this);">
-                    {% csrf_token %}
-                </form>
+    <form id="record_form" action="{% url 'record' song.id %}">
+        <input class="edittext" type="text" name="start_min" placeholder="1">
+        <input class="edittext" type="text" name="start_sec" placeholder="28">
+        <img id="record" src="{% static 'images/mic128.png' %}" onclick="toggleRecording(this);">
+        {% csrf_token %}
+    </form>
 
-                <form method="post" action="{% url 'undo' song.id %}">
-                    <input type="submit" value="undo">
-                    {% csrf_token %}
-                </form>
+    <form method="post" action="{% url 'undo' song.id %}">
+        <input type="submit" value="undo">
+        {% csrf_token %}
+    </form>
 
-                <div class="col-sm-3 col-md-3">
+    <div class="col-sm-3 col-md-3">
 
-                    <table class="edittable">
+    <table class="edittable">
 
-                        <tr>
-                            <td>
-                                <div class="typelabel"> Adjust</div>
-                                <br>
+        <tr>
+            <td>
+                <div class="typelabel"> Adjust</div>
+                <br>
 
-                                <div class="slider">
-                                    <div class="shadowtext"> Amplify</div>
-                                    <label id="slider-label" class="slider-label isRight"></label>
-                                    <input id="slider-input" class="slider-input" type="range" min="-20" value="0"
-                                           max="100">
-                                </div>
-                            </td>
-                            <td>
-                                <br>
-
-                                <div class="slider">
-                                    <div class="shadowtext"> Speed</div>
-                                    <label id="slider-label" class="slider-label isRight"></label>
-                                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
-                                           max="100">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="slider">
-                                    <div class="shadowtext"> Treble</div>
-                                    <label id="slider-label" class="slider-label isRight"></label>
-                                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
-                                           max="100">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="slider">
-                                    <div class="shadowtext"> Tempo</div>
-                                    <label id="slider-label" class="slider-label isRight"></label>
-                                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
-                                           max="100">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="slider">
-                                    <div class="shadowtext"> Bass</div>
-                                    <label id="slider-label" class="slider-label isRight"></label>
-                                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
-                                           max="100">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="slider">
-                                    <div class="shadowtext"> Pitch</div>
-                                    <label id="slider-label" class="slider-label isRight"></label>
-                                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
-                                           max="100">
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <table class="edittable" id="filterpitch">
-
-                        <tbody>
-                        <tr>
-
-                            <td>
-                                <div class="typelabel"> Edit Clip</div>
-                                <br>
-
-                                <form action="{% url 'repeat' song.id %}" method="post">
-                                    <div class="inputnum">
-                                        <div class="shadowtext"> Repeat &nbsp;</div>
-                                        <input class="edittext" type="text" name="start">
-                                        <input class="edittext" type="text" name="end">
-                                        <input class="edittext" type="text" name="iters">
-                                        <button type="submit"> apply</button>
-                                    </div>
-                                    {% csrf_token %}
-                                </form>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <form action="{% url 'reverse' song.id %}" method="post">
-                                <td>
-                                    <div class="inputnum">
-                                        <div class="shadowtext"> Reverse &nbsp; </div>
-                                        <input class="edittext" type="text" name="start">
-                                        <input class="edittext" type="text" name="end">
-                                        <button type="submit"> apply</button>
-                                    </div>
-                                </td>
-                                {% csrf_token %}
-                            </form>
-                        </tr>
-
-                        <tr>
-                            <form action="{% url 'slice' song.id %}" method="post">
-                                <td>
-                                    <div class="inputnum">
-                                        <div class="shadowtext"> Delete &nbsp; </div>
-                                        <input class="edittext" type="text" name="start">
-                                        <input class="edittext" type="text" name="end">
-                                        <button type="submit"> apply</button>
-                                    </div>
-                                </td>
-                                <td></td>
-                                {% csrf_token %}
-                            </form>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <br>
-
-                                <div class="typelabel"> Effects</div>
-                                <br>
-
-                                <div class="inputdouble">
-                                    <div class="shadowtext"> Reverb</div>
-                                    <input class="edittext" type="text">
-                                    <button type="button"> apply</button>
-                                </div>
-                            </td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-
-                    <table class="edittable" id="filterpitch">
-
-                        <tbody>
-                        <form action="{% url 'filter' song.id %}" method="post">
-                            <tr>
-                                <td>
-                                    <div class="typelabel"> Filters</div>
-                                    <br>
-
-                                    <div class="inputdouble">
-                                        <div class="shadowtext"> High Pass</div>
-                                        <input class="edittext" type="text" name="high_cutoff">
-                                        <input type="submit" value="apply">
-
-
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="inputdouble">
-                                        <div class="shadowtext"> Low Pass</div>
-                                        <input class="edittext" type="text" name="low_cutoff">
-                                        <input type="submit" value="apply">
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                            {% csrf_token %}
-                        </form>
-
-                        <tr>
-                            <td>
-                                <br>
-
-                                <div class="typelabel"> Fade</div>
-                                <br>
-
-                                <form action="{% url 'fade_in' song.id %}" method="post">
-                                    <div class="inputnum">
-                                        <div class="shadowtext"> In &nbsp;</div>
-                                        <input class="edittext" type="text" name="seconds">
-                                        <button type="submit"> apply</button>
-                                    </div>
-                                    {% csrf_token %}
-                                </form>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <form action="{% url 'fade_out' song.id %}" method="post">
-                                <td>
-                                    <div class="inputnum">
-                                        <div class="shadowtext"> Out &nbsp; </div>
-                                        <input class="edittext" type="text" name="seconds">
-                                        <button type="submit"> apply</button>
-                                    </div>
-                                </td>
-                                {% csrf_token %}
-                            </form>
-                        </tr>
-
-                        </tbody>
-                    </table>
-
-                    <form method="post" action="{% url 'save_song' song.id %}">
-                        <input type="submit" id="savebutton" class="btn btn-primary" value="Save">
-                        {% csrf_token %}
-                    </form>
-                    </td>
-
-
-                    </table>
-
-
+                <div class="slider">
+                    <div class="shadowtext"> Amplify</div>
+                    <label id="slider-label" class="slider-label isRight"></label>
+                    <input id="slider-input" class="slider-input" type="range" min="-20" value="0"
+                           max="100">
                 </div>
+            </td>
+            <td>
+                <br>
 
-            </div>
+                <div class="slider">
+                    <div class="shadowtext"> Speed</div>
+                    <label id="slider-label" class="slider-label isRight"></label>
+                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
+                           max="100">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="slider">
+                    <div class="shadowtext"> Treble</div>
+                    <label id="slider-label" class="slider-label isRight"></label>
+                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
+                           max="100">
+                </div>
+            </td>
+            <td>
+                <div class="slider">
+                    <div class="shadowtext"> Tempo</div>
+                    <label id="slider-label" class="slider-label isRight"></label>
+                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
+                           max="100">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="slider">
+                    <div class="shadowtext"> Bass</div>
+                    <label id="slider-label" class="slider-label isRight"></label>
+                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
+                           max="100">
+                </div>
+            </td>
+            <td>
+                <div class="slider">
+                    <div class="shadowtext"> Pitch</div>
+                    <label id="slider-label" class="slider-label isRight"></label>
+                    <input id="slider-input" class="slider-input" type="range" min="0" value="0"
+                           max="100">
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="edittable" id="filterpitch">
+
+        <tbody>
+        <tr>
+
+            <td>
+                <div class="typelabel"> Edit Clip</div>
+                <br>
+
+                <form action="{% url 'repeat' song.id %}" method="post">
+                    <div class="inputnum">
+                        <div class="shadowtext"> Repeat &nbsp;</div>
+                        <input class="edittext" type="text" name="start">
+                        <input class="edittext" type="text" name="end">
+                        <input class="edittext" type="text" name="iters">
+                        <button type="submit"> apply</button>
+                    </div>
+                    {% csrf_token %}
+                </form>
+            </td>
+
+        </tr>
+        <tr>
+            <form action="{% url 'reverse' song.id %}" method="post">
+                <td>
+                    <div class="inputnum">
+                        <div class="shadowtext"> Reverse &nbsp; </div>
+                        <input class="edittext" type="text" name="start">
+                        <input class="edittext" type="text" name="end">
+                        <button type="submit"> apply</button>
+                    </div>
+                </td>
+                {% csrf_token %}
+            </form>
+        </tr>
+
+        <tr>
+            <form action="{% url 'slice' song.id %}" method="post">
+                <td>
+                    <div class="inputnum">
+                        <div class="shadowtext"> Delete &nbsp; </div>
+                        <input class="edittext" type="text" name="start">
+                        <input class="edittext" type="text" name="end">
+                        <button type="submit"> apply</button>
+                    </div>
+                </td>
+                <td></td>
+                {% csrf_token %}
+            </form>
+        </tr>
+
+        <tr>
+            <td>
+                <br>
+
+                <div class="typelabel"> Effects</div>
+                <br>
+
+                <div class="inputdouble">
+                    <div class="shadowtext"> Reverb</div>
+                    <input class="edittext" type="text">
+                    <button type="button"> apply</button>
+                </div>
+            </td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <table class="edittable" id="filterpitch">
+
+        <tbody>
+        <form action="{% url 'filter' song.id %}" method="post">
+            <tr>
+                <td>
+                    <div class="typelabel"> Filters</div>
+                    <br>
+
+                    <div class="inputdouble">
+                        <div class="shadowtext"> High Pass</div>
+                        <input class="edittext" type="text" name="high_cutoff">
+                        <input type="submit" value="apply">
+
+
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <div class="inputdouble">
+                        <div class="shadowtext"> Low Pass</div>
+                        <input class="edittext" type="text" name="low_cutoff">
+                        <input type="submit" value="apply">
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            {% csrf_token %}
+        </form>
+
+        <tr>
+            <td>
+                <br>
+
+                <div class="typelabel"> Fade</div>
+                <br>
+
+                <form action="{% url 'fade_in' song.id %}" method="post">
+                    <div class="inputnum">
+                        <div class="shadowtext"> In &nbsp;</div>
+                        <input class="edittext" type="text" name="seconds">
+                        <button type="submit"> apply</button>
+                    </div>
+                    {% csrf_token %}
+                </form>
+            </td>
+
+        </tr>
+        <tr>
+            <form action="{% url 'fade_out' song.id %}" method="post">
+                <td>
+                    <div class="inputnum">
+                        <div class="shadowtext"> Out &nbsp; </div>
+                        <input class="edittext" type="text" name="seconds">
+                        <button type="submit"> apply</button>
+                    </div>
+                </td>
+                {% csrf_token %}
+            </form>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <form method="post" action="{% url 'save_song' song.id %}">
+        <input type="submit" id="savebutton" class="btn btn-primary" value="Save">
+        {% csrf_token %}
+    </form>
+    </td>
+
+
+    </table>
+
+
+    </div>
+
+    </div>
+
+
+    <script src="{% static 'js/recordJs/recorder.js' %}"></script>
+    <script src="{% static 'js/recordJs/recorderWorker.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 {% endblock body %}
