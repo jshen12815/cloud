@@ -1,22 +1,48 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block stylesheets %}
+    <link href="{% static 'css/registration.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block bodytag %}
 <body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
 {% endblock bodytag %}
 
 {% block body %}
-         {{block.super}}
-         <form  action = "{% url 'register' %}" method="post" class="form-signin" role="form">
-            <h2 class="form-signin-heading">Sign up for cloudDj</h2>
-            <input type="text" name="username1" class="form-control" placeholder="Name" required="" autofocus="">
-            <input type="text" name="username2" class="form-control" placeholder="Username" required="" autofocus="">
-            <input type="email" name="email" class="form-control" placeholder="Email address" required="" autofocus="">
-            <input type="password" name="password1" class="form-control" placeholder="Password" required="" autofocus="">
-            <input type="password" name="password2" class="form-control" placeholder="Confirm Password" required="">
-            <a class = "white" href = "{% url 'home' %}">cancel</a>
-            <input type="submit" class="btn btn-lg btn-primary signup" value="sign up">
-            {% csrf_token %}
-         </form>
+    {{block.super}}
+    {% for error in form.non_field_errors %}
+        <p style="color:red">{{error}}</p>
+    {% endfor %}
+    <form method="post" action="{% url 'register' %}" class="signup-form">
+        <h2 class="form-signin-heading">cloudDJ</h2>
+        <div>
+            {{ form.username|add_class:"form-control"|attr:"placeholder:Username" }}
+            {% if form.username.errors %}
+                <p style="color:red">{{ form.username.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password1|add_class:"form-control"|attr:"placeholder:Password" }}
+            {% if form.password1.errors %}
+                <p style="color:red">{{ form.password1.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password2|add_class:"form-control"|attr:"placeholder:Confirm Password" }}
+            {% if form.password2.errors %}
+                <p style="color:red">{{ form.password2.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.email|add_class:"form-control"|attr:"placeholder:Email" }}
+            {% if form.email.errors %}
+                <p style="color:red">{{ form.email.errors }}</p>
+            {% endif %}
+        </div>
+        <button class="btn btn-lg btn-primary btn-block signup" type="submit">Sign up</button>
+        {% csrf_token %}
+    </form>
 {% endblock body %}
