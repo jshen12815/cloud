@@ -129,7 +129,7 @@ def search(request):
 
     form = SearchForm(request.GET)
     context['search'] = form
-    context['user'] = request.user.profile
+    context['user'] = request.user
     if not form.is_valid():
         return render(request, 'search.html', context)
 
