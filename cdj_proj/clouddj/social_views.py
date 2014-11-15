@@ -8,6 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from clouddj.models import *
 from clouddj.forms import *
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.db import transaction
 
 
 def home(request):
@@ -36,50 +39,52 @@ def create_playlist(request):
 def stream(request):
     return render(request, 'home.html', {})
 
-
+@transaction.atomic
 def register(request):
     context = {}
 
     # Just display the registration form if this is a GET request
     if request.method == 'GET':
+        context['form'] = RegistrationForm()
         return render(request, 'signup.html', context)
 
-    errors = []
-    context['errors'] = errors
-
-    # Checks the validity of the form data
-    if not 'username' in request.POST or not request.POST['username']:
-        errors.append('Username is required.')
-    else:
-        # Save the username in the request context to re-fill the username
-        # field in case the form has errrors
-        context['username'] = request.POST['username']
-
-    if not 'password1' in request.POST or not request.POST['password1']:
-        errors.append('Password is required.')
-    if not 'password2' in request.POST or not request.POST['password2']:
-        errors.append('Confirm password is required.')
-
-    if 'password1' in request.POST and 'password2' in request.POST and request.POST['password1'] and request.POST[
-            'password2'] and request.POST['password1'] != request.POST['password2']:
-        errors.append('Passwords did not match.')
-
-    if len(User.objects.filter(username=request.POST['username'])) > 0:
-        errors.append('Username is already taken.')
-
-    if errors:
+    form = RegistrationForm(request.POST)
+    context['form'] = form
+    if not form.is_valid():
         return render(request, 'signup.html', context)
 
     # Creates the new user from the valid form data
-    new_user = User.objects.create_user(first_name=request.POST['first_name'],
-                                        last_name=request.POST['last_name'],
-                                        username=request.POST['username'],
-                                        password=request.POST['password1'],
-                                        email=request.POST['email'])
+    new_user = User.objects.create_user(username=form.cleaned_data['username'],
+                                        password=form.cleaned_data['password1'],
+                                        email=form.cleaned_data['email'])
     new_user.save()
 
-    # Logs in the new user and redirects to home
-    new_user = authenticate(username=request.POST['username'],
-                            password=request.POST['password1'])
-    login(request, new_user)
-    return redirect('/')
+    token = default_token_generator.make_token(new_user)
+    email_body = """
+        Welcome to cloudDJ. Please click the link below to verify your email address
+        and complete the registration of your account:
+
+        http://%s%s
+    """ % (request.get_host(), reverse('confirm', args=(new_user.username, token)))
+
+    send_mail(subject="Verify your email address",
+              message=email_body,
+              from_email="admin@clouddj.com",
+              recipient_list=[new_user.email])
+
+    context['email'] = form.cleaned_data['email']
+
+    return render(request, 'needs_confirmation.html', context)
+
+@transaction.atomic
+def confirm_registration(request, username, token):
+    user = get_object_or_404(User, username=username)
+
+    # Send 404 error if token is invalid
+    if not default_token_generator.check_token(user, token):
+        raise Http404
+
+    # Otherwise token was valid, activate the user
+    user.is_active = True
+    user.save()
+    return render(request, 'confirmation.html', {})
