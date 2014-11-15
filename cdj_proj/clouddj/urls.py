@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^confirm-registration/(?P<username>[a-zA-Z0-9_@\+\-]+)/(?P<token>[a-z0-9\-]+)$',
         'clouddj.social_views.confirm_registration', name='confirm'),
     url(r'^$', 'clouddj.social_views.home', name='home'),
-    url(r'^search$', 'clouddj.social_views.stream', name='search'),
+    url(r'^search$', 'clouddj.social_views.search', name='search'),
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),
     url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset',
         {'post_reset_redirect': '/clouddj/accounts/password_reset/mailed/'}, name="password_reset"),

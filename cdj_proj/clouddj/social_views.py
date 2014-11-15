@@ -16,7 +16,11 @@ from datetime import datetime
 
 def home(request):
     profiles = Profile.objects.all()
-    return render(request, 'index.html', {'profiles': profiles, 'user': request.user})
+    context = {}
+    context['search_form'] = SearchForm()
+    context['user'] = request.user
+    context['profiles'] = profiles
+    return render(request, 'index.html', context)
 
 
 @login_required
@@ -59,7 +63,10 @@ def create_playlist(request):
 
 @login_required
 def stream(request):
-    return render(request, 'home.html', {'user': request.user})
+    context = {}
+    context['search_form'] = SearchForm()
+    context['user'] = request.user
+    return render(request, 'home.html', context)
 
 @transaction.atomic
 def register(request):
@@ -116,12 +123,23 @@ def confirm_registration(request, username, token):
 
 
 
+@login_required
+def search(request):
+    context = {}
 
+    form = SearchForm(request.GET)
+    context['search'] = form
+    context['user'] = request.user
+    if not form.is_valid():
+        return render(request, 'search.html', context)
 
+    posts = Post.get_posts_containing(request.user.profile, form.cleaned_data['text'])
 
+    context['message'] = str(int(len(posts))) + " result(s) found"
 
+    context['posts'] = posts
 
-
+    return render(request, 'search.html', context)
 
 
 @login_required

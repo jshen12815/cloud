@@ -68,7 +68,10 @@
             </div>
             <div class="nav navbar-nav navbar-right">
                 <form class="searchbox" method="get" action="{% url 'search' %}">
-                    <input type="text" class="searchbox" name="searchbar" placeholder="Search...">
+                    <input type="text" class="searchbox" name="text" placeholder="Search...">
+                    {% if search_form.errors %}
+                        <p style="color:red">{{ search.text.errors }}</p>
+                    {% endif %}
                     {% csrf_token %}
                 </form>
             </div>

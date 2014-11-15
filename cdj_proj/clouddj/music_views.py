@@ -21,6 +21,7 @@ def add_empty_forms(context):
     context['reverse_form'] = ReverseForm()
     context['slice_form'] = SliceForm()
     context['amplify_form'] = AmplifyForm()
+    context['search_form'] = SearchForm()
 
 
 @login_required

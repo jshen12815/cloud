@@ -146,3 +146,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             'picture': forms.FileInput()
         }
+
+
+class SearchForm(forms.Form):
+    text = forms.CharField(max_length=200)

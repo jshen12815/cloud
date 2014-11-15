@@ -1,0 +1,98 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-size: cover;
+}
+.signupbody {
+    background-image: url("../images/backgroundsignin.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.profpic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.info-panel {
+    margin-left: 10%;
+    max-width: 160%;
+    margin-top: 10%;
+}
+
+.search-bar {
+  max-width: 250px;
+  margin: 10px;
+}
+
+.search_button {
+  max-height: 35px;
+  margin-top: 10px;
+}
+
+.textbox {
+    border: none;
+    overflow: auto;
+    outline: none;
+    resize: none;
+    
+    box-shadow: none;
+}
+
+.comment-box {
+    width: 900px;
+}
+
+.post-text {
+    text-align: left;
+    margin-top: 3%;
+}
+
+.post-pic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3%;
+}
+
+.post-header {
+    text-align: left;
+}
+
+.post-footer {
+    text-align: left;
+}
+
+.username {
+    text-align: center;
+    font-size: 60px;
+}
+
+.account {
+    text-align: center;
+    font-size: 24px;
+}
+
+.aboutme {
+    text-align: center;
+    font-size: 14px;
+}
+
+.post {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7%;
+    max-width: 50%;
+    
+}
+
+.post-panel-footer {
+    background-color: #FFFFFF;
+}
+
+.blocked-message {
+    text-align: center;
+    margin-top: 10%;
+    color: red;
+}
