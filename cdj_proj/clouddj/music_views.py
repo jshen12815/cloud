@@ -11,7 +11,7 @@ from django.conf import settings
 
 from clouddj.forms import *
 
-
+@login_required
 def studio(request):
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
