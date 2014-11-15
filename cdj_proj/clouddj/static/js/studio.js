@@ -1,5 +1,6 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
+var needsConfirmation = true;
 var audioContext = new AudioContext();
 var audioInput = null,
     realAudioInput = null,
@@ -109,4 +110,12 @@ function initAudio() {
         });
 }
 
+function confirmExit(){
+    if (needsConfirmation){
+        return "You have not saved! If you made any changes they will be lost."
+    }
+
+}
+
 window.addEventListener('load', initAudio);
+window.onbeforeunload = confirmExit;

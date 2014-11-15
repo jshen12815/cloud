@@ -1,7 +1,7 @@
 # Music editing-related actions
 import os
 import json
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from pydub import *
@@ -12,7 +12,16 @@ from django.conf import settings
 from clouddj.forms import *
 
 
-# def studio(request):
+def studio(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
+    if not projects:
+        redirect('/clouddj/upload')
+    most_recent_proj = projects[0]
+    song = get_object_or_404(Song, edit_number=0, project=most_recent_proj)
+    context = {'song': song,'type': get_content_type(song.file.name), 'user': request.user}
+    return render(request, 'studio.html',context)
+
 
 def add_empty_forms(context):
     context['filter_form'] = FilterForm()
@@ -39,8 +48,7 @@ def upload(request):
         form = UploadMusicForm(request.POST, request.FILES, instance=song)
         if form.is_valid():
             song = form.save()
-            return render(request, 'studio.html',
-                          {'song': song, 'type': get_content_type(song.file.name), 'user': request.user})
+            return redirect('/clouddj/studio')
 
     return render(request, 'upload.html', {'form': form, 'user': request.user})
 
@@ -63,7 +71,7 @@ def save_song(request, song_id):
             os.remove(edit.file.path)
             edit.delete()
 
-    return render(request, 'home.html', {'user': request.user})
+    return redirect('/clouddj/stream')
 
 
 @login_required

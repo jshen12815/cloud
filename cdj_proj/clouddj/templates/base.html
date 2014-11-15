@@ -51,6 +51,7 @@
                 <a class="baractions" href="{% url 'stream' %}">explore</a>
                 {% if user.is_authenticated %}
                     <a class="baractions" href="{% url 'upload' %}">upload</a>
+                    <a class="baractions" href="{% url 'studio' %}">studio</a>
                 {% endif %}
             </div>
             {% if not user.is_authenticated %}

@@ -232,13 +232,14 @@
     </table>
 
     <form method="post" action="{% url 'save_song' song.id %}">
-        <input type="submit" id="savebutton" class="btn btn-primary" value="Save">
+        <input type="submit" id="savebutton" class="btn btn-primary" value="Save" onclick="needsConfirmation = false;">
         {% csrf_token %}
     </form>
-    </td>
 
-
-    </table>
+    <form method="post" action="{% url 'save_song' song.id %}">
+        <input type="submit" id="postbutton" class="btn btn-primary" value="Post" onclick="needsConfirmation = false;">
+        {% csrf_token %}
+    </form>
 
 
     </div>
@@ -250,5 +251,5 @@
 {% block more_scripts %}
 <script src="{% static 'js/recordJs/recorder.js' %}"></script>
 <script src="{% static 'js/recordJs/recorderWorker.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/studio.js' %}"></script>
 {% endblock more_scripts %}
