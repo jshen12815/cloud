@@ -1,0 +1,70 @@
+.backgroundpic {
+  width: 100%;
+  height: 200px;
+}
+
+
+
+#streampost {
+margin: 0px;
+padding: 0px;
+margin-left: 240px;
+vertical-align: top;
+height: 300px;
+background-color: white;
+}
+
+.commands{
+  z-index: 200;
+  position:relative;
+  float:right;
+  color: #FFFFFF;
+  margin-top: -40px;
+  margin-right: 5px;
+  font-size: 10px;
+}
+
+
+.comments {
+  padding: 10px;
+}
+
+/* - - - - - RATINGS */
+
+.rating {
+  z-index: 100;
+  position: relative;
+  margin-right: 5px;
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.rating:not(:checked) > input {
+  display: none;
+}
+
+/* - - - - - RATE */
+
+#rate:not(:checked) > label {
+  cursor:pointer;
+  float: right;
+
+  display: block;
+  
+  color: rgba(255, 255, 255, .4);
+
+  text-align: center;
+}
+#rate:not(:checked) > label:hover,
+#rate:not(:checked) > label:hover ~ label {
+  color: rgba(255, 255, 255, .6);
+}
+#rate > input:checked + label:hover,
+#rate > input:checked + label:hover ~ label,
+#rate > input:checked ~ label:hover,
+#rate > input:checked ~ label:hover ~ label,
+#rate > label:hover ~ input:checked ~ label {
+  color: rgba(255, 255, 255, .8);
+}
+#rate > input:checked ~ label {
+  color: rgb(255, 255, 255);
+}

@@ -7,29 +7,31 @@
     <div class="navbar navbar-default navbar-fixed-top mynavbar" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <div class = "nav navbar-nav navbar-left ">
-                    <div class = "playbar">
-                        <a href = "#"><img  class = "playbutton"  src="{% static 'images/back.png' %}" > </a>
-                        <a href = "#"><img  class = "playbutton"  src="{% static 'images/play.png' %}" > </a>
-                        <a href = "#"><img  class = "playbutton"  src="{% static 'images/forward.png' %}"></a>
+                <div class="nav navbar-nav navbar-left ">
+                    <div class="playbar">
+                        <a href="#"><img class="playbutton" src="{% static 'images/back.png' %}"> </a>
+                        <a href="#"><img class="playbutton" src="{% static 'images/play.png' %}"> </a>
+                        <a href="#"><img class="playbutton" src="{% static 'images/forward.png' %}"></a>
                     </div>
                 </div>
                 <a class="navbar-brand clouddj" href="{% url 'home' %}">CloudDj</a>
             </div>
-            <div class = "nav navbar-nav navbar-left ">
-                <a class= "baractions" href = "{% url 'home' %}">home</a>
-                <a class= "baractions" href = "{% url 'stream' %}">explore</a>
-                <a class= "baractions" href = "{% url 'upload' %}">upload</a>
+            <div class="nav navbar-nav navbar-left ">
+                <a class="baractions" href="{% url 'home' %}">home</a>
+                <a class="baractions" href="{% url 'stream' %}">explore</a>
+                <a class="baractions" href="{% url 'upload' %}">upload</a>
+                <a class="baractions" href="{% url 'studio' %}">studio</a>
             </div>
-            <div class = "nav navbar-nav navbar-right">
+            <div class="nav navbar-nav navbar-right">
                 <form class="searchbox" method="get" action="{% url 'search' %}">
-                    <input type="text" class="searchbox" name = "searchbar" placeholder="Search...">
+                    <input type="text" class="searchbox" name="searchbar" placeholder="Search...">
                     {% csrf_token %}
                 </form>
             </div>
