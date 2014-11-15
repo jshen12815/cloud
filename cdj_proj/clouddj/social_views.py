@@ -33,7 +33,7 @@ def create_playlist(request):
             return render(request, 'home.html', {})
 
     # THIS TOO
-    render(request, 'home.html', {'form': form})
+    return render(request, 'home.html', {'form': form})
 
 
 def stream(request):
