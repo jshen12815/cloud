@@ -1,19 +1,29 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
+{% load widget_tweaks %}
+{% block stylesheets %}
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block bodytag %}
 <body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
 {% endblock bodytag %}
 
 {% block body %}
-         {{block.super}}
-         <form method="post" action = "{% url 'login' %}" class="form-signin" role="form">
-            <h2 class="form-signin-heading">Login to cloudDj</h2>
-            <input type="text" name="username" class="form-control" placeholder="Username" required autofocus="">
-            <input type="password" name ="password" class="form-control" placeholder="Password" required>
-            <a class = "white" href = "{% url 'home' %}">cancel</a>
-            <input type="submit" value="login" class="btn btn-lg btn-primary signup">
-            {% csrf_token %}
-         </form>
+    {{block.super}}
+    <form method="post" action = "{% url 'login' %}" class="form-signin" role="form">
+        <h2 class="form-signin-heading">Login to cloudDj</h2>
+        {% if form.errors %}
+		    <p style="color:red; text-align: left">
+		        Incorrect user name and password.
+		    </p>
+		{% endif %}
+		{{ form.username|add_class:"form-control"|attr:"placeholder:Username" }}
+		{{ form.password|add_class:"form-control"|attr:"placeholder:Password" }}
+        <a href="{% url 'password_reset' %}">forgot password</a>
+        <input type="submit" class="btn btn-lg btn-primary btn-block signup" value="Login" />
+		<input type="hidden" name="next" value="{{ next }}" />
+        {% csrf_token %}
+    </form>
 {% endblock body %}
