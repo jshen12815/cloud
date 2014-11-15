@@ -1,7 +1,6 @@
+import os
 from django import forms
-
 from clouddj.models import *
-from clouddj.music_views import *
 
 
 class UploadMusicForm(forms.ModelForm):
@@ -20,6 +19,11 @@ class UploadMusicForm(forms.ModelForm):
             raise forms.ValidationError("Invalid file type.")
 
         return form_file
+
+
+class RecordForm(forms.Form):
+    start_min = models.IntegerField(default=0)
+    start_sec = models.IntegerField(default=0)
 
 
 class FilterForm(forms.Form):
@@ -73,11 +77,6 @@ class CreatePlaylistForm(forms.ModelForm):
 class SliceForm(forms.Form):
     start = forms.IntegerField()
     end = forms.IntegerField()
-
-
-class RecordForm(forms.Form):
-    secs = models.IntegerField()
-    filename = models.CharField(max_length=255)
 
 
 class AmplifyForm(forms.Form):

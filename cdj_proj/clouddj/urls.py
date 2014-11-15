@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^filter/(?P<song_id>\d+)/$', 'clouddj.music_views.x_filter', name='filter'),
     url(r'^undo/(?P<song_id>\d+)/$', 'clouddj.music_views.undo', name='undo'),
     url(r'^save/(?P<song_id>\d+)/$', 'clouddj.music_views.save_song', name='save_song'),
-
+    url(r'^record/(?P<song_id>\d+)/$', 'clouddj.music_views.record', name='record'),
 
 ]

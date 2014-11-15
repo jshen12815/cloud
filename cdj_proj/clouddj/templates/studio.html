@@ -13,13 +13,20 @@
                 NAME OF SONG
             </h1>
 
-    {{ song.file.path }} <br/>
             <div class="songclip">
                 <!-- <img class = "songpic" src="{% static 'images/next.png' %}" > -->
-                <audio controls>
+                <audio controls id="audio_control">
                     <source src="{% url 'get_song' song.id %}" type="{{ type }}">
                     Your browser does not support the audio element.
                 </audio>
+
+                <form id="record_form" action="{% url 'record' song.id %}">
+                    <input class="edittext" type="text" name="start_min" placeholder="1">
+                    <input class="edittext" type="text" name="start_sec" placeholder="28">
+                    <img id="record" src="{% static 'images/mic128.png' %}" onclick="toggleRecording(this);">
+                    {% csrf_token %}
+                </form>
+
                 <form method="post" action="{% url 'undo' song.id %}">
                     <input type="submit" value="undo">
                     {% csrf_token %}
