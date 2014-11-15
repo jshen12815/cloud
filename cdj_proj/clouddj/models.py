@@ -79,6 +79,7 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
+    numratings = models.IntegerField(default=0)
     profile= models.ForeignKey(Profile)
     post = models.ForeignKey(Post)
     rating = models.IntegerField()

@@ -10,7 +10,12 @@
 
 
             <h1>
-                NAME OF SONG
+            <form class = "Songname" method="post">
+              <input type="text" class = "update-name" name="Songtitle" placeholder= "Song Title">
+
+                           <input type = "hidden" name = "grumbleID" value = {{grumble.id}}>
+                 {% csrf_token %}
+                                      </form>
             </h1>
 
             <div class="songclip">
