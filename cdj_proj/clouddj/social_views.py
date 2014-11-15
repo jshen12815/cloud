@@ -1,6 +1,6 @@
 # Social actions for clouddj
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -11,11 +11,33 @@ from clouddj.forms import *
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.db import transaction
+from datetime import datetime
 
 
 def home(request):
     profiles = Profile.objects.all()
     return render(request, 'index.html', {'profiles': profiles})
+
+
+@login_required
+def add_post(request):
+
+    new_post = Post(user=request.user.person, date=datetime.now())
+    form = PostForm(request.POST, request.FILES, instance=new_post)
+    if not form.is_valid():
+        return redirect(request.META['HTTP_REFERER'])
+
+    form.save()
+
+    return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def delete_post(request, id):
+
+    post_to_delete = get_object_or_404(Post, user=request.user.profile, id=id)
+    post_to_delete.delete()
+    return redirect(request.META['HTTP_REFERER'])
 
 
 @login_required

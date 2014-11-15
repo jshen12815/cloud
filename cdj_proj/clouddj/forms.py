@@ -137,3 +137,12 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("Account with this email address already exists.")
 
         return email
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        exclude = ('profile', 'plays', 'date', )
+        widgets = {
+            'picture': forms.FileInput()
+        }
