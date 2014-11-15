@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 # Create your models here.
@@ -33,7 +34,7 @@ class Song(models.Model):
 class Post(models.Model):
     profile = models.ForeignKey(Profile)
     text = models.CharField(max_length=255)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, default='')
     date = models.DateTimeField(auto_now_add=True)
     photo = models.ImageField(upload_to='album-art', default='album-art/default.jpg')
     song = models.OneToOneField(Song)
@@ -46,7 +47,7 @@ class Post(models.Model):
 
     @staticmethod
     def get_posts_containing(user, query):
-        return Post.objects.filter(text__contains=query).append(Post.objects.filter(title__contains=query))
+        return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query))
 
     # once the text is set, parse the hashtags from it and save them
     def setHashtags(self):

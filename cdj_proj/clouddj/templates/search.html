@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% block stylesheets %}
+    <link href="{% static 'css/search.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block bodytag %}
+<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
+{% block body %}
+    {{block.super}}
+    <h3 style="text-align: center; margin-top: 10%"><b><i>{{message}}</i></b></h3>
+
+
+{% endblock %}
