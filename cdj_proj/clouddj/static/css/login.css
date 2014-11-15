@@ -10,6 +10,10 @@ body {
 }
 
 .form-signin {
+  font-family: 'Avenir', serif;
+        font-size: 25px;
+        font-weight: 100;
+        color: #FFFFFF;
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
@@ -61,6 +65,6 @@ body {
 }
 
 #signup-btn {
+  float: right;
   margin-left: 20%;
-  margin-top: 80%;
 }

@@ -10,17 +10,16 @@ body {
 }
 
 .form-signin {
+  font-family: 'Avenir', serif;
+  font-size: 25px;
+  font-weight: 100;
+  color: #FFFFFF;
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
-
-.signup-form {
-  max-width: 30%;
-  margin: 0 auto;
-}
-
 .form-signin .form-signin-heading {
+
   margin-bottom: 10px;
   font-size: 70px;
 }
@@ -52,6 +51,11 @@ body {
   border-top-right-radius: 0;
 }
 
+.signup-form {
+  max-width: 30%;
+  margin: 0 auto;
+}
+
 .searchbar {
   left: 75%;
   max-width: 20%;
@@ -71,6 +75,13 @@ body {
 }
 
 #signup-btn {
+  float: right;
   margin-left: 20%;
-  margin-top: 80%;
+}
+
+#signup-header {
+  font-family: 'Avenir', serif;
+  font-size: 70px;
+  font-weight: 100px;
+  color: #FFFFFF;
 }
