@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^search$', 'clouddj.social_views.stream', name='search'),
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),
     url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset',
-        {'post_reset_redirect': '/clouddj/accounts/password_reset/mailed/'}, name="password_reset"),
+        {'post_reset_redirect': '/cdj_proj/accounts/password_reset/mailed/'}, name="password_reset"),
     url(r'^accounts/password_reset/mailed/$', 'django.contrib.auth.views.password_reset_done'),
     url(r'^accounts/password_reset/(?P<uidb64>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         'django.contrib.auth.views.password_reset_confirm',
@@ -35,6 +35,6 @@ urlpatterns = [
     url(r'^filter/(?P<song_id>\d+)/$', 'clouddj.music_views.x_filter', name='filter'),
     url(r'^undo/(?P<song_id>\d+)/$', 'clouddj.music_views.undo', name='undo'),
     url(r'^save/(?P<song_id>\d+)/$', 'clouddj.music_views.save_song', name='save_song'),
-
+    url(r'^record/(?P<song_id>\d+)/$', 'clouddj.music_views.record', name='record'),
 
 ]

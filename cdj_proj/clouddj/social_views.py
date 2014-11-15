@@ -1,8 +1,8 @@
 # Social actions for clouddj
-import re
-from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect
+
+from django.shortcuts import render, get_object_or_404
+from django.http import Http404
+from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
@@ -33,7 +33,7 @@ def create_playlist(request):
             return render(request, 'home.html', {})
 
     # THIS TOO
-    render(request, 'home.html', {'form': form})
+    return render(request, 'home.html', {'form': form})
 
 
 def stream(request):

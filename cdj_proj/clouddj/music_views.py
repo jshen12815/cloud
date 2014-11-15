@@ -3,13 +3,12 @@ import os
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
-from pydub import AudioSegment
-import pyaudio
-import wave
+from pydub import *
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.conf import settings
 
-from forms import *
+from clouddj.forms import *
 
 
 def add_empty_forms(context):
@@ -63,49 +62,33 @@ def save_song(request, song_id):
     return render(request, 'home.html', {})
 
 
+#@login_required
+def record(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    context = {'song': song, 'type': song.file.name }
 
-@login_required
-def record(request):
-    if request.method == 'POST':
-        form = RecordForm(request.POST)
-        if not form.is_valid():
-            return
-        chunk = 1024
-        format = pyaudio.paInt16
-        channels = 2
-        rate = 44100
-        record_seconds = form.cleaned_data['secs']
-        wave_output_filename = form.cleaned_data['filename']
+    add_empty_forms(context)
 
-        p = pyaudio.PyAudio()
+    if request.method == 'GET':
+        return render(request, 'studio.html', context)
 
-        stream = p.open(format=format,
-                        channels=channels,
-                        rate=rate,
-                        input=True,
-                        frames_per_buffer=chunk)
+    print(request.POST)
+    form = RecordForm(request.POST)
+    if not form.is_valid():
+        return render(request, 'studio.html', context)
 
-        print("* recording")
+    temp_file = request.FILES['recording']
+    seg = song_to_audioseg(song)
+    recording = AudioSegment.from_file(temp_file, format='wav')
+    start_time = int(request.POST['start_min'])*60 + int(request.POST['start_sec'])
+    start_time *= 1000
 
-        frames = []
-
-        for i in range(0, int(rate / chunk * record_seconds)):
-            data = stream.read(chunk)
-            frames.append(data)
-
-        print("* done recording")
-
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-
-        wf = wave.open(wave_output_filename, 'wb')
-        wf.setnchannels(channels)
-        wf.setsampwidth(p.get_sample_size(format))
-        wf.setframerate(rate)
-        wf.writeframes(b''.join(frames))
-        wf.close()
-
+    seg = seg.overlay(recording, start_time)
+    new_song = export_edit(seg, song)
+   # os.remove(new_file_path)
+    context['song'] = new_song
+    context['type'] = get_content_type(song.file.name)
+    return render(request, 'studio.html', context)
 
 
 ###################################
@@ -353,19 +336,19 @@ def amplify(request, song_id):
 
     if request.method == 'GET':
         context['amplify_form'] = AmplifyForm()
-        return render(request, 'edit.html', context)
-    form = AmplifyForm(request.POST)
-    context['amplify_form'] = form
+        return render(request, 'studio.html', context)
+    amplify_form = AmplifyForm(request.POST)
+    context['amplify_form'] = amplify_form
     amp = int(form.cleaned_data['amplify'])
     # handle amplification
-    if 'beginning' in request.GET and 'end' in request.GET:
-        beginning = int(form.cleaned_data['beginning'])
-        end = int(form.cleaned_data['end'])
-        portion = sound[beginning:end]
-        portion += amp
-        sound = sound[:beginning] + portion + sound[end:]
-    else:
-        sound += amp
+    # if 'beginning' in request.GET and 'end' in request.GET:
+    #     beginning = int(form.cleaned_data['beginning'])
+    #     end = int(form.cleaned_data['end'])
+    #     portion = sound[beginning:end]
+    #     portion += amp
+    #     sound = sound[:beginning] + portion + sound[end:]
+    # else:
+    sound += amp
     new_song = export_edit(sound, song)
     context['song'] = new_song
     context['type'] = get_content_type(new_song.file.name)
