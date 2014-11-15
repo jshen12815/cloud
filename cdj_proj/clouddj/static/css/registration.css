@@ -75,13 +75,19 @@ body {
 }
 
 #signup-btn {
-  float: right;
-  margin-left: 20%;
+  position: relative;
+  left: 1400%;
 }
 
 #signup-header {
   font-family: 'Avenir', serif;
-  font-size: 70px;
+  font-size: 90px;
   font-weight: 100px;
   color: #FFFFFF;
+}
+
+.slogan {
+    text-align: center;
+    font-size: 18px;
+    color: #FFFFFF;
 }
