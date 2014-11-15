@@ -65,14 +65,13 @@ def save_song(request, song_id):
 #@login_required
 def record(request, song_id):
     song = get_object_or_404(Song, id=song_id)
-    context = {'song': song, 'type': song.file.name }
+    context = {'song': song, 'type': song.file.name}
 
     add_empty_forms(context)
 
     if request.method == 'GET':
         return render(request, 'studio.html', context)
 
-    print(request.POST)
     form = RecordForm(request.POST)
     if not form.is_valid():
         return render(request, 'studio.html', context)
@@ -80,12 +79,18 @@ def record(request, song_id):
     temp_file = request.FILES['recording']
     seg = song_to_audioseg(song)
     recording = AudioSegment.from_file(temp_file, format='wav')
-    start_time = int(request.POST['start_min'])*60 + int(request.POST['start_sec'])
+    start_time = int(form.cleaned_data['start_min'])*60 + int(form.cleaned_data['start_sec'])
     start_time *= 1000
 
-    seg = seg.overlay(recording, start_time)
+    if start_time/1000 >= len(seg)/1000:
+        #append
+        silent_secs = start_time - len(seg)
+        silence = AudioSegment.silent(duration=silent_secs)
+        seg = seg + silence + recording
+    else:
+        seg = seg.overlay(recording, start_time)
+
     new_song = export_edit(seg, song)
-   # os.remove(new_file_path)
     context['song'] = new_song
     context['type'] = get_content_type(song.file.name)
     return render(request, 'studio.html', context)
@@ -115,14 +120,11 @@ def undo(request, song_id):
 def x_filter(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
-    context = {}
-    modified = False
+    context = {'song': song, 'type': song.file.name}
 
     add_empty_forms(context)
 
     if request.method == 'GET':
-        context['song'] = song
-        context['type'] = get_content_type(song.file.name)
         return render(request, 'studio.html', context)
 
     form = FilterForm(request.POST)
@@ -130,18 +132,13 @@ def x_filter(request, song_id):
     if not form.is_valid():
         return render(request, 'studio.html', context)
 
-    if 'high_cutoff' in request.POST and request.POST['high_cutoff']:
-        modified = True
-        seg = seg.high_pass_filter(int(request.POST['high_cutoff']))
-    if 'low_cutoff' in request.POST and request.POST['low_cutoff']:
-        modified = True
-        seg = seg.high_pass_filter(int(request.POST['low_cutoff']))
+    if form.cleaned_data['high_cutoff']:
+        seg = seg.high_pass_filter(int(form.cleaned_data['high_cutoff']))
+    if form.cleaned_data['low_cutoff']:
+        seg = seg.high_pass_filter(int(form.cleaned_data['low_cutoff']))
 
     #export new song
-    if modified:
-        new_song = export_edit(seg, song)
-    else:
-        new_song = song
+    new_song = export_edit(seg, song)
 
     return render(request, 'studio.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
@@ -339,7 +336,7 @@ def amplify(request, song_id):
         return render(request, 'studio.html', context)
     amplify_form = AmplifyForm(request.POST)
     context['amplify_form'] = amplify_form
-    amp = int(form.cleaned_data['amplify'])
+    amp = int(amplify_form.cleaned_data['amplify'])
     # handle amplification
     # if 'beginning' in request.GET and 'end' in request.GET:
     #     beginning = int(form.cleaned_data['beginning'])
