@@ -30,7 +30,7 @@
 
 </head>
 {% block bodytag %}
-<body>
+    <body>
 {% endblock bodytag %}
 
 {% block body %}
@@ -73,5 +73,9 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static  'js/bootstrap.min.js' %}"></script>
+{% block more_scripts %}
+
+{% endblock more_scripts %}
 </body>
 </html>
