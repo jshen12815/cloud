@@ -74,7 +74,7 @@ def register(request):
 
     context['email'] = form.cleaned_data['email']
 
-    return render(request, 'needs_confirmation.html', context)
+    return render(request, 'needs-confirmation.html', context)
 
 @transaction.atomic
 def confirm_registration(request, username, token):
