@@ -22,13 +22,32 @@ class UploadMusicForm(forms.ModelForm):
 
 
 class RecordForm(forms.Form):
-    start_min = models.IntegerField(default=0)
-    start_sec = models.IntegerField(default=0)
+    start_min = forms.IntegerField(initial=0)
+    start_sec = forms.IntegerField(initial=0, max_value=59)
+
+    def clean(self):
+        cleaned_data = super(RecordForm, self).clean()
+        start_min = cleaned_data.get('start_min')
+        start_sec = cleaned_data.get('start_sec')
+
+        if start_min < 0 or start_sec < 0:
+            raise forms.ValidationError("Must use positive values.")
 
 
 class FilterForm(forms.Form):
-    high_cutoff = models.IntegerField()
-    low_cutoff = models.IntegerField()
+    high_cutoff = forms.IntegerField(required=False)
+    low_cutoff = forms.IntegerField(required=False)
+
+    def clean(self):
+        cleaned_data = super(FilterForm, self).clean()
+        high_cutoff = cleaned_data.get('high_cutoff')
+        low_cutoff = cleaned_data.get('low_cutoff')
+
+        if high_cutoff < 0 or low_cutoff < 0:
+            raise forms.ValidationError("Must use positive values.")
+
+        if not high_cutoff and not low_cutoff:
+            raise forms.ValidationError("Please enter a value.")
 
 
 class FadeInForm(forms.Form):
@@ -118,3 +137,12 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("Account with this email address already exists.")
 
         return email
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        exclude = ('profile', 'plays', 'date', )
+        widgets = {
+            'picture': forms.FileInput()
+        }

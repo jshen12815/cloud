@@ -12,12 +12,17 @@
 {% endblock bodytag %}
 
 {% block body %}
-    {{block.super}}
+     <div class="btn-group"><a href="{% url 'login' %}">
+        <button id="signup-btn" class="btn btn-lg btn-primary btn-block" type="submit">Log in</button></a>
+    </div>
+
     {% for error in form.non_field_errors %}
         <p style="color:red">{{error}}</p>
     {% endfor %}
     <form method="post" action="{% url 'register' %}" class="signup-form">
-        <h2 class="form-signin-heading">cloudDJ</h2>
+        <h2 id="signup-header" class="form-signin-heading"><center>cl&#9729;udDJ</center></h2>
+        <p class="slogan"> Share and create music you love. </p>
+        <p class="slogan"> With people you love. </p>
         <div>
             {{ form.username|add_class:"form-control"|attr:"placeholder:Username" }}
             {% if form.username.errors %}
@@ -45,4 +50,6 @@
         <button class="btn btn-lg btn-primary btn-block signup" type="submit">Sign up</button>
         {% csrf_token %}
     </form>
+
+
 {% endblock body %}

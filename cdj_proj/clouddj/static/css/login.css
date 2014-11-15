@@ -10,6 +10,10 @@ body {
 }
 
 .form-signin {
+  font-family: 'Avenir', serif;
+        font-size: 25px;
+        font-weight: 100;
+        color: #FFFFFF;
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
@@ -60,7 +64,14 @@ body {
   left: 20%;
 }
 
+#signup-header {
+  font-family: 'Avenir', serif;
+  font-size: 70px;
+  font-weight: 100px;
+  color: #FFFFFF;
+}
+
 #signup-btn {
-  margin-left: 20%;
-  margin-top: 80%;
+  position: relative;
+  left: 1210%;
 }

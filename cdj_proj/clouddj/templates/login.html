@@ -11,9 +11,12 @@
 {% endblock bodytag %}
 
 {% block body %}
-    {{block.super}}
+    <div class="btn-group"><a href="{% url 'register' %}">
+        <button id="signup-btn" class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button></a>
+    </div>
+
     <form method="post" action = "{% url 'login' %}" class="form-signin" role="form">
-        <h2 class="form-signin-heading">Login to cloudDj</h2>
+        <h2 id="signup-header" class="form-signin-heading"><center>cl&#9729;udDJ</center></h2>
         {% if form.errors %}
 		    <p style="color:red; text-align: left">
 		        Incorrect user name and password.
@@ -26,4 +29,6 @@
 		<input type="hidden" name="next" value="{{ next }}" />
         {% csrf_token %}
     </form>
+
+
 {% endblock body %}
