@@ -12,6 +12,8 @@ from django.conf import settings
 from clouddj.forms import *
 
 
+# def studio(request):
+
 def add_empty_forms(context):
     context['filter_form'] = FilterForm()
     context['fade_out_form'] = FadeOutForm()
@@ -23,13 +25,13 @@ def add_empty_forms(context):
     context['amplify_form'] = AmplifyForm()
 
 
-# @login_required
+@login_required
 def upload(request):
     if request.method == 'GET':
         form = UploadMusicForm()
     else:
-        #new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
-        new_project = Project(status="in_progress")
+        new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
+        #new_project = Project(status="in_progress")
         new_project.save()
 
         song = Song(project=new_project)
@@ -37,12 +39,13 @@ def upload(request):
         form = UploadMusicForm(request.POST, request.FILES, instance=song)
         if form.is_valid():
             song = form.save()
-            return render(request, 'studio.html', {'song': song, 'type': get_content_type(song.file.name)})
+            return render(request, 'studio.html',
+                          {'song': song, 'type': get_content_type(song.file.name), 'user': request.user})
 
-    return render(request, 'upload.html', {'form': form})
+    return render(request, 'upload.html', {'form': form, 'user': request.user})
 
 
-#@login_required
+@login_required
 def save_song(request, song_id):
     #save latest edit to original file
     song = get_object_or_404(Song, id=song_id)
@@ -60,10 +63,10 @@ def save_song(request, song_id):
             os.remove(edit.file.path)
             edit.delete()
 
-    return render(request, 'home.html', {})
+    return render(request, 'home.html', {'user': request.user})
 
 
-#@login_required
+@login_required
 def record(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
@@ -78,10 +81,10 @@ def record(request, song_id):
     temp_file = request.FILES['recording']
     seg = song_to_audioseg(song)
     recording = AudioSegment.from_file(temp_file, format='wav')
-    start_time = int(form.cleaned_data['start_min'])*60 + int(form.cleaned_data['start_sec'])
+    start_time = int(form.cleaned_data['start_min']) * 60 + int(form.cleaned_data['start_sec'])
     start_time *= 1000
 
-    if start_time/1000 >= len(seg)/1000:
+    if start_time / 1000 >= len(seg) / 1000:
         #append
         silent_secs = start_time - len(seg)
         silence = AudioSegment.silent(duration=silent_secs)
@@ -98,7 +101,7 @@ def record(request, song_id):
 ###################################
 ### Music Editing Functionality ###
 ###################################
-#@login_required
+@login_required
 def undo(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     previous_edit = song.edit_number - 1
@@ -115,7 +118,7 @@ def undo(request, song_id):
     return render(request, 'studio.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
 
-#@login_required
+@login_required
 def x_filter(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
@@ -142,7 +145,7 @@ def x_filter(request, song_id):
     return render(request, 'studio.html', {'song': new_song, 'type': get_content_type(new_song.file.name)})
 
 
-#@login_required
+@login_required
 def fade_out(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
@@ -169,7 +172,7 @@ def fade_out(request, song_id):
     return render(request, 'studio.html', context)
 
 
-#@login_required
+@login_required
 def fade_in(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
@@ -196,7 +199,7 @@ def fade_in(request, song_id):
     return render(request, 'studio.html', context)
 
 
-#@login_required
+@login_required
 def repeat(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
@@ -230,7 +233,7 @@ def repeat(request, song_id):
     return render(request, 'studio.html', context)
 
 
-#@login_required
+@login_required
 def speedup(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
@@ -257,7 +260,7 @@ def speedup(request, song_id):
     return render(request, 'studio.html', context)
 
 
-#@login_required
+@login_required
 def reverse(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
@@ -290,7 +293,7 @@ def reverse(request, song_id):
     return render(request, 'studio.html', context)
 
 
-#@login_required
+@login_required
 def slice(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
@@ -322,7 +325,7 @@ def slice(request, song_id):
     return render(request, 'studio.html', context)
 
 
-#@login_required
+@login_required
 def amplify(request, song_id):
     context = {}
     song = get_object_or_404(Song, id=song_id)
@@ -354,7 +357,7 @@ def amplify(request, song_id):
 ########################
 ### Helper Functions ###
 ########################
-#@login_required
+@login_required
 def get_song(request, id):
     song = get_object_or_404(Song, id=id)
     if not song.file:

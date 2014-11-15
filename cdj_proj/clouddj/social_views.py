@@ -16,7 +16,7 @@ from datetime import datetime
 
 def home(request):
     profiles = Profile.objects.all()
-    return render(request, 'index.html', {'profiles': profiles})
+    return render(request, 'index.html', {'profiles': profiles, 'user': request.user})
 
 
 @login_required
@@ -52,14 +52,14 @@ def create_playlist(request):
             new_playlist.save()
 
             # NEED TO UPDATE THIS LATER
-            return render(request, 'home.html', {})
+            return render(request, 'home.html', {'user': request.user})
 
     # THIS TOO
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'home.html', {'form': form, 'user': request.user})
 
-
+@login_required
 def stream(request):
-    return render(request, 'home.html', {})
+    return render(request, 'home.html', {'user': request.user})
 
 @transaction.atomic
 def register(request):
@@ -80,6 +80,8 @@ def register(request):
                                         password=form.cleaned_data['password1'],
                                         email=form.cleaned_data['email'])
     new_user.save()
+    profile = Profile(user=new_user)
+    profile.save()
 
     token = default_token_generator.make_token(new_user)
     email_body = """

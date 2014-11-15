@@ -40,23 +40,25 @@ function handleRecording(blob) {
         data: fd,
         processData: false,
         contentType: false,
-        success: function(data){
-            //reload song
-            var audio = $("#audio_src");
-            audio.attr("type", data['type']);
-            var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
-            audio.attr("src", new_src);
-            document.getElementById("audio_controls").load();
+        success: updatePage
+    });
+}
+
+function updatePage(data) {
+    //reload song
+    var audio = $("#audio_src");
+    audio.attr("type", data['type']);
+    var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
+    audio.attr("src", new_src);
+    document.getElementById("audio_controls").load();
 
 
-            var edit_forms = $("#musiceditor").find("form");
-            edit_forms.each(function(index, item){
-                var form = $(this);
-                var action = form.attr("action");
-                var new_action = action.replace(/\d+/, data['song_id']);
-                form.attr("action", new_action);
-            });
-        }
+    var edit_forms = $("#musiceditor").find("form");
+    edit_forms.each(function (index, item) {
+        var form = $(this);
+        var action = form.attr("action");
+        var new_action = action.replace(/\d+/, data['song_id']);
+        form.attr("action", new_action);
     });
 }
 
