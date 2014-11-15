@@ -112,3 +112,52 @@ def confirm_registration(request, username, token):
     user.is_active = True
     user.save()
     return render(request, 'confirmation.html', {})
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def add_comment(request):
+    errors = []
+    context = {}
+    # Creates a new comment if it is present as a parameter in the request
+    if not 'comment' in request.POST or not request.POST['comment']:
+        errors.append('You must enter an comment to add.')
+        print("Error")
+    if not 'postID' in request.POST or not request.POST['postID']:
+        errors.append('id')
+    else:
+        post = Post.objects.get(id =request.POST['postID'])
+        new_comment = Comment(text=request.POST['comment'], post = post, profile = request.user)
+        new_comment.save()
+    comments = Comment.objects.filter(user=request.user)
+    context = {'comments' : comments, 'errors' : errors}
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+
+
+@login_required
+def rate(request,id):
+    print "hi"
+    if id:
+        rating=Rating.objects.get(id=id)
+        num_ratings = rating.numratings
+        cur_rating = rating.rating
+        my_rating = request.POST['rating']
+        new_ratings = (num_ratings * cur_rating) + new_rating
+        new_num_ratings = num_ratings + 1
+        new_rating = new_ratings/new_num_ratings
+        rating.rating = new_rating
+        rating.numratings = new_num_ratings
+        rating.save
+    return redirect(request.META.get('HTTP_REFERER'))
+

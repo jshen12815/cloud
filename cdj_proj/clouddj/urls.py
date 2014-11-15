@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'^password_reset_complete/$',
         'django.contrib.auth.views.password_reset_complete', name="password_reset_complete"),
 
+    url(r'^add-comment$', 'clouddj.social_views.add_comment', name='add_comment'),
+    url(r'^rate/(?P<id>\d+)/$', 'clouddj.social_views.rate'),
+
     #music urls
     url(r'^studio', 'clouddj.music_views.studio', name='studio'),
     url(r'^upload$', 'clouddj.music_views.upload', name='upload'),
