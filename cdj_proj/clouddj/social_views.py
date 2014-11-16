@@ -61,12 +61,17 @@ def create_playlist(request):
     # THIS TOO
     return render(request, 'home.html', {'form': form, 'user': request.user})
 
+
 @login_required
 def stream(request):
     context = {}
     context['search_form'] = SearchForm()
     context['user'] = request.user
+    context['profile'] = request.user.profile
+    context['posts'] = Post.get_stream_posts(request.user.profile)
+
     return render(request, 'home.html', context)
+
 
 @transaction.atomic
 def register(request):
