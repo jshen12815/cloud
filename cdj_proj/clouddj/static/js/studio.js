@@ -1,5 +1,6 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
+var song_id;
 var needsConfirmation = false;
 var audioContext = new AudioContext();
 var audioInput = null,
@@ -18,7 +19,6 @@ $(".music_form").submit(function (event) {
             type: "POST",
             data: postData,
             success: function(data){
-                console.log(data);
                 updatePage(data);
                 form.find("input[type=text], textarea").val("");
             }
@@ -70,7 +70,7 @@ function reloadSong(){
 }
 function updatePage(data) {
     //reload song
-    //reload song
+    song_id = data['song_id']; //used to discard changes
     var audio = $("#audio_src");
     audio.attr("type", data['type']);
     var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
@@ -148,5 +148,23 @@ function confirmExit(){
     }
 }
 
+function discardChanges() {
+    //only true when changes have been made
+    if (needsConfirmation) {
+        var url = '/clouddj/undo_all/'+song_id+'/';
+        var csrf_token = $("input[name=csrfmiddlewaretoken]").val();
+        $.ajax(
+            {
+                url:url ,
+                type: "POST",
+                data: {"csrfmiddlewaretoken": csrf_token},
+                async: false
+            }
+        )
+    }
+    return false;
+}
+
 window.addEventListener('load', initAudio);
 window.onbeforeunload = confirmExit;
+window.addEventListener('unload', discardChanges)
