@@ -12,6 +12,8 @@ from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.db import transaction
 from datetime import datetime
+from django.http import HttpResponse, Http404
+from mimetypes import guess_type
 
 
 def home(request):
@@ -42,6 +44,17 @@ def delete_post(request, id):
     post_to_delete = get_object_or_404(Post, user=request.user.profile, id=id)
     post_to_delete.delete()
     return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def get_post_photo(request, id):
+
+    post = get_object_or_404(Post, id=id)
+    if not post.photo:
+        raise Http404
+
+    content_type = guess_type(post.photo.name)
+    return HttpResponse(post.photo, content_type=content_type)
 
 
 @login_required
@@ -148,7 +161,7 @@ def search(request):
 
 
 @login_required
-def add_comment(request):
+def add_comment(request, id):
     errors = []
     context = {}
     # Creates a new comment if it is present as a parameter in the request
