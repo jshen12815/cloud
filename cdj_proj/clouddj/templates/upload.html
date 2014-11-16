@@ -11,8 +11,31 @@
             <h2 class="form-signin-heading">upload music</h2>
             <input type="file" name="file" class="form-control" placeholder="upload file" required="" autofocus="">
             <!--<a class = "white" href = "{% url 'stream' %}">cancel</a>-->
-            <input type="submit" class="btn btn-lg btn-primary signup" value="upload" >
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="submit" class="btn btn-lg btn-primary signup" value="upload" >
+                </div>
+                <div class="col-md-2">
+                    <button type="button" data-toggle="modal" data-target="#info_modal" class="btn btn-lg btn-primary signup">info</button>
+                </div>
+            </div>
             {% csrf_token %}
          </form>
+
+         <div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="infoLabel">Basic Info</h4>
+                    </div>
+                    <div class="modal-body">
+                        Modal Body
+                    </div>
+                </div>
+            </div>
+         </div>
     
 {% endblock body %}
