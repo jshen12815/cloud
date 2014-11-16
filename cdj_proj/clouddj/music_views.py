@@ -83,23 +83,17 @@ def save_song(request, song_id):
 
 @login_required
 def undo_all(request, song_id):
-    print "in undo all"
     song = get_object_or_404(Song, id=song_id)
     project = song.project
     final_song = get_object_or_404(Song, edit_number=0, project=project)
-    delete= False
 
     #delete all temp files
     all_edits = project.song_set.all()
     for edit in all_edits:
         if not final_song == edit:
             if os.path.isfile(edit.file.path):
-                delete=True
                 os.remove(edit.file.path)
             edit.delete()
-
-    response_text = {'type': str(delete) }
-    return HttpResponse(json.dumps(response_text), content_type="application/json")
 
 
 @login_required
