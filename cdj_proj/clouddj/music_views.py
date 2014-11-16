@@ -38,20 +38,28 @@ def upload(request):
         form = UploadMusicForm(request.POST, request.FILES, instance=song)
         if form.is_valid():
             song = form.save()
+            name = get_root(song.file.name).replace("music/", "")
+            song.name = name
+            song.save()
             return redirect('/clouddj/studio')
 
     return render(request, 'upload.html', {'form': form, 'user': request.user})
 
 
 @login_required
-def studio(request):
+def studio(request, proj_id=None):
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
     if not projects:
         return redirect('/clouddj/upload')
-    most_recent_proj = projects[0]
-    song = get_object_or_404(Song, edit_number=0, project=most_recent_proj)
-    context = {'song': song,'type': get_content_type(song.file.name), 'user': request.user}
+    if proj_id:
+        proj = get_object_or_404(Project, id=proj_id)
+    else:
+        proj = projects[0]
+    song = get_object_or_404(Song, edit_number=0, project=proj)
+    name = get_root(song.file.name).replace("music/", "")
+    song.name = name
+    context = {'song': song,'type': get_content_type(song.file.name), 'user': request.user, 'projects': projects}
     add_empty_forms(context)
     return render(request, 'studio.html',context)
 
@@ -70,7 +78,7 @@ def save_song(request, song_id):
     #delete all temp files - ** user cannot undo edits from a previous session **
     undo_all(request, song_id)
 
-    return redirect('/clouddj/stream')
+    return redirect('/clouddj/studio/'+str(project.id))
 
 
 @login_required
@@ -385,7 +393,7 @@ def export_edit(audio_seg, old_song):
     f = audio_seg.export(new_file_path, format=ext[1:])
     f.close()
 
-    new_song = Song(file=new_file_path, edit_number=new_edit_number, project=old_song.project)
+    new_song = Song(name=old_song.name, file=new_file_path, edit_number=new_edit_number, project=old_song.project)
     new_song.save()
 
     return new_song

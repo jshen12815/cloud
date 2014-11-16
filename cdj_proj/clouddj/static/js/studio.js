@@ -17,6 +17,7 @@ $(".music_form").submit(function (event) {
             type: "POST",
             data: postData,
             success: function(data){
+                console.log(data);
                 updatePage(data);
                 form.find("input[type=text], textarea").val("");
             }
@@ -63,18 +64,29 @@ function handleRecording(blob) {
             }
     });
 }
-
+function reloadSong(){
+    document.getElementById("audio_controls").load();
+}
 function updatePage(data) {
+    //reload song
     //reload song
     var audio = $("#audio_src");
     audio.attr("type", data['type']);
     var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
     audio.attr("src", new_src);
-    document.getElementById("audio_controls").load();
+    reloadSong();
 
-
-    var edit_forms = $("#musiceditor").find("form");
+    var body = $('body');
+    var edit_forms = body.find(".music_form");
     edit_forms.each(function (index, item) {
+        var form = $(this);
+        var action = form.attr("action");
+        var new_action = action.replace(/\d+/, data['song_id']);
+        form.attr("action", new_action);
+    });
+
+    var control_forms = body.find(".control_form");
+    control_forms.each(function (index, item) {
         var form = $(this);
         var action = form.attr("action");
         var new_action = action.replace(/\d+/, data['song_id']);

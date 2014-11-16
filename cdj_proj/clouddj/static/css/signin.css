@@ -335,10 +335,10 @@ body {
 .inputnum{
   display: inline-block;
     background-color: #E3E3E3;
-    padding: 5px 20px 20px 20px;
+    padding: 5px 5px 5px 5px;
     height: 42px;
-    text-align: right;
-    width:250px;
+    text-align: left;
+    width:260px;
     margin: 1px;
     /*border: solid;
     border-width: 1px;*/
@@ -353,9 +353,9 @@ body {
 .inputdouble{
   display: inline-block;
     background-color: #E3E3E3;
-    padding: 5px 20px 20px 20px;
+    padding: 5px 5px 5px 5px;
     height: 42px;
-    text-align: right;
+    text-align: left;
     width:250px;
     margin: 1px;
     /*border: solid;
@@ -374,7 +374,7 @@ body {
     appearance: none;
     display: inline-block;
     vertical-align: middle;
-    width: 70px;
+    width: 40px;
     margin-left: 5px;
     background: hsl(0,0%,100%);
     box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
@@ -484,12 +484,20 @@ html {
  height: 100%;
 }
 
-#savebutton {
+.savebutton {
   color: black;
   background-color: white;
-  margin-top: -20px;
+  /*margin-top: -20px;*/
+}
+.postbutton {
+  color: #ffffff;
+  background-color: green;
+  /*margin-top: -20px;*/
 }
 
+.project-title{
+    color: #ffffff;
+}
 
 .sidebar {
 
@@ -499,7 +507,7 @@ html {
 
 /* Recording */
 #record {
-    height: 15vh;
+    height: 35px;
 }
 
 #record.recording {

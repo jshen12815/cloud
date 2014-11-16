@@ -7,7 +7,7 @@ class UploadMusicForm(forms.ModelForm):
     class Meta:
         model = Song
         fields = ('file',)
-        exclude = ('edit_number', 'project',)
+        exclude = ('edit_number', 'project', 'name')
 
     def clean_file(self):
         form_file = self.cleaned_data.get('file')
