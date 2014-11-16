@@ -9,6 +9,13 @@ body {
     background-repeat: no-repeat;
 }
 
+.message-text {
+ font-family: 'Avenir', serif;
+ text-align: center;
+ margin-top: 10%;
+ color:#6FE1D5;
+}
+
 .profpic {
     display: block;
     margin-left: auto;

@@ -75,3 +75,11 @@ body {
   position: relative;
   left: 1210%;
 }
+
+a:link {
+    color: #6FE1D5;
+}
+
+a:visited {
+    color: #6FE1D5;
+}
