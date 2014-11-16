@@ -295,7 +295,19 @@ body {
 }
 
 
+.textbox-wrapper {
+    width: 300px;
+    border: 15px solid light-gray;
+}
 
+.textbox {
+    border: none;
+    overflow: auto;
+    outline: none;
+    resize: none;
+    width: 100%;
+    box-shadow: none;
+}
 
 
 

@@ -50,6 +50,10 @@ class Post(models.Model):
     def get_posts_containing(user, query):
         return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query))
 
+    @staticmethod
+    def get_stream_posts(user):
+        return reversed(Post.objects.all().filter(Q(profile__in=user.following.all()) | Q(profile=user)))
+
     # once the text is set, parse the hashtags from it and save them
     def setHashtags(self):
         newhts = set([i[1:] for i in line.split() if i.startswith("#")])
