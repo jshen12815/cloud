@@ -1,6 +1,6 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-var needsConfirmation = true;
+var needsConfirmation = false;
 var audioContext = new AudioContext();
 var audioInput = null,
     realAudioInput = null,
@@ -8,6 +8,7 @@ var audioInput = null,
     audioRecorder = null;
 
 $(".music_form").submit(function (event) {
+    needsConfirmation = true;
     var form = $(this);
     var postData = $(this).serializeArray();
     var formURL = $(this).attr("action");
@@ -143,7 +144,7 @@ function initAudio() {
 
 function confirmExit(){
     if (needsConfirmation){
-        return "You have not saved! If you made any changes they will be lost."
+        return "You have unsaved changes! Your changes will be lost unless you save them. "
     }
 }
 
