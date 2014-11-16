@@ -14,6 +14,7 @@ from django.db import transaction
 from datetime import datetime
 from django.http import HttpResponse, Http404
 from mimetypes import guess_type
+from django.contrib.auth import update_session_auth_hash
 
 
 def home(request):
@@ -196,4 +197,40 @@ def rate(request,id):
         rating.numratings = new_num_ratings
         rating.save
     return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+@transaction.atomic
+def edit_profile(request):
+    context = {}
+    errors = []
+    context['errors'] = errors
+
+    if request.method == 'GET':
+        context['form'] = EditForm()
+        return render(request, 'editprofile.html', context)
+
+    form = EditForm(request.POST)
+    context['form'] = form
+
+    if not form.is_valid():
+        return render(request, 'editprofile.html', context)
+    
+
+    if form.cleaned_data['password1'] != "": 
+        if request.user.check_password(form.cleaned_data['passwordc']):
+            request.user.set_password(form.cleaned_data['password1'])
+        else:
+            errors.append("Current password is wrong.")
+            context['errors'] = errors
+            return render(request, 'editprofile.html', context)
+
+    if form.cleaned_data['new_username'] != "":
+        request.user.username = form.cleaned_data['new_username']
+    if form.cleaned_data['new_email'] != "":
+        request.user.email = form.cleaned_data['new_email']
+
+    request.user.save()
+    update_session_auth_hash(request, request.user)
+
+    return render(request, 'editprofile.html', context)
 

@@ -53,6 +53,7 @@
                 {% if user.is_authenticated %}
                     <a class="baractions" href="{% url 'upload' %}">Upload</a>
                     <a class="baractions" href="{% url 'studio' %}">Studio</a>
+                    <a class="baractions" href="{% url 'edit-profile' %}">Edit</a>
                 {% endif %}
             </div>
             {% if not user.is_authenticated %}
