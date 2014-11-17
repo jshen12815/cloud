@@ -33,6 +33,7 @@ def add_post(request, id):
 
     song = get_object_or_404(Song, id=id)
     song.project.status = "complete"
+    song.project.save()
     new_post = Post(profile=request.user.profile, date=datetime.now(), song=song)
     form = PostForm(request.POST, request.FILES, instance=new_post)
     if not form.is_valid():
