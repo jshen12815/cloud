@@ -287,7 +287,7 @@ def tempo(request, song_id):
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
     print form.cleaned_data['multiplier']
-    changed = seg.speedup(form.cleaned_data['multiplier'])
+    changed = seg.speedup(form.cleaned_data['multiplier'], crossfade=0)
 
     new_song = export_edit(changed, song)
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
