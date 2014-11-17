@@ -41,6 +41,12 @@
                                         {% csrf_token %}
                                     </form>
                                 </div>
+                                <p style="margin-top: 10px">
+                                    <button type="button" class="btn btn-default btn-xs"> &#10084; Like</button>
+                                    {% if post.profile.user == user %}
+                                        <button type="button" class="btn btn-default btn-xs"> &#10006; Delete</button>
+                                    {% endif %}
+                                </p>
                             </div>
                         </div>
                     {% endfor %}
