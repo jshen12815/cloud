@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^add-comment/(?P<id>\d+)$', 'clouddj.social_views.add_comment', name='add_comment'),
     url(r'^rate/(?P<id>\d+)/$', 'clouddj.social_views.rate'),
     url(r'^post_photo/(?P<id>\d+)$', 'clouddj.social_views.get_post_photo', name='post_photo'),
+    url(r'^add-post/(?P<id>\d+)$', 'clouddj.social_views.add_post', name='add_post'),
+    url(r'^delete-post/(?P<id>\d+)$', 'clouddj.social_views.delete_post', name='delete_post'),
 
     #music urls
     url(r'^studio/(?P<proj_id>\d+)/$', 'clouddj.music_views.studio', name='studio'),

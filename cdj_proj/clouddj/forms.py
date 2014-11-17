@@ -92,6 +92,28 @@ class CreatePlaylistForm(forms.ModelForm):
 
         return name
 
+class PlaylistForm(forms.Form):
+    post = forms.IntegerField()
+    playlist = forms.IntegerField()
+
+    def clean(self):
+        cleaned_data = super(AddToPlaylistForm, self).clean()
+
+        return cleaned_data
+
+    def clean_post(self):
+        post = self.cleaned_data.get('post')
+        if not Post.objects.filter(id=post):
+            raise forms.ValidationError("Invalid post")
+
+        return post
+
+    def clean_playlist(self):
+        playlist = self.cleaned_data.get('playlist')
+        if not Playlist.objects.filter(id=playlist):
+            raise forms.ValidationError("Invalid playlist")
+
+        return playlist
 
 class SliceForm(forms.Form):
     start = forms.IntegerField()
@@ -142,9 +164,9 @@ class RegistrationForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('profile', 'plays', 'date', )
+        exclude = ('profile', 'plays', 'date', 'song', 'hashtags' )
         widgets = {
-            'picture': forms.FileInput()
+            'photo': forms.FileInput()
         }
 
 

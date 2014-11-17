@@ -181,7 +181,7 @@ $('#file-input').change(function () {
         image.error(function () {
             $(this).remove();
         }).attr('src', e.target.result);
-        image.addClass('small-pic');
+        image.addClass('img-rounded modal-photo');
         var images = $('#images');
         if (images.children().length != 0) {
             images.empty();

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Q, Count
 
 
 # Create your models here.
@@ -19,6 +19,10 @@ class Hashtag(models.Model):
     def numPosts(self):
         return len(self.posts)
 
+    # returns the hashtags with the most posts referencing them
+    @staticmethod
+    def trending(num):
+        return Hashtag.objects.annotate(hits=Count('posts')).order_by('-hits')[:num]
 
 class Project(models.Model):
     profile = models.ForeignKey(Profile)
@@ -26,7 +30,7 @@ class Project(models.Model):
 
 
 class Song(models.Model):
-    name = models.CharField(blank=True, max_length=30)
+    name = models.CharField(blank=True, max_length=255)
     file = models.FileField(upload_to="music")
     edit_number = models.IntegerField(default=0)
     project = models.ForeignKey(Project)
