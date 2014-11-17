@@ -234,3 +234,28 @@ def edit_profile(request):
 
     return render(request, 'editprofile.html', context)
 
+@login_required
+def show_profile(request, id):
+    user = get_object_or_404(User, username=id)
+    logged_in = request.user.profile
+    if (user.id == request.user.id):
+        return redirect(reverse('home'))        
+    else:
+        context = {}
+        context['user'] = Profile.objects.get(user=user)
+        context['following'] = logged_in in user.profile.followers.all()
+        return render(request, 'userprofile.html', context)
+
+@login_required
+@transaction.atomic
+def follow(request, id):
+    user = get_object_or_404(User, username=id).profile
+    logged_in = request.user.profile
+    if request.method == 'GET':
+        return redirect(reverse('home'))
+    if logged_in in user.followers.all():
+        user.followers.remove(logged_in)
+    else:    
+        user.followers.add(logged_in)
+    return redirect(request.META.get('HTTP_REFERER'))
+
