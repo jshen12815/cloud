@@ -3,14 +3,14 @@
 {% load staticfiles %}
 
 {% block bodytag %}
-    <body id="musiceditor">
+<body class="signupbody" bgcolor="#FFFFFF">
 {% endblock bodytag %}
 
 {% block body %}
     {{ block.super }}
     <div class="container-fluid">
     <div class="row">
-    <div class="col-sm-3 col-md-2 sidebar">
+    <div class="col-sm-3 col-md-2 sidebar" style="background-color: gray">
         <ul class="nav nav-sidebar">
             {% for project in projects %}
                 <li class="{% if song.project == project %}active{% else %}{% endif %}"><a
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-md-3">
                     <button type="button" data-toggle="modal" data-target="#info_modal"
-                            class="btn btn-primary postbutton">
+                            class="btn btn-primary savebutton">
                         Post
                     </button>
                 </div>
@@ -101,7 +101,7 @@
         </div>
         <div class="col-md-offset-6 col-md-2">
             <form class="music_form pull-right" method="post" action="{% url 'undo' song.id %}">
-                <input class="btn btn-danger btn-lg" type="submit" value="undo">
+                <input class="btn btn-danger" type="submit" value="undo">
                 {% csrf_token %}
             </form>
         </div>

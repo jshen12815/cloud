@@ -7,7 +7,7 @@ var wavesurfer = Object.create(WaveSurfer);
 document.addEventListener('DOMContentLoaded', function () {
     var options = {
         container     : document.querySelector('#waveform'),
-        waveColor     : 'violet',
+        waveColor     : '#6FE1D5',
         progressColor : 'purple',
         loaderColor   : 'purple',
         cursorColor   : 'navy'
@@ -79,7 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var timeline = Object.create(WaveSurfer.Timeline);
         timeline.init({
             wavesurfer: wavesurfer,
-            container: "#wave-timeline"
+            container: "#wave-timeline",
+            primaryFontColor: "#fff",
+            secondaryFontColor: "#fff"
         });
     });
 
