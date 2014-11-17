@@ -14,6 +14,7 @@ from django.db import transaction
 from datetime import datetime
 from django.http import HttpResponse, Http404
 from mimetypes import guess_type
+from django.contrib.auth import update_session_auth_hash
 
 
 def home(request):
@@ -26,15 +27,17 @@ def home(request):
 
 
 @login_required
-def add_post(request):
+def add_post(request, id):
 
-    new_post = Post(user=request.user.person, date=datetime.now())
+    song = get_object_or_404(Song, id=id)
+    new_post = Post(profile=request.user.profile, date=datetime.now(), song=song)
     form = PostForm(request.POST, request.FILES, instance=new_post)
     if not form.is_valid():
+        print form.errors
         return redirect(request.META['HTTP_REFERER'])
 
     form.save()
-
+    print("post added\n")
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -68,12 +71,53 @@ def create_playlist(request):
                                     name=form.cleaned_data['name'])
             new_playlist.save()
 
-            # NEED TO UPDATE THIS LATER
-            return render(request, 'home.html', {'user': request.user})
+    return redirect(request.META.get('HTTP_REFERER'))
 
-    # THIS TOO
-    return render(request, 'home.html', {'form': form, 'user': request.user})
+@login_required
+def add_to_playlist(request):
+    if request.method == 'GET':
+        form = PlaylistForm()
+    else:
+        form = PlaylistForm(request.POST)
+        
+        if not form.is_valid():
+            return redirect(request.META.get('HTTP_REFERER'))
+        
+        playlist = Playlist.objects.get(id=form.cleaned_data['playlist'])
 
+        if playlist.profile != request.user.profile:
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        post = Post.objects.get(id=form.cleaned_data['post'])
+
+        if post not in playlist.posts:
+            playlist.posts.add(post)
+            # no need to save() after this I think
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def delete_from_playlist(request):
+    if request.method == 'GET':
+        form = PlaylistForm()
+    else:
+        form = PlaylistForm(request.POST)
+        
+        if not form.is_valid():
+            return redirect(request.META.get('HTTP_REFERER'))
+        
+        playlist = Playlist.objects.get(id=form.cleaned_data['playlist'])
+
+        if playlist.profile != request.user.profile:
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        post = Post.objects.get(id=form.cleaned_data['post'])
+
+        if post in playlist.posts:
+            playlist.posts.remove(post)
+            # no need to save() after this I think
+
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
 def stream(request):
@@ -196,4 +240,106 @@ def rate(request,id):
         rating.numratings = new_num_ratings
         rating.save
     return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+@transaction.atomic
+def edit_profile(request):
+    context = {}
+    errors = []
+    context['errors'] = errors
+
+    if request.method == 'GET':
+        context['form'] = EditForm()
+        return render(request, 'editprofile.html', context)
+
+    form = EditForm(request.POST)
+    context['form'] = form
+
+    if not form.is_valid():
+        return render(request, 'editprofile.html', context)
+    
+
+    if form.cleaned_data['password1'] != "": 
+        if request.user.check_password(form.cleaned_data['passwordc']):
+            request.user.set_password(form.cleaned_data['password1'])
+        else:
+            errors.append("Current password is wrong.")
+            context['errors'] = errors
+            return render(request, 'editprofile.html', context)
+
+    if form.cleaned_data['new_username'] != "":
+        request.user.username = form.cleaned_data['new_username']
+    if form.cleaned_data['new_email'] != "":
+        request.user.email = form.cleaned_data['new_email']
+
+    request.user.save()
+    update_session_auth_hash(request, request.user)
+
+    return render(request, 'editprofile.html', context)
+
+@login_required
+def show_profile(request, id):
+    user = get_object_or_404(User, username=id)
+    logged_in = request.user.profile
+    if (user.id == request.user.id):
+        return redirect(reverse('home'))        
+    else:
+        context = {}
+        context['user'] = Profile.objects.get(user=user)
+        context['following'] = logged_in in user.profile.followers.all()
+        return render(request, 'userprofile.html', context)
+
+@login_required
+@transaction.atomic
+def follow(request, id):
+    user = get_object_or_404(User, username=id).profile
+    logged_in = request.user.profile
+    if request.method == 'GET':
+        return redirect(reverse('home'))
+    if logged_in in user.followers.all():
+        user.followers.remove(logged_in)
+    else:    
+        user.followers.add(logged_in)
+    return redirect(request.META.get('HTTP_REFERER'))
+
+# returns list of recommended songs
+@login_required
+def recommended_songs(profile):
+    num_songs = 5
+    posts = profile.posts
+    ratings = Rating.objects.filter(profile=profile)
+
+    #genres = {}
+    hts = {}
+    for r in ratings.all():
+        p = r.post
+        mod_rating = (r.rating**2) * r.numratings
+
+        for hashtag in p.hashtags.all():
+            if hashtag in hts:
+                hts[hashtag] = hts[hashtag] + mod_rating
+            else:
+                hts[hashtag] = mod_rating
+
+    best_ht = None
+    best_rating = 0
+
+    for hashtag in hts:
+        if hts[hashtag] >= best_rating:
+            best_rating = hts[hashtag]
+            best_ht = hashtag
+
+    print list(Post.objects.order_by('-plays')[:num_songs])
+    return list(Post.objects.order_by('-plays')[:num_songs])
+
+
+# should maybe get rid of this and import music_views?
+@login_required
+def get_song(request, id):
+    song = get_object_or_404(Song, id=id)
+    if not song.file:
+        raise Http404
+
+    content_type = guess_type(song.file.name)
+    return HttpResponse(song.file, content_type=content_type)
 

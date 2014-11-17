@@ -6,13 +6,14 @@
     <ul class="profile">
         <img class = "propic" src="{% static 'images/propic.png' %}" >
 
+
         <div class="sideoptions">
             <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            your music
+            {{user.user.username}}'s music
         </div>
         <div class="sideoptions">
             <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            playlists
+            {{user.user.username}}'s playlists
         </div>
         <div class="sideoptions">
             <img class = "sideicons" src="{% static 'images/icon.png' %}" >
@@ -23,7 +24,7 @@
             stream
         </div>
         <div class="yourfavorites">
-            your favorites
+            {{user.user.username}}'s favorites
             <div class = "favorite">
                 <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
                 name here
@@ -41,6 +42,20 @@
                 name here
             </div>
         </div>
+
+        <form action="{% url 'follow' user.user.username %}" method="post">
+          {% if following %}
+            <div>
+                <input type="submit" class="btn btn-lg btn-primary signup" value="unfollow {{user.user.username}}">
+            </div>
+          {% else %}
+            <div>
+                <input type="submit" class="btn btn-lg btn-primary signup" value="follow {{user.user.username}}">
+            </div>
+          {% endif %}
+          {% csrf_token %}
+        </form>  
+
     </ul>
 
 {% endblock labels %}

@@ -92,6 +92,28 @@ class CreatePlaylistForm(forms.ModelForm):
 
         return name
 
+class PlaylistForm(forms.Form):
+    post = forms.IntegerField()
+    playlist = forms.IntegerField()
+
+    def clean(self):
+        cleaned_data = super(AddToPlaylistForm, self).clean()
+
+        return cleaned_data
+
+    def clean_post(self):
+        post = self.cleaned_data.get('post')
+        if not Post.objects.filter(id=post):
+            raise forms.ValidationError("Invalid post")
+
+        return post
+
+    def clean_playlist(self):
+        playlist = self.cleaned_data.get('playlist')
+        if not Playlist.objects.filter(id=playlist):
+            raise forms.ValidationError("Invalid playlist")
+
+        return playlist
 
 class SliceForm(forms.Form):
     start = forms.IntegerField()
@@ -142,11 +164,63 @@ class RegistrationForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('profile', 'plays', 'date', )
+        exclude = ('profile', 'plays', 'date', 'song', 'hashtags' )
         widgets = {
-            'picture': forms.FileInput()
+            'photo': forms.FileInput()
         }
 
 
 class SearchForm(forms.Form):
     text = forms.CharField(max_length=200)
+
+class EditForm(forms.Form):
+    new_username = forms.CharField(max_length =20,
+                                label = 'New Username',
+                                widget = forms.TextInput(attrs = {"class": "form-control"}),
+                                required = False)
+    new_email = forms.CharField(max_length = 20,
+                                widget = forms.TextInput(attrs = {"class": "form-control", "input type": "email"}),
+                                label = 'New Email',
+                                required = False)
+    passwordc = forms.CharField(max_length = 200, 
+                                label='Current Password', 
+                                widget = forms.PasswordInput(attrs = {"class": "form-control"}),
+                                required = False)
+    password1 = forms.CharField(max_length = 200, 
+                                label='New Password', 
+                                widget = forms.PasswordInput(attrs = {"class": "form-control"}),
+                                required = False)
+    password2 = forms.CharField(max_length = 200, 
+                                label='Re-enter password',  
+                                widget = forms.PasswordInput(attrs = {"class": "form-control"}),
+                                required = False)
+
+    # Customizes form validation for properties that apply to more
+    # than one field.  Overrides the forms.Form.clean function.
+    def clean(self):
+        # Calls our parent (forms.Form) .clean function, gets a dictionary
+        # of cleaned data as a result
+        cleaned_data = super(EditForm, self).clean()
+
+        # Confirms that the two password fields match
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords did not match.")
+
+        # Generally return the cleaned data we got from our parent.
+        return cleaned_data
+
+
+    # Customizes form validation for the username field.
+    def clean_username(self):
+        # Confirms that the username is not already present in the
+        # User model database.
+        new_username = self.cleaned_data.get('new_username')
+        if User.objects.filter(username__exact=new_username):
+            raise forms.ValidationError("Username is already taken.")
+
+        # Generally return the cleaned data we got from the cleaned_data
+        # dictionary
+        return new_username

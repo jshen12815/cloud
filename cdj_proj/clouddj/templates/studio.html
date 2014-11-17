@@ -4,7 +4,7 @@
 
 {% block body %}
     {{ block.super }}
-    <div class="container-fluid" class="music_edit_body" id="musiceditor">
+    <div class="container-fluid" id="musiceditor">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
@@ -274,15 +274,44 @@
 
         </div>
         <div class="col-md-6 pull-right">
-            <form class="control_form" method="post" action="{% url 'save_song' song.id %}">
-                <input type="submit" class="btn btn-primary postbutton" value="Post"
-                       onclick="needsConfirmation = false;">
-                {% csrf_token %}
-            </form>
+            <button type="button" data-toggle="modal" data-target="#info_modal" class="btn btn-primary postbutton">Post</button>
         </div>
     </div>
 
-
+    <form class="control_form" method="post" action="{% url 'add_post' song.id %}">
+        <div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header modal-head">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h2 class="modal-title" id="infoLabel">&#9729; track info</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div id="images">
+                                    <img class="img-rounded modal-photo" border="0" src="../static/images/backgroundsignin.jpg" alt="song photo">
+                                </div>
+                                <input id="file-input" type="file" name="file" class="form-control" placeholder="choose photo" required="" autofocus="">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="title" class="form-control song-title-tags" placeholder="Name track">
+                                <input type="text" name="genre" class="form-control song-title-tags" placeholder="Add genre">
+                                <textarea type="text" name="text" class="form-control description-box" placeholder="Describe track"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary share-button" onclick="needsConfirmation = false;">Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% csrf_token %}
+    </form>
 
 
 

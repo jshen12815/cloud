@@ -1,0 +1,154 @@
+{% extends "base_loggedin.html" %}
+
+{% load staticfiles %}
+
+{% block body %}
+    <div data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+        {{block.super}}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-3 sidebar">
+                    {% block labels %}
+                    {% endblock %}
+                </div>
+
+                <div class="col-md-11 col-md-offset-3 main">
+                    {% for post in posts %} 
+                        <div class="row">
+                            <div class="col-md-3">
+                                {% if post.photo %}
+                                    <img class="img-rounded" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}" width="100" height="100">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-8">
+                                {{post.profile.user.username}}
+                                {{post.title}}
+                                <!-- SONG -->
+                                <form action="{% url 'add_comment' post.id %}" method="post">
+                                    <div class="textbox-wrapper">
+                                        <input type="text" name="comment" class="textbox" placeholder="Comment...">
+                                    </div>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+                <div id = "streampost" class="col-md-11 col-md-offset-3 main">
+                    <div class = "songpost">
+                        <img class = "backgroundpic" src="{% static 'images/nowplaying.png' %}">
+                        <div class = "commands">
+                            <!-- RATE -->
+                            <div id="rate" class="rating">
+                                <!-- FIFTH STAR -->
+                                <input type="radio" id="star_5" name="rate" value="5"{% if rating.rating = 5 %} checked {% endif %}/>
+                                <label for="star_5" title="Five">&#9733;</label>
+                                <!-- FOURTH STAR -->
+                                <input type="radio" id="star_4" name="rate" value="4" {% if rating.rating = 4 %} checked {% endif %} />
+                                <label for="star_4" title="Four">&#9733;</label>
+                                <!-- THIRD STAR -->
+                                <input type="radio" id="star_3" name="rate" value="3" {% if rating.rating = 3 %} checked {% endif %}/>
+                                <label for="star_3" title="Three">&#9733;</label>
+                                <!-- SECOND STAR -->
+                                <input type="radio" id="star_2" name="rate" value="2" {% if rating.rating = 2 %} checked {% endif %}/>
+                                <label for="star_2" title="Two">&#9733;</label>
+                                <!-- FIRST STAR -->
+                                <input type="radio" id="star_1" name="rate" value="1" {% if rating.rating = 1 %} checked {% endif %}/>
+                                <label for="star_1" title="One">&#9733;</label>
+                            </div>
+                            <!-- ADD FOR DROPDOWN COMMENTS
+
+                                input type="radio" name="control-1" id="show-1">
+                                <label for="show-1">Read Comments</label>
+                                <input type="radio" name="control-1" id="hide-1">
+                                <label for="hide-1">Hide Comments</label>
+                                <div class="comments">
+                                <ul>
+                                <li>Nice Article!</li>
+                                <li>I agree!</li>
+                                <input type = "text">
+                              </ul>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div  class = "comments">
+                        <a class = "commentername"> usernamehere{{comment.user.username}} </a>
+                        {{comment}} hiiiii
+                        </br>
+                        <form class = "commentformpost"  method="post">
+                            <input type="text" class = "update-comment-box" name="comment" placeholder= "comment">
+                            <input class = "postComment" type="submit" value ="comment" data-item-id = {{post.id}}>
+                            <input type = "hidden" name = "postID" value = {{post.id}}>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                    {% for post in posts %}
+                        <div class = "posts">
+                            {% if post.photo %}
+                                <img class = "songphoto" src="{% url 'photo' post.photo %}" alt="{{ STATIC_URL }}media/thumbnails/default.png" >
+                            {% endif %}
+                            <a class = "name" href= "/grumblr/home"> {{user.username}} </a>
+                            <br/>
+                            <br/>
+                            {{song}}
+                            </br>
+                            <img class = "liked" src="{{ STATIC_URL }}/grumblr/images/heart.png" >
+                            <a class = "rating" href="/grumblr/dislike/{{grumble.id}}/">{{grumble.date_created}} </a>
+                            <form>
+                                <div class="stars">
+                                    <input type="radio" name="star" class="star-1" id="star-1" />
+                                    <label class="star-1" for="star-1">1</label>
+                                    <input type="radio" name="star" class="star-2" id="star-2" />
+                                    <label class="star-2" for="star-2">2</label>
+                                    <input type="radio" name="star" class="star-3" id="star-3" />
+                                    <label class="star-3" for="star-3">3</label>
+                                    <input type="radio" name="star" class="star-4" id="star-4" />
+                                    <label class="star-4" for="star-4">4</label>
+                                    <input type="radio" name="star" class="star-5" id="star-5" />
+                                    <label class="star-5" for="star-5">5</label>
+                                    <span></span>
+                                </div>
+                            </form>
+              
+                            <div name = "commentList"></div>
+
+                            <form class = "commentformpost" action="{% url 'add_comment' %}" method="post">
+                                <input type="text" class = "update-comment-box" name="comment" placeholder= "comment">
+                                <input class = "postComment" type="submit" value ="comment" data-item-id = {{grumble.id}}>
+                                <input type = "hidden" name = "grumbleID" value = {{grumble.id}}>
+                                {% csrf_token %}
+                            </form>
+                        </div>
+
+                        <a class = "commands" href="/grumblr/dislike/{{grumble.id}}/">{{grumble.dislikes}} DISLIKES</a>
+                        <a class = "commands" href="/grumblr/delete-grumble/{{grumble.id}}">DELETE</a>
+                        </br>
+                        <div  class = "comments">
+                        {% for comment in grumble.comment_set.all %}
+                            <a class = "commentername" href= "/grumblr/profile/{{grumble.user.id}}"> {{comment.user.username}} </a>
+                            {{comment}}
+                            {% if comment.user.username = user.username %}
+                                <form method = "post" class = "commands" action = "/grumblr/delete-comment/"> <input type = "hidden" value = "/grumblr/followers/" name = "redirect">
+                                    <input type="submit" value="delete">
+                                    <input type = "hidden" value = "{{comment.id}}" name = "comment_id">
+                                    {% csrf_token %}
+                                </form>
+                            {% endif %}
+                            </br>
+                        {% endfor %}
+                        <div name = "commentList"></div>
+                        <form class = "commentformpost" action="{% url 'add_comment' %}" method="post">
+                            <input type="text" class = "update-comment-box" name="comment" placeholder= "comment">
+                            <input class = "postComment" type="submit" value ="comment" data-item-id = {{grumble.id}}>
+                            <input type = "hidden" name = "grumbleID" value = {{grumble.id}}>
+                            {% csrf_token %}
+                        </form>
+                    {% endfor %}
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
