@@ -51,7 +51,6 @@ urlpatterns = [
     url(r'^undo/(?P<song_id>\d+)/$', 'clouddj.music_views.undo', name='undo'),
     url(r'^save/(?P<song_id>\d+)/$', 'clouddj.music_views.save_song', name='save_song'),
     url(r'^undo_all/(?P<song_id>\d+)/$', 'clouddj.music_views.undo_all', name='undo_all'),
-    url(r'^delete/(?P<song_id>\d+)/$', 'clouddj.music_views.delete', name='delete'),
     url(r'^record/(?P<song_id>\d+)/$', 'clouddj.music_views.record', name='record'),
 
 ]
