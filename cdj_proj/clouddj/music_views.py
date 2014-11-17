@@ -30,7 +30,7 @@ def upload(request):
         form = UploadMusicForm()
     else:
         new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
-        #new_project = Project(status="in_progress")
+        # new_project = Project(status="in_progress")
         new_project.save()
 
         song = Song(project=new_project)
@@ -59,14 +59,14 @@ def studio(request, proj_id=None):
     song = get_object_or_404(Song, edit_number=0, project=proj)
     name = get_root(song.file.name).replace("music/", "")
     song.name = name
-    context = {'song': song,'type': get_content_type(song.file.name), 'user': request.user, 'projects': projects}
+    context = {'song': song, 'type': get_content_type(song.file.name), 'user': request.user, 'projects': projects}
     add_empty_forms(context)
-    return render(request, 'studio.html',context)
+    return render(request, 'studio.html', context)
 
 
 @login_required
 def save_song(request, song_id):
-    #save latest edit to original file
+    # save latest edit to original file
     song = get_object_or_404(Song, id=song_id)
     project = song.project
     final_song = get_object_or_404(Song, edit_number=0, project=project)
@@ -78,7 +78,7 @@ def save_song(request, song_id):
     #delete all temp files - ** user cannot undo edits from a previous session **
     undo_all(request, song_id)
 
-    return redirect('/clouddj/studio/'+str(project.id))
+    return redirect('/clouddj/studio/' + str(project.id))
 
 
 @login_required
@@ -87,7 +87,7 @@ def undo_all(request, song_id):
     project = song.project
     final_song = get_object_or_404(Song, edit_number=0, project=project)
 
-    #delete all temp files
+    # delete all temp files
     all_edits = project.song_set.all()
     for edit in all_edits:
         if not final_song == edit:
@@ -111,16 +111,19 @@ def record(request, song_id):
     temp_file = request.FILES['recording']
     seg = song_to_audioseg(song)
     recording = AudioSegment.from_file(temp_file, format='wav')
-    start_time = int(form.cleaned_data['start_min']) * 60 + int(form.cleaned_data['start_sec'])
+    start_time = float(form.cleaned_data['start'])
     start_time *= 1000
 
     if start_time / 1000 >= len(seg) / 1000:
-        #append
+        # append
         silent_secs = start_time - len(seg)
         silence = AudioSegment.silent(duration=silent_secs)
         seg = seg + silence + recording
     else:
         seg = seg.overlay(recording, start_time)
+        if len(recording) > len(seg):
+            remaining = len(recording) - len(seg)
+            seg += recording[remaining:]
 
     new_song = export_edit(seg, song)
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
@@ -128,7 +131,7 @@ def record(request, song_id):
     return HttpResponse(json.dumps(response_text), content_type="application/json")
 
 
-###################################
+# ##################################
 ### Music Editing Functionality ###
 ###################################
 @login_required
@@ -165,10 +168,27 @@ def x_filter(request, song_id):
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    if form.cleaned_data['high_cutoff']:
-        seg = seg.high_pass_filter(int(form.cleaned_data['high_cutoff']))
-    if form.cleaned_data['low_cutoff']:
-        seg = seg.high_pass_filter(int(form.cleaned_data['low_cutoff']))
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
+    high_cut = form.cleaned_data['high_cutoff']
+    low_cut = form.cleaned_data['low_cutoff']
+
+    if start and end:
+        lower_seg = seg[:start]
+        upper_seg = seg[end:]
+        middle_seg = seg[start:end]
+
+        if high_cut:
+            middle_seg = middle_seg.high_pass_filter(float(high_cut))
+        if low_cut:
+            middle_seg = middle_seg.low_pass_filter(float(low_cut))
+
+        seg = lower_seg + middle_seg + upper_seg
+    else:
+        if high_cut:
+            seg = seg.high_pass_filter(float(high_cut))
+        if low_cut:
+            seg = seg.low_pass_filter(float(low_cut))
 
     #export new song
     new_song = export_edit(seg, song)
@@ -192,7 +212,7 @@ def fade_out(request, song_id):
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    milliseconds = int(form.cleaned_data['seconds'])
+    milliseconds = int(form.cleaned_data['end']) - int(form.cleaned_data['start'])
     new_seg = seg.fade_out(milliseconds * 1000)
     new_song = export_edit(new_seg, song)
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
@@ -206,7 +226,6 @@ def fade_in(request, song_id):
     seg = song_to_audioseg(song)
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
 
-
     if request.method == 'GET':
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
@@ -215,7 +234,7 @@ def fade_in(request, song_id):
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    milliseconds = int(form.cleaned_data['seconds'])
+    milliseconds = int(form.cleaned_data['end']) - int(form.cleaned_data['start'])
     new_seg = seg.fade_in(milliseconds * 1000)
     new_song = export_edit(new_seg, song)
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
@@ -237,12 +256,12 @@ def repeat(request, song_id):
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    start = int(form.cleaned_data['start']) * 1000
-    end = int(form.cleaned_data['end']) * 1000
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
     iters = int(form.cleaned_data['iters'])
 
     lower_seg = seg[:start]
-    upper_seg = seg[-end:]
+    upper_seg = seg[end:]
     middle_seg = seg[start:end]
 
     new_seg = lower_seg + middle_seg * iters + upper_seg
@@ -264,11 +283,90 @@ def speedup(request, song_id):
     form = SpeedupForm(request.POST)
 
     if not form.is_valid():
+        print form.errors
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
+    print form.cleaned_data['multiplier']
     changed = seg.speedup(form.cleaned_data['multiplier'])
 
     new_song = export_edit(changed, song)
+    response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
+
+    return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+
+@login_required
+def bass(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    seg = song_to_audioseg(song)
+    response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
+
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    form = AmplifyForm(request.POST)
+
+    if not form.is_valid():
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
+    amp = int(form.cleaned_data['amplify'])
+
+    lower_seg = seg[:start]
+    upper_seg = seg[end:]
+    middle_seg = seg[start:end]
+
+    middle_bass = middle_seg.low_pass_filter(140)
+    middle_bass = middle_bass.high_pass_filter(20)
+
+    modify = -1 if amp > 0 else 1
+    middle_bass = middle_bass.apply_gain(amp+modify)
+
+    middle_seg = middle_seg.overlay(middle_bass)
+
+    seg = lower_seg + middle_seg + upper_seg
+
+    #export new song
+    new_song = export_edit(seg, song)
+
+    response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
+
+    return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+
+@login_required
+def treble(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    seg = song_to_audioseg(song)
+    response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
+
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    form = AmplifyForm(request.POST)
+    if not form.is_valid():
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
+    amp = int(form.cleaned_data['amplify'])
+
+    lower_seg = seg[:start]
+    upper_seg = seg[end:]
+    middle_seg = seg[start:end]
+
+    middle_bass = middle_seg.low_pass_filter(20000)
+    middle_bass = middle_bass.high_pass_filter(5200)
+    middle_bass = middle_bass.apply_gain(amp-1)
+
+    middle_seg = middle_seg.overlay(middle_bass)
+
+    seg = lower_seg + middle_seg + upper_seg
+
+    #export new song
+    new_song = export_edit(seg, song)
+
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
 
     return HttpResponse(json.dumps(response_text), content_type="application/json")
@@ -288,11 +386,11 @@ def reverse(request, song_id):
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    start = int(form.cleaned_data['start']) * 1000
-    end = int(form.cleaned_data['end']) * 1000
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
 
     lower_seg = seg[:start]
-    upper_seg = seg[-end:]
+    upper_seg = seg[end:]
     middle_seg = seg[start:end]
 
     new_seg = lower_seg + middle_seg.reverse() + upper_seg
@@ -316,13 +414,16 @@ def slice(request, song_id):
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    start = int(form.cleaned_data['start']) * 1000
-    end = int(form.cleaned_data['end']) * 1000
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
 
     lower_seg = seg[:start]
-    upper_seg = seg[-end:]
+    upper_seg = seg[end:]
 
     new_seg = lower_seg + upper_seg
+    if len(new_seg) <= 0:
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
     new_song = export_edit(new_seg, song)
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
 
@@ -332,25 +433,28 @@ def slice(request, song_id):
 @login_required
 def amplify(request, song_id):
     song = get_object_or_404(Song, id=song_id)
-    sound = song_to_audioseg(song)
+    seg = song_to_audioseg(song)
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
 
     if request.method == 'GET':
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    amplify_form = AmplifyForm(request.POST)
+    form = AmplifyForm(request.POST)
 
-    amp = int(amplify_form.cleaned_data['amplify'])
-    # handle amplification
-    # if 'beginning' in request.GET and 'end' in request.GET:
-    #     beginning = int(form.cleaned_data['beginning'])
-    #     end = int(form.cleaned_data['end'])
-    #     portion = sound[beginning:end]
-    #     portion += amp
-    #     sound = sound[:beginning] + portion + sound[end:]
-    # else:
-    sound += amp
-    new_song = export_edit(sound, song)
+    if not form.is_valid():
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    amp = int(form.cleaned_data['amplify'])
+    start = float(form.cleaned_data['start'])*1000
+    end = float(form.cleaned_data['end'])*1000
+
+    lower_seg = seg[:start]
+    upper_seg = seg[end:]
+    middle_seg = seg[start:end]
+    middle_seg = middle_seg.apply_gain(amp)
+    new_seg = lower_seg + middle_seg + upper_seg
+    new_song = export_edit(new_seg, song)
+
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
 
     return HttpResponse(json.dumps(response_text), content_type="application/json")
