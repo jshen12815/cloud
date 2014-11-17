@@ -9,7 +9,6 @@ var audioInput = null,
     audioRecorder = null;
 
 $(".music_form").submit(function (event) {
-    needsConfirmation = true;
     var form = $(this);
     var postData = $(this).serializeArray();
     var formURL = $(this).attr("action");
@@ -19,6 +18,7 @@ $(".music_form").submit(function (event) {
             type: "POST",
             data: postData,
             success: function(data){
+                needsConfirmation = true;
                 updatePage(data);
                 form.find("input[type=text], textarea").val("");
             }
@@ -60,6 +60,7 @@ function handleRecording(blob) {
         processData: false,
         contentType: false,
         success: function(data){
+                needsConfirmation = true;
                 updatePage(data);
                 form.find("input[type=text], textarea").val("");
             }
@@ -72,10 +73,11 @@ function updatePage(data) {
     //reload song
     song_id = data['song_id']; //used to discard changes
     var audio = $("#audio_src");
-    audio.attr("type", data['type']);
     var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
-    audio.attr("src", new_src);
-    reloadSong();
+
+    $("#wave-timeline").empty();
+    wavesurfer.load(new_src);
+
 
     var body = $('body');
     var edit_forms = body.find(".music_form");

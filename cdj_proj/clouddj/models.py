@@ -24,6 +24,7 @@ class Hashtag(models.Model):
     def trending(num):
         return Hashtag.objects.annotate(hits=Count('posts')).order_by('-hits')[:num]
 
+
 class Project(models.Model):
     profile = models.ForeignKey(Profile)
     status = models.CharField(max_length=255)  # in_progress vs. complete
@@ -48,7 +49,7 @@ class Post(models.Model):
     hashtags = models.ManyToManyField(Hashtag, related_name='posts')
     
     def __unicode__(self):
-        return self.profile.user.username +": "+self.text
+        return self.profile.user.username + ": "+self.text
 
     @staticmethod
     def get_posts_containing(user, query):
