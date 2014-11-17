@@ -2,11 +2,15 @@
 
 {% load staticfiles %}
 
+{% block bodytag %}
+<body class="signupbody" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
 {% block body %}
     {{ block.super }}
-    <div class="container-fluid" id="musiceditor">
+    <div class="container-fluid">
     <div class="row">
-    <div class="col-sm-3 col-md-2 sidebar">
+    <div class="col-sm-3 col-md-2 sidebar" style="background-color: gray">
         <ul class="nav nav-sidebar">
             {% for project in projects %}
                 <li class="{% if song.project == project %}active{% else %}{% endif %}"><a
@@ -19,7 +23,29 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 
-    <h1 class="page-header project-title">{{ song.name }}</h1>
+    <div class="row title">
+        <div class="col-md-8 title">
+            <h1 class="page-header project-title">{{ song.name }} </h1>
+        </div>
+        <div class="col-md-4 control">
+            <div class="row">
+                <div class="col-md-offset-6 col-md-3">
+                    <form class="control_form" method="post" action="{% url 'save_song' song.id %}">
+                        <input type="submit" class="btn btn-primary savebutton" value="Save"
+                               onclick="needsConfirmation = false;">
+                        {% csrf_token %}
+                    </form>
+
+                </div>
+                <div class="col-md-3">
+                    <button type="button" data-toggle="modal" data-target="#info_modal"
+                            class="btn btn-primary savebutton">
+                        Post
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div id="wave-timeline">
@@ -73,9 +99,10 @@
                 {% csrf_token %}
             </form>
         </div>
-        <div>
+        <div class="col-md-8">
+            <a class="delete btn btn-danger pull-right" href="{% url 'delete'  song.id %}">delete</a>&nbsp;&nbsp;
             <form class="music_form pull-right" method="post" action="{% url 'undo' song.id %}">
-                <input class="btn btn-danger btn-lg" type="submit" value="undo">
+                <input class="btn btn-danger" type="submit" value="undo">
                 {% csrf_token %}
             </form>
         </div>
@@ -190,7 +217,7 @@
             <div class="typelabel"> Effects</div>
             <br>
 
-            <div class="inputdouble">
+            <div class="inputnum">
                 <div class="shadowtext"> Reverb</div>
                 <input class="edittext" type="text">
                 <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
@@ -206,7 +233,8 @@
                 <div class="inputdouble">
                     <div class="shadowtext"> High Pass</div>
                     <input class="edittext" type="text" name="high_cutoff">
-
+                </div>
+                <div class="inputdouble">
                     <div class="shadowtext"> Low Pass</div>
                     <input class="edittext" type="text" name="low_cutoff">
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
@@ -217,14 +245,14 @@
             <div class="typelabel"> Fade</div>
             <br>
 
-            <div class="inputnum">
+            <div class="inputdouble">
                 <form class="music_form" action="{% url 'fade_in' song.id %}" method="post">
                     <div class="shadowtext"> In &nbsp;</div>
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
                     {% csrf_token %}
                 </form>
             </div>
-            <div class="inputnum">
+            <div class="inputdouble">
                 <form class="music_form" action="{% url 'fade_out' song.id %}" method="post">
                     <div class="shadowtext"> Out &nbsp; </div>
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
@@ -238,24 +266,9 @@
     </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6 pull-right">
-            <form class="control_form" method="post" action="{% url 'save_song' song.id %}">
-                <input type="submit" class="btn btn-primary savebutton" value="Save"
-                       onclick="needsConfirmation = false;">
-                {% csrf_token %}
-            </form>
-
-        </div>
-        <div class="col-md-6 pull-right">
-            <button type="button" data-toggle="modal" data-target="#info_modal" class="btn btn-primary postbutton">
-                Post
-            </button>
-        </div>
-    </div>
-
     <form enctype="multipart/form-data" class="control_form" method="post" action="{% url 'add_post' song.id %}">
-        <div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
+        <div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="infoLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header modal-head">
@@ -268,9 +281,11 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div id="images">
-                                    <img class="img-rounded modal-photo" border="0" src="{% static 'images/default.jpg' %}" alt="song photo">
+                                    <img class="img-rounded modal-photo" border="0"
+                                         src="{% static 'images/default.jpg' %}" alt="song photo">
                                 </div>
-                                <input id="file-input" type="file" name="photo" class="form-control" placeholder="choose photo" required="" autofocus="">
+                                <input id="file-input" type="file" name="photo" class="form-control"
+                                       placeholder="choose photo" required="" autofocus="">
                             </div>
                             <div class="col-md-4">
                                 <input type="text" name="title" class="form-control song-title-tags"

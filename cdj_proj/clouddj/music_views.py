@@ -7,7 +7,6 @@ from django.core.files import File
 from pydub import *
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.conf import settings
 
 from clouddj.forms import *
 
@@ -97,6 +96,17 @@ def undo_all(request, song_id):
 
 
 @login_required
+def delete(request, song_id):
+    undo_all(request, song_id)
+    song = get_object_or_404(Song, id=song_id)
+    song.project.delete()
+    song.delete()
+    return redirect('/clouddj/studio')
+
+# ##################################
+### Music Editing Functionality ###
+###################################
+@login_required
 def record(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
@@ -131,9 +141,6 @@ def record(request, song_id):
     return HttpResponse(json.dumps(response_text), content_type="application/json")
 
 
-# ##################################
-### Music Editing Functionality ###
-###################################
 @login_required
 def undo(request, song_id):
     song = get_object_or_404(Song, id=song_id)
