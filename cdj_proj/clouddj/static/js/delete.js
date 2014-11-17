@@ -3,6 +3,7 @@ $("#del-btn").click(function( event ) {
 
     var link = $(this).parent();
     var url = link.attr("href");
+    var element = $(this);
 
     $.ajax({
         url: url,
@@ -10,7 +11,7 @@ $("#del-btn").click(function( event ) {
         success: function( data ) {
 
             var post_id = data['post_id'];
-            link.parent().parent().parent().hide();
+            element.parent().parent().parent().parent().hide();
         }
     });
 
