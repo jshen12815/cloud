@@ -114,16 +114,53 @@ document.addEventListener('DOMContentLoaded', function () {
     wavesurfer.on('error', hideProgress);
 });
 
-//when user submits edit form
-function getTime(){
-    var regions = wavesurfer.regions.list;
-    if (regions) {
-        var region = regions[0];
-        var start_sec = region.start;
-        var end_sec = region.end;
-    }
+var GLOBAL_ACTIONS = {
+    'play': function () {
+        wavesurfer.playPause();
+    },
 
-}
+    'back': function () {
+        wavesurfer.skipBackward();
+    },
+
+    'forth': function () {
+        wavesurfer.skipForward();
+    },
+
+    'toggle-mute': function () {
+        wavesurfer.toggleMute();
+    }
+};
+
+
+// Bind actions to buttons and keypresses
+document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('keydown', function (e) {
+        var map = {
+            32: 'play',       // space
+            37: 'back',       // left
+            39: 'forth'       // right
+        };
+        var action = map[e.keyCode];
+        if (action in GLOBAL_ACTIONS) {
+            if ($('#info_modal').attr("aria-hidden") == "false") {
+                return;
+            }
+            e.preventDefault();
+            GLOBAL_ACTIONS[action](e);
+        }
+    });
+
+    [].forEach.call(document.querySelectorAll('[data-action]'), function (el) {
+        el.addEventListener('click', function (e) {
+            var action = e.currentTarget.dataset.action;
+            if (action in GLOBAL_ACTIONS) {
+                e.preventDefault();
+                GLOBAL_ACTIONS[action](e);
+            }
+        });
+    });
+});
 
 
 
