@@ -44,7 +44,9 @@
                                 <p style="margin-top: 10px">
                                     <button type="button" class="btn btn-default btn-xs"> &#10084; Like</button>
                                     {% if post.profile.user == user %}
-                                        <button type="button" class="btn btn-default btn-xs"> &#10006; Delete</button>
+                                        <a href="{% url 'delete_post' post.id %}">
+                                            <button type="button" class="btn btn-default btn-xs"> &#10006; Delete</button>
+                                        </a>
                                     {% endif %}
                                 </p>
                             </div>

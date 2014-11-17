@@ -44,7 +44,7 @@ def add_post(request, id):
 @login_required
 def delete_post(request, id):
 
-    post_to_delete = get_object_or_404(Post, user=request.user.profile, id=id)
+    post_to_delete = get_object_or_404(Post, profile=request.user.profile, id=id)
     post_to_delete.delete()
     return redirect(request.META['HTTP_REFERER'])
 
