@@ -15,6 +15,7 @@ from datetime import datetime
 from django.http import HttpResponse, Http404
 from mimetypes import guess_type
 from django.contrib.auth import update_session_auth_hash
+import json
 
 
 def home(request):
@@ -44,7 +45,7 @@ def add_post(request, id):
 @login_required
 def delete_post(request, id):
 
-    post_to_delete = get_object_or_404(Post, user=request.user.profile, id=id)
+    post_to_delete = get_object_or_404(Post, profile=request.user.profile, id=id)
     post_to_delete.delete()
     return redirect(request.META['HTTP_REFERER'])
 
@@ -206,21 +207,19 @@ def search(request):
 
 @login_required
 def add_comment(request, id):
-    errors = []
-    context = {}
-    # Creates a new comment if it is present as a parameter in the request
-    if not 'comment' in request.POST or not request.POST['comment']:
-        errors.append('You must enter an comment to add.')
-        print("Error")
-    if not 'postID' in request.POST or not request.POST['postID']:
-        errors.append('id')
-    else:
-        post = Post.objects.get(id =request.POST['postID'])
-        new_comment = Comment(text=request.POST['comment'], post = post, profile = request.user)
-        new_comment.save()
-    comments = Comment.objects.filter(user=request.user)
-    context = {'comments' : comments, 'errors' : errors}
-    return redirect(request.META.get('HTTP_REFERER'))
+
+    if not request.POST.get('comm', False):
+        return
+
+    post = get_object_or_404(Post, id=id)
+
+    new_comment = Comment(profile=request.user.profile, post=post, text=request.POST['comm'])
+    new_comment.save()
+
+    data = {"comment": new_comment.text, "username": new_comment.profile.user.username, "post_id": id,
+            "user_id": str(new_comment.profile.user.id)}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 
