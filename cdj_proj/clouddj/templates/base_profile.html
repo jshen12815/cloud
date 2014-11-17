@@ -50,7 +50,7 @@
                                 <button type="button" class="btn btn-default btn-xs my-btn"> &#10084; Like</button>
                                 {% if post.profile.user == user %}
                                     <a href="{% url 'delete_post' post.id %}">
-                                        <button type="button" class="btn btn-default btn-xs my-btn"> &#10006; Delete</button>
+                                        <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn"> &#10006; Delete</button>
                                     </a>
                                 {% endif %}
                                 <button type="button" data-toggle="collapse" data-target="#{{post.id}}" class="btn btn-default btn-xs my-btn"> &#9998; Comments</button>
