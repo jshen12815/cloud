@@ -272,7 +272,7 @@ def repeat(request, song_id):
 
 
 @login_required
-def speedup(request, song_id):
+def tempo(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     seg = song_to_audioseg(song)
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
