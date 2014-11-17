@@ -272,7 +272,7 @@
         </div>
     </div>
 
-    <form class="control_form" method="post" action="{% url 'add_post' song.id %}">
+    <form enctype="multipart/form-data" class="control_form" method="post" action="{% url 'add_post' song.id %}">
         <div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -286,9 +286,9 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div id="images">
-                                    <img class="img-rounded modal-photo" border="0" src="../static/images/backgroundsignin.jpg" alt="song photo">
+                                    <img class="img-rounded modal-photo" border="0" src="{% static 'images/backgroundsignin.jpg' %}" alt="song photo">
                                 </div>
-                                <input id="file-input" type="file" name="file" class="form-control" placeholder="choose photo" required="" autofocus="">
+                                <input id="file-input" type="file" name="photo" class="form-control" placeholder="choose photo" required="" autofocus="">
                             </div>
                             <div class="col-md-4">
                                 <input type="text" name="title" class="form-control song-title-tags" placeholder="Name track">
