@@ -309,8 +309,27 @@ body {
     box-shadow: none;
 }
 
+.description-box {
+    width: 300px;
+    height:200px;
+    resize: none;
+}
+
+.song-title-tags {
+    width: 300px;
+}
+
+.modal-head {
+    background-color: #6FE1D5;
+}
 
 
+.modal-photo {
+    margin-top: 20px;
+    margin-left: 10px;
+     width: 220px;
+     height: 212px;
+}
 
 
 .editingoptions {
@@ -503,8 +522,14 @@ html {
 }
 .postbutton {
   color: #ffffff;
-  background-color: green;
+  background-color: #6FE1D5;
+  border-color: #6FE1D5;
   /*margin-top: -20px;*/
+}
+
+.share-button {
+    background-color: #6FE1D5;
+    border-color: #6FE1D5;
 }
 
 .project-title{

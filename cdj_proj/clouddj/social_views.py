@@ -26,15 +26,17 @@ def home(request):
 
 
 @login_required
-def add_post(request):
+def add_post(request, id):
 
-    new_post = Post(user=request.user.person, date=datetime.now())
+    song = get_object_or_404(Song, id=id)
+    new_post = Post(profile=request.user.profile, date=datetime.now(), song=song)
     form = PostForm(request.POST, request.FILES, instance=new_post)
     if not form.is_valid():
+        print form.errors
         return redirect(request.META['HTTP_REFERER'])
 
     form.save()
-
+    print("post added\n")
     return redirect(request.META['HTTP_REFERER'])
 
 
