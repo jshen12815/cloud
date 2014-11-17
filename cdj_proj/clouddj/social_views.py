@@ -265,10 +265,9 @@ def recommended_songs(profile):
             best_rating = hts[hashtag]
             best_ht = hashtag
 
-    best_posts = Post.objects.order_by('-plays')[:num_songs]
+    print list(Post.objects.order_by('-plays')[:num_songs])
+    return list(Post.objects.order_by('-plays')[:num_songs])
 
-    # return list recommended songs
-    return map(lambda x: return x.song.id, best_posts)
 
 # should maybe get rid of this and import music_views?
 @login_required
