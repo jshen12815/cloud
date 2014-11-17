@@ -1,4 +1,4 @@
-{% extends "base_loggedin.html" %}
+{% extends "base.html" %}
 
 {% load staticfiles %}
 {% load widget_tweaks %}
@@ -6,6 +6,10 @@
     {{block.super}}
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 {% endblock %}
+
+{% block bodytag %}
+<body style="background-color: white">
+{% endblock bodytag %}
 
 {% block body %}
     {{block.super}}
@@ -31,7 +35,9 @@
                             <div style="width: 200px" class="song-title">
                                 {{post.title}}
                             </div>
-                            <!-- SONG -->
+                            <audio controls id="audio_controls">
+-                               <source id="audio_src" src="{% url 'get_post_song' post.id %}" type="{{ type }}">
+-                           </audio>
                             <div class="comment-box">
                                 <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
                                     <div class="textbox-wrapper">
@@ -41,20 +47,20 @@
                                 </form>
                             </div>
                             <p style="margin-top: 10px; width: 200px">
-                                <button type="button" class="btn btn-default btn-xs"> &#10084; Like</button>
+                                <button type="button" class="btn btn-default btn-xs my-btn"> &#10084; Like</button>
                                 {% if post.profile.user == user %}
                                     <a href="{% url 'delete_post' post.id %}">
-                                        <button type="button" class="btn btn-default btn-xs"> &#10006; Delete</button>
+                                        <button type="button" class="btn btn-default btn-xs my-btn"> &#10006; Delete</button>
                                     </a>
                                 {% endif %}
-                                <button type="button" data-toggle="collapse" data-target="#{{post.id}}" class="btn btn-default btn-xs"> &#9998; Comments</button>
+                                <button type="button" data-toggle="collapse" data-target="#{{post.id}}" class="btn btn-default btn-xs my-btn"> &#9998; Comments</button>
                             </p>
                             <div id="{{post.id}}" class="collapse">
                                 {% for comment in post.comment_set.all reversed %}
                                     <div class="comment-username">
                                         {{comment.profile.user.username}}
                                     </div>
-                                    <div style="width: 100%" class="comment-text">
+                                    <div style="width: 200px" class="comment-text">
                                         {{comment.text}}
                                     </div>
                                 {% endfor %}

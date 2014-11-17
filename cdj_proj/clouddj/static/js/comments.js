@@ -27,7 +27,7 @@ $(".comm-form").submit(function( event ) {
                                         <a style='color: black'>\
                                             <h2 class='panel-title comment-username'><b>"+username+"</b></h2>\
                                         </a>\
-                                        <div style='width:100px'>\
+                                        <div style='width:200px'>\
                                             <p class='comment-text'>"+comment+"</p>\
                                         </div>\
                                     </div>\

@@ -107,9 +107,13 @@ a:visited {
 }
 
 .comment-box {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .post-div {
     margin-top: 20px;
+}
+
+.my-btn {
+    background-color: #F8F8F8;
 }

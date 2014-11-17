@@ -16,6 +16,7 @@ from django.http import HttpResponse, Http404
 from mimetypes import guess_type
 from django.contrib.auth import update_session_auth_hash
 import json
+from clouddj.music_views import get_root, get_content_type
 
 
 def home(request):
@@ -31,14 +32,13 @@ def home(request):
 def add_post(request, id):
 
     song = get_object_or_404(Song, id=id)
+    song.project.status = "complete"
     new_post = Post(profile=request.user.profile, date=datetime.now(), song=song)
     form = PostForm(request.POST, request.FILES, instance=new_post)
     if not form.is_valid():
-        print form.errors
         return redirect(request.META['HTTP_REFERER'])
 
     form.save()
-    print("post added\n")
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -127,6 +127,17 @@ def stream(request):
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
+
+    profile = get_object_or_404(Profile, user=request.user)
+    projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
+
+
+    proj = projects[0]
+    song = get_object_or_404(Song, edit_number=0, project=proj)
+    name = get_root(song.file.name).replace("music/", "")
+    song.name = name
+    context['type'] = get_content_type(song.file.name)
+    context['projects'] = projects
 
     return render(request, 'home.html', context)
 
@@ -341,4 +352,14 @@ def get_song(request, id):
 
     content_type = guess_type(song.file.name)
     return HttpResponse(song.file, content_type=content_type)
+
+@login_required
+def get_post_song(request, id):
+    post = get_object_or_404(Post, id=id)
+    if not post.song.file:
+        raise Http404
+
+    content_type = guess_type(post.song.file.name)
+    return HttpResponse(post.song.file, content_type=content_type)
+
 
