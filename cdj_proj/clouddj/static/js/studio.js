@@ -7,16 +7,49 @@ var audioInput = null,
     realAudioInput = null,
     inputPoint = null,
     audioRecorder = null;
+$(".slider-input").change(function(event){
+    var form = $(this).parent();
+    form.submit();
+});
 
 $(".music_form").submit(function (event) {
     var form = $(this);
-    var postData = $(this).serializeArray();
-    var formURL = $(this).attr("action");
+    var inputs = form.find(":input");
+    var formURL = form.attr("action");
+    var regions = wavesurfer.regions.list;
+    var fd = new FormData();
+    var start, end;
+
+    inputs.each(function () {
+        fd.append($(this).attr("name"), $(this).val());
+    });
+
+    if (!isEmpty(regions)) {
+        Object.keys(regions).map(function (id) {
+            var region = regions[id];
+            start = region.start;
+            end = region.end;
+        });
+    } else {
+        start = 0;
+        end = wavesurfer.getDuration();
+    }
+
+    if (formURL.indexOf('fade') >= 0){
+        start = Math.round(start);
+        end = Math.round(end);
+    }
+
+    fd.append('start',start);
+    fd.append('end', end);
+
     $.ajax(
         {
             url: formURL,
             type: "POST",
-            data: postData,
+            data: fd,
+            processData: false,
+            contentType: false,
             success: function(data){
                 needsConfirmation = true;
                 updatePage(data);
@@ -46,11 +79,24 @@ function handleRecording(blob) {
     var form = $("#record_form");
     var url = form.attr("action");
     var inputs = form.find(":input");
+    var regions = wavesurfer.regions.list;
     var fd = new FormData();
+    var start;
 
     inputs.each(function () {
         fd.append($(this).attr("name"), $(this).val());
     });
+
+    if (!isEmpty(regions)) {
+        Object.keys(regions).map(function (id) {
+            var region = regions[id];
+            start = region.start;
+        });
+    } else {
+        start = wavesurfer.getCurrentTime();
+    }
+
+    fd.append('start',start);
     fd.append('recording', blob);
 
     $.ajax({
@@ -66,14 +112,13 @@ function handleRecording(blob) {
             }
     });
 }
-function reloadSong(){
-    document.getElementById("audio_controls").load();
-}
+
 function updatePage(data) {
     //reload song
     song_id = data['song_id']; //used to discard changes
     var audio = $("#audio_src");
-    var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
+     var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
+     audio.attr("src", new_src);
 
     $("#wave-timeline").empty();
     wavesurfer.load(new_src);
@@ -191,3 +236,12 @@ $('#file-input').change(function () {
         $(image).appendTo('#images');
     };
 });
+
+function isEmpty(map) {
+   for(var key in map) {
+      if (map.hasOwnProperty(key)) {
+         return false;
+      }
+   }
+   return true;
+}

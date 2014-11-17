@@ -87,16 +87,33 @@ a:visited {
 .username-text {
     color: dimgray;
     font-size: 14px;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+}
+
+.comment-username {
+    color: dimgray;
+    font-size: 12px;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+}
+
+.comment-text {
+    font-size: 14px;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
 
 .song-title {
     font-size: 24px;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
 
 .comment-box {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .post-div {
-    margin-top: 55px;
+    margin-top: 20px;
+}
+
+.my-btn {
+    background-color: #F8F8F8;
 }

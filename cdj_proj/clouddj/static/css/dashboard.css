@@ -5,7 +5,6 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 50px;
-  background-color: #ECECEC;
 }
 
 
@@ -26,31 +25,6 @@ body {
   border: 0;
 }
 
-.navbar-default .navbar-brand {
-
-  font-family: 'Avenir', serif;
-        font-size: 25px;
-        font-weight: lighter;
-        color: #6FE1D5
-;
-}
-
-
-#musiceditor {
-  /*background-color: black;*/
-  border-radius: 10px;
-  /*padding: 20px;
-  width: 90%;*/
-  /*height: 650px;*/
-  background: #8B8888;
-  /*-moz-box-shadow:    inset 0px 3px 5px 0px rgba(0,0,0,0.50);
-  box-shadow:         inset 0px 3px 5px 0px rgba(0,0,0,0.50);*/
-}
-
-
-
-
-
 /*
  * Sidebar
  */
@@ -58,23 +32,19 @@ body {
 /* Hide for mobile, show later */
 .sidebar {
   display: none;
-        position: fixed;
-    top:70px;
-
 }
 @media (min-width: 768px) {
   .sidebar {
-    margin-right: -10px;
-    padding: 0;
     position: fixed;
     top: 51px;
     bottom: 0;
     left: 0;
     z-index: 1000;
     display: block;
+    padding: 20px;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    background-color: #343232;
+    background-color: #f5f5f5;
     border-right: 1px solid #eee;
   }
 }
@@ -84,7 +54,6 @@ body {
   margin-right: -21px; /* 20px padding + 1px border */
   margin-bottom: 20px;
   margin-left: -20px;
-
 }
 .nav-sidebar > li > a {
   padding-right: 20px;
@@ -96,6 +65,47 @@ body {
   color: #fff;
   background-color: #428bca;
 }
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+
+/* stuff from signin.css */
 
 .description {
   color: #fff;
@@ -121,29 +131,6 @@ body {
   padding-right: 50px;
   padding-left: 50px;
 }
-
-
-/*
- * Main content
- */
-
-.main {
-  padding: 20px;
-}
-@media (min-width: 768px) {
-  .main {
-    padding-right: 40px;
-    padding-left: 40px;
-  }
-}
-.main .page-header {
-  margin-top: 0;
-}
-
-
-/*
- * Placeholder dashboard ideas
- */
 
 .smalltext {
   font-size: 10px;
@@ -279,16 +266,7 @@ body {
   padding-left: 50px;
 }
 
-.currentsong {
-  margin-top: -10px;
-  width: 100%;
-}
 
-.white2 {
-  margin: 110px;
-  color: #FFFFFF;
-  font-size: 18px;
-}
 .songpic {
   display: inline-block;
   width:1100px;
@@ -317,108 +295,6 @@ body {
     resize: none;
 }
 
-.song-title-tags {
-    width: 300px;
-}
-
-.modal-head {
-    background-color: #6FE1D5;
-}
-
-
-.modal-photo {
-    margin-top: 20px;
-    margin-left: 10px;
-     width: 220px;
-     height: 212px;
-}
-
-
-.editingoptions {
-  padding: 20px;
-  background-color: #565656;
-
-}
-
-.typelabel {
-  display: inline-block;
-  color: #C3C3C3;
-  font-weight: bolder;
-
-
-}
-/* Number slider ------------------- */
-
-.slider {
-  display: inline-block;
-    background-color: #E3E3E3;
-    padding: 15px 20px 0px 20px;
-    height: 70px;
-    vertical-align: middle;
-    width:175px;
-    margin: 1px;
-    /*border: solid;
-    border-width: 1px;*/
-   /* border-color: #565656;*/
-    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
-
-
-}
-
-.inputnum{
-  display: inline-block;
-    background-color: #E3E3E3;
-    padding: 5px 5px 5px 5px;
-    height: 42px;
-    text-align: left;
-    width:260px;
-    margin: 1px;
-    /*border: solid;
-    border-width: 1px;*/
-   /* border-color: #565656;*/
-    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
-
-
-}
-
-
-
-.inputdouble{
-  display: inline-block;
-    background-color: #E3E3E3;
-    padding: 5px 5px 5px 5px;
-    height: 42px;
-    text-align: left;
-    width:250px;
-    margin: 1px;
-    /*border: solid;
-    border-width: 1px;*/
-   /* border-color: #565656;*/
-    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
-
-
-}
-
-#filterpitch{
-  margin-top: -20px;
-}
-
-.edittext {
-    appearance: none;
-    display: inline-block;
-    vertical-align: middle;
-    width: 40px;
-    margin-left: 5px;
-    background: hsl(0,0%,100%);
-    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
-    overflow: hidden;
-
-}
-
-.edittable{
-  margin-right: 30px;
-  display: inline-block;
-}
 
 .shadowtext{
 
@@ -433,106 +309,10 @@ body {
 }
 
 
-/* Label ------------------- */
-
-.slider-label {
-    position: absolute;
-    z-index: 1;
-    top: 4px;
-    font-size: 11px;
-    color: hsla(0,0%,0%,0);
-    pointer-events: none;
-    transition: transform .2s cubic-bezier(.26,.08,.15,1), color .6s .6s ease-out;
-}
-
-.slider-label.isRight {
-    right: 50%;
-    margin-right: -20px;
-    left: auto;
-    transform: translateX(20px);
-}
-.slider-label.isLeft {
-    right: auto;
-    margin-left: -20px;
-    left: 50%;
-    transform: translate(-20px);
-}
-
-.slider:active .slider-label {
-    color: hsla(0,0%,0%,.7);
-    transition-delay: 0;
-}
-
-
-/* Input ------------------- */
-
-.slider-input {
-    appearance: none;
-    position: relative;
-    vertical-align: middle;
-    width: 100px;
-    border-radius: 20px;
-    background: hsl(0,0%,80%);
-    box-shadow: 0 1px 0 hsla(0,0%,100%,.6);
-    overflow: hidden;
-}
-
-.slider-input::-webkit-slider-thumb,
-.slider-input::slider-thumb {
-    appearance: none;
-    border-radius: 20px;
-    width: 20px;
-    height: 20px;
-    border: 5px solid hsl(0,0%,80%);
-    cursor: pointer;
-    background: hsl(0,0%,40%);
-    box-shadow: inset 0 1px 2px hsla(0,0%,0%,.4);
-    transition: border-width .2s cubic-bezier(.26, .08, .15, 1);
-}
-
-.slider-input:active::-webkit-slider-thumb,
-.slider-input:active::slider-thumb {
-    border: 0px solid hsl(0,0%,80%);
-    transition-duration: .1;
-}
 
 
 
-body {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
-  display: flex;
-  flex-direction: column;
-  flex-orient: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding: 50px;
-  box-sizing: border-box;
-  background: hsl(0,0%,90%);
-}
-html {
- height: 100%;
-}
 
-.savebutton {
-  color: black;
-  background-color: white;
-  /*margin-top: -20px;*/
-}
-.postbutton {
-  color: #ffffff;
-  background-color: #6FE1D5;
-  border-color: #6FE1D5;
-  /*margin-top: -20px;*/
-}
-
-.share-button {
-    background-color: #6FE1D5;
-    border-color: #6FE1D5;
-}
 
 .project-title{
     color: #ffffff;

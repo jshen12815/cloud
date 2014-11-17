@@ -22,62 +22,65 @@ class UploadMusicForm(forms.ModelForm):
 
 
 class RecordForm(forms.Form):
-    start_min = forms.IntegerField(initial=0)
-    start_sec = forms.IntegerField(initial=0, max_value=59)
+    start = forms.FloatField(initial=0)
 
     def clean(self):
         cleaned_data = super(RecordForm, self).clean()
-        start_min = cleaned_data.get('start_min')
-        start_sec = cleaned_data.get('start_sec')
+        start = cleaned_data.get('start')
 
-        if start_min < 0 or start_sec < 0:
+        if start < 0:
             raise forms.ValidationError("Must use positive values.")
+
+        return cleaned_data
 
 
 class FilterForm(forms.Form):
-    high_cutoff = forms.IntegerField(required=False)
-    low_cutoff = forms.IntegerField(required=False)
+    start = forms.FloatField(required=False)
+    end = forms.FloatField(required=False)
+    high_cutoff = forms.FloatField(required=False)
+    low_cutoff = forms.FloatField(required=False)
 
     def clean(self):
         cleaned_data = super(FilterForm, self).clean()
         high_cutoff = cleaned_data.get('high_cutoff')
         low_cutoff = cleaned_data.get('low_cutoff')
 
-        if high_cutoff < 0 or low_cutoff < 0:
-            raise forms.ValidationError("Must use positive values.")
-
         if not high_cutoff and not low_cutoff:
             raise forms.ValidationError("Please enter a value.")
 
 
 class FadeInForm(forms.Form):
-    seconds = forms.IntegerField()
+    start = forms.IntegerField()
+    end = forms.IntegerField()
 
 
 class FadeOutForm(forms.Form):
-    seconds = forms.IntegerField()
+    start = forms.IntegerField()
+    end = forms.IntegerField()
 
 
 class RepeatForm(forms.Form):
-    start = forms.IntegerField()
-    end = forms.IntegerField()
+    start = forms.FloatField()
+    end = forms.FloatField()
     iters = forms.IntegerField()
 
 
 class SpeedupForm(forms.Form):
-    multiplier = forms.DecimalField(required=False, max_digits=5, decimal_places=3)
+    start = forms.FloatField()
+    end = forms.FloatField()
+    multiplier = forms.FloatField()
 
     def clean_multiplier(self):
-        mult = self.cleaned_data.get('clean_multiplier')
-        if mult <= 0.0:
-            raise forms.ValidationError("Multiplier must be nonnegative")
+        mult = self.cleaned_data.get('multiplier')
+        if mult <= 1.0:
+            raise forms.ValidationError("Multiplier must be positive")
 
         return mult
 
 
 class ReverseForm(forms.Form):
-    start = forms.IntegerField()
-    end = forms.IntegerField()
+    start = forms.FloatField()
+    end = forms.FloatField()
 
 
 class CreatePlaylistForm(forms.ModelForm):
@@ -91,6 +94,7 @@ class CreatePlaylistForm(forms.ModelForm):
             raise forms.ValidationError("Playlist name cannot be empty")
 
         return name
+
 
 class PlaylistForm(forms.Form):
     post = forms.IntegerField()
@@ -115,15 +119,16 @@ class PlaylistForm(forms.Form):
 
         return playlist
 
+
 class SliceForm(forms.Form):
-    start = forms.IntegerField()
-    end = forms.IntegerField()
+    start = forms.FloatField()
+    end = forms.FloatField()
 
 
 class AmplifyForm(forms.Form):
     amplify = forms.IntegerField()
-    beginning = forms.IntegerField()
-    end = forms.IntegerField()
+    start = forms.FloatField()
+    end = forms.FloatField()
 
 
 class RegistrationForm(forms.Form):
@@ -173,6 +178,7 @@ class PostForm(forms.ModelForm):
 class SearchForm(forms.Form):
     text = forms.CharField(max_length=200)
 
+
 class EditForm(forms.Form):
     new_username = forms.CharField(max_length =20,
                                 label = 'New Username',
@@ -211,7 +217,6 @@ class EditForm(forms.Form):
 
         # Generally return the cleaned data we got from our parent.
         return cleaned_data
-
 
     # Customizes form validation for the username field.
     def clean_username(self):

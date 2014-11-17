@@ -7,7 +7,7 @@ var wavesurfer = Object.create(WaveSurfer);
 document.addEventListener('DOMContentLoaded', function () {
     var options = {
         container     : document.querySelector('#waveform'),
-        waveColor     : 'violet',
+        waveColor     : '#6FE1D5',
         progressColor : 'purple',
         loaderColor   : 'purple',
         cursorColor   : 'navy'
@@ -40,16 +40,28 @@ document.addEventListener('DOMContentLoaded', function () {
     wavesurfer.on('region-click', function (region, e) {
         e.stopPropagation();
         // Play on click, loop on shift click
-        e.shiftKey ? region.playLoop() : region.play();
+        e.shiftKey ? region.playLoop() : e.ctrlKey ? region.remove() : region.play();
+
     });
     
-    wavesurfer.on('region-created', deleteOldRegion);
+    wavesurfer.on('region-created', function(region){
+        var regions = wavesurfer.regions.list;
+        $.each(regions, function(index, value){
+            if (value != region) {
+                value.remove();
+            }
+        });
+    });
 
     wavesurfer.on('region-play', function (region) {
         region.once('out', function () {
             wavesurfer.play(region.start);
             wavesurfer.pause();
         });
+    });
+
+    wavesurfer.on('region-dblclick', function(region){
+        region.remove();
     });
 
 
@@ -67,7 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var timeline = Object.create(WaveSurfer.Timeline);
         timeline.init({
             wavesurfer: wavesurfer,
-            container: "#wave-timeline"
+            container: "#wave-timeline",
+            primaryFontColor: "#fff",
+            secondaryFontColor: "#fff"
         });
     });
 
@@ -76,30 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-function deleteOldRegion(Region){
-    var regions = wavesurfer.regions.list;
-    $.each(regions, function(index, value){
-        if (value != Region) {
-            value.remove();
-        }
-    });
-}
-
-// Play at once when ready
-// Won't work on iOS until you touch the page
-wavesurfer.on('ready', function () {
-    //wavesurfer.play();
-});
-
 // Report errors
 wavesurfer.on('error', function (err) {
     console.error(err);
-});
-
-// Do something when the clip is over
-wavesurfer.on('finish', function () {
-    console.log('Finished playing');
 });
 
 
@@ -123,16 +116,53 @@ document.addEventListener('DOMContentLoaded', function () {
     wavesurfer.on('error', hideProgress);
 });
 
-//when user submits edit form
-function getTime(){
-    var regions = wavesurfer.regions.list;
-    if (regions) {
-        var region = regions[0];
-        var start_sec = region.start;
-        var end_sec = region.end;
-    }
+var GLOBAL_ACTIONS = {
+    'play': function () {
+        wavesurfer.playPause();
+    },
 
-}
+    'back': function () {
+        wavesurfer.skipBackward();
+    },
+
+    'forth': function () {
+        wavesurfer.skipForward();
+    },
+
+    'toggle-mute': function () {
+        wavesurfer.toggleMute();
+    }
+};
+
+
+// Bind actions to buttons and keypresses
+document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('keydown', function (e) {
+        var map = {
+            32: 'play',       // space
+            37: 'back',       // left
+            39: 'forth'       // right
+        };
+        var action = map[e.keyCode];
+        if (action in GLOBAL_ACTIONS) {
+            if ($('#info_modal').attr("aria-hidden") == "false") {
+                return;
+            }
+            e.preventDefault();
+            GLOBAL_ACTIONS[action](e);
+        }
+    });
+
+    [].forEach.call(document.querySelectorAll('[data-action]'), function (el) {
+        el.addEventListener('click', function (e) {
+            var action = e.currentTarget.dataset.action;
+            if (action in GLOBAL_ACTIONS) {
+                e.preventDefault();
+                GLOBAL_ACTIONS[action](e);
+            }
+        });
+    });
+});
 
 
 

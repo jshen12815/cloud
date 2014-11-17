@@ -21,6 +21,13 @@
         <link href="{% static 'css/stars.css' %}" rel="stylesheet">
         <link href="{% static 'css/ribbon.css' %}" rel= "stylesheet">
         <link href="{% static 'css/style.css' %}" rel= "stylesheet">
+        <link href="{% static 'css/dashboard.css' %}" rel= "stylesheet">
+    {% endblock %}
+
+    {% block jsfiles %}
+        <script src="/static/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+        <script src="/static/js/comments.js" type="text/javascript"></script>
+        <script src="/static/js/delete.js" type="text/javascript"></script>
     {% endblock %}
 
 
@@ -37,6 +44,7 @@
 {% endblock bodytag %}
 
 {% block body %}
+
     <div class="navbar navbar-default navbar-fixed-top mynavbar" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">

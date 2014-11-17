@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^post_photo/(?P<id>\d+)$', 'clouddj.social_views.get_post_photo', name='post_photo'),
     url(r'^add-post/(?P<id>\d+)$', 'clouddj.social_views.add_post', name='add_post'),
     url(r'^delete-post/(?P<id>\d+)$', 'clouddj.social_views.delete_post', name='delete_post'),
+    url(r'^post-song/(?P<id>\d+)/$', 'clouddj.social_views.get_post_song', name='get_post_song'),
 
     #music urls
     url(r'^studio/(?P<proj_id>\d+)/$', 'clouddj.music_views.studio', name='studio'),
@@ -43,11 +44,14 @@ urlpatterns = [
     url(r'^repeat/(?P<song_id>\d+)/$', 'clouddj.music_views.repeat', name='repeat'),
     url(r'^reverse/(?P<song_id>\d+)/$', 'clouddj.music_views.reverse', name='reverse'),
     url(r'^amplify/(?P<song_id>\d+)/$', 'clouddj.music_views.amplify', name='amplify'),
-    url(r'^speedup/(?P<song_id>\d+)/$', 'clouddj.music_views.speedup', name='speedup'),
+    url(r'^tempo/(?P<song_id>\d+)/$', 'clouddj.music_views.tempo', name='tempo'),
     url(r'^filter/(?P<song_id>\d+)/$', 'clouddj.music_views.x_filter', name='filter'),
+    url(r'^bass/(?P<song_id>\d+)/$', 'clouddj.music_views.bass', name='bass'),
+    url(r'^treble/(?P<song_id>\d+)/$', 'clouddj.music_views.treble', name='treble'),
     url(r'^undo/(?P<song_id>\d+)/$', 'clouddj.music_views.undo', name='undo'),
     url(r'^save/(?P<song_id>\d+)/$', 'clouddj.music_views.save_song', name='save_song'),
     url(r'^undo_all/(?P<song_id>\d+)/$', 'clouddj.music_views.undo_all', name='undo_all'),
+    url(r'^delete/(?P<song_id>\d+)/$', 'clouddj.music_views.delete', name='delete'),
     url(r'^record/(?P<song_id>\d+)/$', 'clouddj.music_views.record', name='record'),
 
 ]

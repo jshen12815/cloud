@@ -15,6 +15,8 @@ from datetime import datetime
 from django.http import HttpResponse, Http404
 from mimetypes import guess_type
 from django.contrib.auth import update_session_auth_hash
+import json
+from clouddj.music_views import get_root, get_content_type
 
 
 def home(request):
@@ -30,14 +32,14 @@ def home(request):
 def add_post(request, id):
 
     song = get_object_or_404(Song, id=id)
+    song.project.status = "complete"
+    song.project.save()
     new_post = Post(profile=request.user.profile, date=datetime.now(), song=song)
     form = PostForm(request.POST, request.FILES, instance=new_post)
     if not form.is_valid():
-        print form.errors
         return redirect(request.META['HTTP_REFERER'])
 
     form.save()
-    print("post added\n")
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -46,7 +48,27 @@ def delete_post(request, id):
 
     post_to_delete = get_object_or_404(Post, profile=request.user.profile, id=id)
     post_to_delete.delete()
-    return redirect(request.META['HTTP_REFERER'])
+
+    data = {"post_id": id}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+@login_required
+def add_comment(request, id):
+
+    if not request.POST.get('comm', False):
+        return
+
+    post = get_object_or_404(Post, id=id)
+
+    new_comment = Comment(profile=request.user.profile, post=post, text=request.POST['comm'])
+    new_comment.save()
+
+    data = {"comment": new_comment.text, "username": new_comment.profile.user.username, "post_id": id,
+            "user_id": str(new_comment.profile.user.id)}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @login_required
@@ -127,6 +149,17 @@ def stream(request):
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
 
+    profile = get_object_or_404(Profile, user=request.user)
+    projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
+
+
+    proj = projects[0]
+    song = get_object_or_404(Song, edit_number=0, project=proj)
+    name = get_root(song.file.name).replace("music/", "")
+    song.name = name
+    context['type'] = get_content_type(song.file.name)
+    context['projects'] = projects
+
     return render(request, 'home.html', context)
 
 
@@ -202,27 +235,6 @@ def search(request):
     context['posts'] = posts
 
     return render(request, 'search.html', context)
-
-
-@login_required
-def add_comment(request, id):
-    errors = []
-    context = {}
-    # Creates a new comment if it is present as a parameter in the request
-    if not 'comment' in request.POST or not request.POST['comment']:
-        errors.append('You must enter an comment to add.')
-        print("Error")
-    if not 'postID' in request.POST or not request.POST['postID']:
-        errors.append('id')
-    else:
-        post = Post.objects.get(id =request.POST['postID'])
-        new_comment = Comment(text=request.POST['comment'], post = post, profile = request.user)
-        new_comment.save()
-    comments = Comment.objects.filter(user=request.user)
-    context = {'comments' : comments, 'errors' : errors}
-    return redirect(request.META.get('HTTP_REFERER'))
-
-
 
 
 @login_required
@@ -342,4 +354,14 @@ def get_song(request, id):
 
     content_type = guess_type(song.file.name)
     return HttpResponse(song.file, content_type=content_type)
+
+@login_required
+def get_post_song(request, id):
+    post = get_object_or_404(Post, id=id)
+    if not post.song.file:
+        raise Http404
+
+    content_type = guess_type(post.song.file.name)
+    return HttpResponse(post.song.file, content_type=content_type)
+
 
