@@ -38,7 +38,7 @@ class Song(models.Model):
 
 
 class Post(models.Model):
-    profile = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile, related_name='posts')
     text = models.CharField(max_length=255)
     title = models.CharField(max_length=255, default='')
     date = models.DateTimeField(auto_now_add=True)

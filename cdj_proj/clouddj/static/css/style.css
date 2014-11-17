@@ -108,3 +108,10 @@ body {
 #drop.wavesurfer-dragover {
     border-color: #333;
 }
+
+.login-bg {
+    background-image: url("../images/table.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
