@@ -15,44 +15,8 @@
                 <div class="col-md-4">
                     <input type="submit" class="btn btn-lg btn-primary signup" value="upload" >
                 </div>
-                <div class="col-md-2">
-                    <button type="button" data-toggle="modal" data-target="#info_modal" class="btn btn-lg btn-primary signup">info</button>
-                </div>
             </div>
             {% csrf_token %}
          </form>
-
-         <div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header modal-head">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                        </button>
-                        <h2 class="modal-title" id="infoLabel">&#9729; track info</h2>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div id="images">
-                                    <img class="img-rounded modal-photo" border="0" src="../static/images/backgroundsignin.jpg" alt="song photo" width="220" height="212">
-                                </div>
-                                <input id="file-input" type="file" name="file" class="form-control" placeholder="choose photo" required="" autofocus="">
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control song-title-tags" placeholder="Name track">
-                                <input type="text" class="form-control song-title-tags" placeholder="Add genre">
-                                <input type="text" class="form-control song-title-tags" placeholder="Add tags">
-                                <textarea type="text" class="form-control description-box" placeholder="Describe track"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary share-button">Share</button>
-                    </div>
-                </div>
-            </div>
-         </div>
     
 {% endblock body %}

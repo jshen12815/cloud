@@ -327,6 +327,8 @@ body {
 .modal-photo {
     margin-top: 20px;
     margin-left: 10px;
+     width: 220px;
+     height: 212px;
 }
 
 
@@ -520,7 +522,8 @@ html {
 }
 .postbutton {
   color: #ffffff;
-  background-color: green;
+  background-color: #6FE1D5;
+  border-color: #6FE1D5;
   /*margin-top: -20px;*/
 }
 

@@ -142,9 +142,9 @@ class RegistrationForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('profile', 'plays', 'date', )
+        exclude = ('profile', 'plays', 'date', 'song', 'hashtags' )
         widgets = {
-            'picture': forms.FileInput()
+            'photo': forms.FileInput()
         }
 
 

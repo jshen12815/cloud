@@ -26,7 +26,7 @@ class Project(models.Model):
 
 
 class Song(models.Model):
-    name = models.CharField(blank=True, max_length=30)
+    name = models.CharField(blank=True, max_length=255)
     file = models.FileField(upload_to="music")
     edit_number = models.IntegerField(default=0)
     project = models.ForeignKey(Project)
