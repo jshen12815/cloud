@@ -72,7 +72,7 @@ class SpeedupForm(forms.Form):
 
     def clean_multiplier(self):
         mult = self.cleaned_data.get('multiplier')
-        if mult <= 0.0:
+        if mult <= 1.0:
             raise forms.ValidationError("Multiplier must be positive")
 
         return mult
