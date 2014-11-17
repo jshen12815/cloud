@@ -25,7 +25,7 @@
 
     <div class="row title">
         <div class="col-md-8 title">
-            <h1 class="page-header project-title">{{ song.name }}</h1>
+            <h1 class="page-header project-title">{{ song.name }} </h1>
         </div>
         <div class="col-md-4 control">
             <div class="row">
@@ -99,7 +99,8 @@
                 {% csrf_token %}
             </form>
         </div>
-        <div class="col-md-offset-6 col-md-2">
+        <div class="col-md-8">
+            <a class="delete btn btn-danger pull-right" href="{% url 'delete'  song.id %}">delete</a>&nbsp;&nbsp;
             <form class="music_form pull-right" method="post" action="{% url 'undo' song.id %}">
                 <input class="btn btn-danger" type="submit" value="undo">
                 {% csrf_token %}
