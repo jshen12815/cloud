@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
     wavesurfer.init(options);
     // Load audio from URL
     //get elementbyidx
-    wavesurfer.load('demo.wav');
+    var src = $("#audio_src").attr("src");
+    wavesurfer.load(src);
 
     // Regions
     if (wavesurfer.enableDragSelection) {
@@ -34,7 +35,56 @@ document.addEventListener('DOMContentLoaded', function () {
             color: 'rgba(0, 255, 0, 0.1)'
         });
     }
+
+
+    wavesurfer.on('region-click', function (region, e) {
+        e.stopPropagation();
+        // Play on click, loop on shift click
+        e.shiftKey ? region.playLoop() : region.play();
+    });
+    
+    wavesurfer.on('region-created', deleteOldRegion);
+
+    wavesurfer.on('region-play', function (region) {
+        region.once('out', function () {
+            wavesurfer.play(region.start);
+            wavesurfer.pause();
+        });
+    });
+
+
+    /* Minimap plugin */
+    wavesurfer.initMinimap({
+        height: 30,
+        waveColor: '#ddd',
+        progressColor: '#999',
+        cursorColor: '#999'
+    });
+
+
+    /* Timeline plugin */
+    wavesurfer.on('ready', function () {
+        var timeline = Object.create(WaveSurfer.Timeline);
+        timeline.init({
+            wavesurfer: wavesurfer,
+            container: "#wave-timeline"
+        });
+    });
+
+
+   
 });
+
+
+
+function deleteOldRegion(Region){
+    var regions = wavesurfer.regions.list;
+    $.each(regions, function(index, value){
+        if (value != Region) {
+            value.remove();
+        }
+    });
+}
 
 // Play at once when ready
 // Won't work on iOS until you touch the page
@@ -73,42 +123,17 @@ document.addEventListener('DOMContentLoaded', function () {
     wavesurfer.on('error', hideProgress);
 });
 
+//when user submits edit form
+function getTime(){
+    var regions = wavesurfer.regions.list;
+    if (regions) {
+        var region = regions[0];
+        var start_sec = region.start;
+        var end_sec = region.end;
+    }
 
-// Drag'n'drop
-document.addEventListener('DOMContentLoaded', function () {
-    var toggleActive = function (e, toggle) {
-        e.stopPropagation();
-        e.preventDefault();
-        toggle ? e.target.classList.add('wavesurfer-dragover') :
-            e.target.classList.remove('wavesurfer-dragover');
-    };
+}
 
-    var handlers = {
-        // Drop event
-        drop: function (e) {
-            toggleActive(e, false);
 
-            // Load the file into wavesurfer
-            if (e.dataTransfer.files.length) {
-                wavesurfer.loadBlob(e.dataTransfer.files[0]);
-            } else {
-                wavesurfer.fireEvent('error', 'Not a file');
-            }
-        },
 
-        // Drag-over event
-        dragover: function (e) {
-            toggleActive(e, true);
-        },
 
-        // Drag-leave event
-        dragleave: function (e) {
-            toggleActive(e, false);
-        }
-    };
-
-    var dropTarget = document.querySelector('#drop');
-    Object.keys(handlers).forEach(function (event) {
-        dropTarget.addEventListener(event, handlers[event]);
-    });
-});
