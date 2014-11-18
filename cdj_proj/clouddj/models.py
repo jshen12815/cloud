@@ -101,9 +101,21 @@ class Rating(models.Model):
     post = models.ForeignKey(Post)
     rating = models.IntegerField()
 
-
 class Playlist(models.Model):
     posts = models.ManyToManyField(Post, related_name="playlist")
     profile = models.ForeignKey(Profile)
     name = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+class Competition(models.Model):
+    creator = models.ForeignKey(Profile)
+    # judges can rate submissions
+    judges = models.ManyToManyField(Profiles, related_name='judging')
+    participants = models.ManyToManyField(Profile, related_name='participating')
+    submissions = models.ManyToManyField(Post, related_name='comp')
+    description = models.CharField(max_length=420)
+    # add base sound files to edit
+
+    # returns posts ranked from 1 to last
+    def rankings(self):
+        return Rating.objects.filter(comp=self).order_by('-rating')
