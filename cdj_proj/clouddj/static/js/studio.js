@@ -184,7 +184,6 @@ function initAudio() {
                 "optional": []
             }
         }, gotStream, function (e) {
-            alert('Error getting audio');
             console.log(e);
         });
 }

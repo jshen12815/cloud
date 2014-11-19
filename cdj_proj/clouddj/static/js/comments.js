@@ -4,6 +4,7 @@ $(".comm-form").submit(function( event ) {
     var form = $(this);
     var url = form.attr("action");
     var csrf_name = form.find("[type=hidden]").attr("name");
+    alert("here");
 
     $.ajax({
         url: url,
@@ -16,6 +17,7 @@ $(".comm-form").submit(function( event ) {
         type: "POST",
 
         success: function( data ) {
+            alert("success");
             form.find("[type=text]").val('');
             var comment = data['comment'];
             var username = data['username'];

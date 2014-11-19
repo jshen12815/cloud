@@ -3,13 +3,11 @@
 {% load staticfiles %}
 
 {% block bodytag %}
-<body data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF"
-{% if user.is_authenticated %}class="login-bg"{% endif %}>
+<body data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
 {% endblock bodytag %}
 
 {% block body %}
          {{block.super}}
-         {% if not user.is_authenticated %}
          <img  class = "mainpic"  src="{% static 'images/clouddj.jpg' %}">
          <div class = "details">
             <div class ="col-sm-4 col-md-4">
@@ -22,18 +20,4 @@
                 <img  class = "mainpic"  src="{% static 'images/createown.jpg' %}">
             </div>
          </div>
-         {% else %}
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-            {% for post in user.profile.posts.all %}
-                <div class="panel panel-info">
-                    <div class="panel-heading">{{ post.title}}</div>
-
-                    <div class="panel-body">
-                        {{ post.profile }}: {{ post.text }}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-         {% endif %}
 {% endblock body %}

@@ -48,27 +48,7 @@ def delete_post(request, id):
 
     post_to_delete = get_object_or_404(Post, profile=request.user.profile, id=id)
     post_to_delete.delete()
-
-    data = {"post_id": id}
-
-    return HttpResponse(json.dumps(data), content_type="application/json")
-
-
-@login_required
-def add_comment(request, id):
-
-    if not request.POST.get('comm', False):
-        return
-
-    post = get_object_or_404(Post, id=id)
-
-    new_comment = Comment(profile=request.user.profile, post=post, text=request.POST['comm'])
-    new_comment.save()
-
-    data = {"comment": new_comment.text, "username": new_comment.profile.user.username, "post_id": id,
-            "user_id": str(new_comment.profile.user.id)}
-
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return redirect(request.META['HTTP_REFERER'])
 
 
 @login_required
@@ -152,13 +132,13 @@ def stream(request):
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
 
-
-    proj = projects[0]
-    song = get_object_or_404(Song, edit_number=0, project=proj)
-    name = get_root(song.file.name).replace("music/", "")
-    song.name = name
-    context['type'] = get_content_type(song.file.name)
-    context['projects'] = projects
+    if projects:
+        proj = projects[0]
+        song = get_object_or_404(Song, edit_number=0, project=proj)
+        name = get_root(song.file.name).replace("music/", "")
+        song.name = name
+        context['type'] = get_content_type(song.file.name)
+        context['projects'] = projects
 
     return render(request, 'home.html', context)
 
@@ -235,6 +215,25 @@ def search(request):
     context['posts'] = posts
 
     return render(request, 'search.html', context)
+
+
+@login_required
+def add_comment(request, id):
+
+    if not request.POST.get('comm', False):
+        return
+
+    post = get_object_or_404(Post, id=id)
+
+    new_comment = Comment(profile=request.user.profile, post=post, text=request.POST['comm'])
+    new_comment.save()
+
+    data = {"comment": new_comment.text, "username": new_comment.profile.user.username, "post_id": id,
+            "user_id": str(new_comment.profile.user.id)}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+
 
 
 @login_required
