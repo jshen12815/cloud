@@ -100,6 +100,8 @@ def delete(request, song_id):
     undo_all(request, song_id)
     song = get_object_or_404(Song, id=song_id)
     song.project.delete()
+    if os.path.isfile(song.file.path):
+        os.remove(song.file.path)
     song.delete()
     return redirect('/clouddj/studio')
 

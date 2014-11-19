@@ -132,13 +132,13 @@ def stream(request):
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
 
-
-    proj = projects[0]
-    song = get_object_or_404(Song, edit_number=0, project=proj)
-    name = get_root(song.file.name).replace("music/", "")
-    song.name = name
-    context['type'] = get_content_type(song.file.name)
-    context['projects'] = projects
+    if projects:
+        proj = projects[0]
+        song = get_object_or_404(Song, edit_number=0, project=proj)
+        name = get_root(song.file.name).replace("music/", "")
+        song.name = name
+        context['type'] = get_content_type(song.file.name)
+        context['projects'] = projects
 
     return render(request, 'home.html', context)
 
