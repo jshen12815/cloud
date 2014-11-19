@@ -55,7 +55,7 @@ class Post(models.Model):
 
     @staticmethod
     def get_posts_containing(user, query):
-        return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query))
+        return reversed(Post.objects.filter(Q(text__contains=query) | Q(title__contains=query)))
 
     @staticmethod
     def get_stream_posts(user):
