@@ -28,12 +28,19 @@
                                 <img class="pull-right" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}" width="120" height="120">
                             {% endif %}
                         </div>
-                        <div class="col-md-2">
-                            <div class="username-text">
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-1 username-text">
                                 {{post.profile.user.username}}
+                                </div>
+                                <div class="pull-right dim-text">3 hours</div>
                             </div>
+
                             <div style="width: 200px" class="song-title">
                                 {{post.title}}
+                            </div>
+                            <div style="width: 200px" class="song-text">
+                                {{post.text}}
                             </div>
                             <audio controls id="audio_controls">
 -                               <source id="audio_src" src="{% url 'get_post_song' post.id %}" type="{{ type }}">
@@ -41,19 +48,20 @@
                             <div class="comment-box">
                                 <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
                                     <div class="textbox-wrapper">
-                                        <input type="text" name="comm" class="textbox" placeholder=" Comment...">
+                                        <input type="text" name="comm" class="textbox song-text" placeholder=" Comment...">
                                     </div>
                                     {% csrf_token %}
                                 </form>
                             </div>
-                            <p style="margin-top: 10px; width: 200px">
-                                <button type="button" class="btn btn-default btn-xs my-btn"> &#10084; Like</button>
+                            <p style="margin-top: 10px; width: 590px">
+                                <button type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10084; Like</button>
                                 {% if post.profile.user == user %}
                                     <a href="{% url 'delete_post' post.id %}">
-                                        <button type="button" class="btn btn-default btn-xs my-btn"> &#10006; Delete</button>
+                                        <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10006; Delete</button>
                                     </a>
                                 {% endif %}
-                                <button type="button" data-toggle="collapse" data-target="#{{post.id}}" class="btn btn-default btn-xs my-btn"> &#9998; Comments</button>
+                                <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}"> &#9998; {{post.comment_set.count}}</a>
+                                <span class="pull-right dim-text">&#10084; 6 &nbsp;</span>
                             </p>
                             <div id="{{post.id}}" class="collapse">
                                 {% for comment in post.comment_set.all reversed %}

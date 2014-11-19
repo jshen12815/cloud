@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q, Count
@@ -38,11 +39,11 @@ class Song(models.Model):
 
 
 class Post(models.Model):
-    profile = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile, related_name='posts')
     text = models.CharField(max_length=255)
     title = models.CharField(max_length=255, default='')
     date = models.DateTimeField(auto_now_add=True)
-    photo = models.ImageField(upload_to='album-art', default='album-art/default.jpg')
+    photo = models.ImageField(upload_to='album-art', default='album-art/default.jpg', blank=True)
     song = models.OneToOneField(Song)
     plays = models.IntegerField(default=0)
     genre = models.CharField(max_length=255)
@@ -101,9 +102,24 @@ class Rating(models.Model):
     post = models.ForeignKey(Post)
     rating = models.IntegerField()
 
-
 class Playlist(models.Model):
     posts = models.ManyToManyField(Post, related_name="playlist")
     profile = models.ForeignKey(Profile)
     name = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+class Competition(models.Model):
+    creator = models.ForeignKey(Profile, related_name='created')
+    # judges can rate submissions
+    judges = models.ManyToManyField(Profile, related_name='judging')
+    participants = models.ManyToManyField(Profile, related_name='participating')
+    submissions = models.ManyToManyField(Post, related_name='comp')
+    description = models.CharField(max_length=420)
+    # add base sound file(s) to edit
+    # add status (not started, in progress, completed)
+    start = models.DateTimeField(auto_now_add=False)
+    end = models.DateTimeField(auto_now_add=False)
+
+    # returns posts ranked from 1 to last
+    def rankings(self):
+        return Rating.objects.filter(comp=self).order_by('-rating')
