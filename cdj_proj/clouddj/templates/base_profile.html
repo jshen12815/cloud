@@ -54,18 +54,27 @@
                                 </form>
                             </div>
                             <p style="margin-top: 10px; width: 590px">
-                                <a href="{% url 'like' post.id %}">
-                                   <button type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10084; Like</button>
-                                </a>
-                                {% if post.profile.user == user %}
-                                    <a href="{% url 'delete_post' post.id %}">
-                                        <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10006; Delete</button>
+                                {% if profile not in post.likes.all %}
+                                    <a href="{% url 'like' post.id %}">
+                                       <button type="button" class="btn btn-default btn-xs my-btn dark-text like-btn"> &#10084; Like</button>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'like' post.id %}">
+                                       <button type="button" class="btn btn-default btn-xs lit-like dark-text like-btn"> &#10084; Like</button>
                                     </a>
                                 {% endif %}
-
+                                {% if post.profile.user == user %}
+                                    <a href="{% url 'delete_post' post.id %}">
+                                        <button type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10006; Delete</button>
+                                    </a>
+                                {% endif %}
+                                <!-- comment related -->
                                 <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}"> {{post.comment_set.count}}</a>
                                 <span class="dim-text pull-right">&#9998; &nbsp;</span>
-                                <span class="pull-right dim-text">&#10084; &nbsp; {{post.likes.count}} &nbsp; | &nbsp;</span>
+                                <!-- like related -->
+                                <span class="pull-right dim-text">&nbsp; | &nbsp;</span>
+                                <span class="pull-right dim-text like-count">{{post.likes.count}}</span>
+                                <span class="pull-right dim-text">&#10084; &nbsp;  </span>
                             </p>
                             <div id="{{post.id}}" class="collapse">
                                 {% for comment in post.comment_set.all reversed %}
