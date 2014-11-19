@@ -7,8 +7,8 @@ var wavesurfer = Object.create(WaveSurfer);
 document.addEventListener('DOMContentLoaded', function () {
     var options = {
         container     : document.querySelector('#waveform'),
-        waveColor     : '#6FE1D5',
-        progressColor : 'purple',
+        waveColor     : 'dimgray',
+        progressColor : '#6FE1D5',
         loaderColor   : 'purple',
         cursorColor   : 'navy'
     };

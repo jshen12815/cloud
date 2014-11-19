@@ -35,6 +35,9 @@
                             <div style="width: 200px" class="song-title">
                                 {{post.title}}
                             </div>
+                            <div style="width: 200px" class="song-text">
+                                {{post.text}}
+                            </div>
                             <audio controls id="audio_controls">
 -                               <source id="audio_src" src="{% url 'get_post_song' post.id %}" type="{{ type }}">
 -                           </audio>
@@ -50,7 +53,7 @@
                                 <button type="button" class="btn btn-default btn-xs my-btn"> &#10084; Like</button>
                                 {% if post.profile.user == user %}
                                     <a href="{% url 'delete_post' post.id %}">
-                                        <button type="button" class="btn btn-default btn-xs my-btn"> &#10006; Delete</button>
+                                        <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn"> &#10006; Delete</button>
                                     </a>
                                 {% endif %}
                                 <button type="button" data-toggle="collapse" data-target="#{{post.id}}" class="btn btn-default btn-xs my-btn"> &#9998; Comments</button>

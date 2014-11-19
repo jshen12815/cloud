@@ -16,7 +16,7 @@ from django.http import HttpResponse, Http404
 from mimetypes import guess_type
 from django.contrib.auth import update_session_auth_hash
 import json
-from clouddj.music_views import get_root, get_content_type
+from clouddj.music_views import get_root, get_content_type, delete
 
 
 def home(request):
@@ -40,13 +40,14 @@ def add_post(request, id):
         return redirect(request.META['HTTP_REFERER'])
 
     form.save()
-    return redirect(request.META['HTTP_REFERER'])
+    return redirect("/clouddj/stream")
 
 
 @login_required
 def delete_post(request, id):
 
     post_to_delete = get_object_or_404(Post, profile=request.user.profile, id=id)
+    delete(request, post_to_delete.song.id)
     post_to_delete.delete()
     return redirect(request.META['HTTP_REFERER'])
 
