@@ -55,7 +55,13 @@ def studio(request, proj_id=None):
         proj = get_object_or_404(Project, id=proj_id)
     else:
         proj = projects[0]
+
     song = get_object_or_404(Song, edit_number=0, project=proj)
+
+    # remove unsaved changes
+    if len(proj.song_set.all()) > 1:
+        undo_all(request, song.id)
+
     name = get_root(song.file.name).replace("music/", "")
     song.name = name
     context = {'song': song, 'type': get_content_type(song.file.name), 'user': request.user, 'projects': projects}

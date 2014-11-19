@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block bodytag %}
-<body class="signupbody" bgcolor="#FFFFFF">
+    <body class="signupbody" bgcolor="#FFFFFF">
 {% endblock bodytag %}
 
 {% block body %}
@@ -92,14 +92,21 @@
     </audio>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-9">
             <form id="record_form" class="music_form" action="{% url 'record' song.id %}">
-                <img id="record" src="{% static 'images/mic128.png' %}" onclick="toggleRecording(this);"
-                     alt="mic">
+                <div class="row record">
+                    <div class="col-md-1 mic">
+                        <img id="record" src="{% static 'images/mic128.png' %}" onclick="toggleRecording(this);"
+                             alt="mic">
+                    </div>
+                    <div class="col-md-11 wave">
+                        <div id="waveform-mic" style="display: none"></div>
+                    </div>
+                </div>
                 {% csrf_token %}
             </form>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-3">
             <a class="delete btn btn-danger pull-right" href="{% url 'delete'  song.id %}">delete</a>&nbsp;&nbsp;
             <form class="music_form pull-right" method="post" action="{% url 'undo' song.id %}">
                 <input class="btn btn-danger" type="submit" value="undo">
@@ -324,6 +331,7 @@
     <script src="{% static 'js/wavesurfer/plugin/wavesurfer.timeline.js' %}"></script>
     <script src="{% static 'js/wavesurfer/plugin/wavesurfer.regions.js' %}"></script>
     <script src="{% static 'js/wavesurfer/plugin/wavesurfer.minimap.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.microphone.js' %}"></script>
 
     <script src="{% static 'js/wave.js' %}"></script>
 

@@ -1,13 +1,17 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-var song_id;
+var song_id, ol;
 var needsConfirmation = false;
 var audioContext = new AudioContext();
+var wavesurfer_mic = Object.create(WaveSurfer);
+var microphone = null;
 var audioInput = null,
     realAudioInput = null,
     inputPoint = null,
     audioRecorder = null;
-$(".slider-input").change(function(event){
+
+/* handle forms */
+$(".slider-input").change(function (event) {
     var form = $(this).parent();
     form.submit();
 });
@@ -35,12 +39,12 @@ $(".music_form").submit(function (event) {
         end = wavesurfer.getDuration();
     }
 
-    if (formURL.indexOf('fade') >= 0){
+    if (formURL.indexOf('fade') >= 0) {
         start = Math.round(start);
         end = Math.round(end);
     }
 
-    fd.append('start',start);
+    fd.append('start', start);
     fd.append('end', end);
 
     $.ajax(
@@ -50,10 +54,12 @@ $(".music_form").submit(function (event) {
             data: fd,
             processData: false,
             contentType: false,
-            success: function(data){
+            success: function (data) {
                 needsConfirmation = true;
                 updatePage(data);
                 form.find("input[type=text], textarea").val("");
+                var el = $(".slider-input");
+                el.val(el.data('oldVal'));
             }
         });
     return false;
@@ -63,6 +69,9 @@ function toggleRecording(e) {
     if (e.classList.contains("recording")) {
         // stop recording
         audioRecorder.stop();
+        $("#waveform-mic").hide();
+        microphone.levelChecker.disconnect();
+        microphone.wavesurfer.empty();
         e.classList.remove("recording");
         audioRecorder.exportWAV(handleRecording);
     } else {
@@ -70,6 +79,11 @@ function toggleRecording(e) {
         if (!audioRecorder)
             return;
         e.classList.add("recording");
+        $("#waveform-mic").show();
+        microphone.levelChecker = audioContext.createScriptProcessor(4096, 1, 1);
+        microphone.mediaStreamSource.connect(microphone.levelChecker);
+        microphone.levelChecker.connect(audioContext.destination);
+        microphone.levelChecker.onaudioprocess = microphone.reloadBuffer.bind(microphone);
         audioRecorder.clear();
         audioRecorder.record();
     }
@@ -96,7 +110,7 @@ function handleRecording(blob) {
         start = wavesurfer.getCurrentTime();
     }
 
-    fd.append('start',start);
+    fd.append('start', start);
     fd.append('recording', blob);
 
     $.ajax({
@@ -105,11 +119,11 @@ function handleRecording(blob) {
         data: fd,
         processData: false,
         contentType: false,
-        success: function(data){
-                needsConfirmation = true;
-                updatePage(data);
-                form.find("input[type=text], textarea").val("");
-            }
+        success: function (data) {
+            needsConfirmation = true;
+            updatePage(data);
+            form.find("input[type=text], textarea").val("");
+        }
     });
 }
 
@@ -117,8 +131,8 @@ function updatePage(data) {
     //reload song
     song_id = data['song_id']; //used to discard changes
     var audio = $("#audio_src");
-     var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
-     audio.attr("src", new_src);
+    var new_src = audio.attr("src").replace(/\d+/, data['song_id']);
+    audio.attr("src", new_src);
 
     $("#wave-timeline").empty();
     wavesurfer.load(new_src);
@@ -142,11 +156,18 @@ function updatePage(data) {
     });
 }
 
+/* set up recording and microphone waveform */
 function gotStream(stream) {
+    //setup mic
+    microphone.stream = stream;
+    microphone.active = true;
+
+
     inputPoint = audioContext.createGain();
 
     // Create an AudioNode from the stream.
     realAudioInput = audioContext.createMediaStreamSource(stream);
+    microphone.mediaStreamSource = realAudioInput;
     audioInput = realAudioInput;
     audioInput.connect(inputPoint);
 
@@ -165,6 +186,8 @@ function gotStream(stream) {
 }
 
 function initAudio() {
+    var el = $(".slider-input");
+    el.data('oldVal',  el.val() );
     if (!navigator.getUserMedia)
         navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     if (!navigator.cancelAnimationFrame)
@@ -186,10 +209,25 @@ function initAudio() {
         }, gotStream, function (e) {
             console.log(e);
         });
+
+    wavesurfer_mic.init({
+        container: '#waveform-mic',
+        waveColor: 'dimgray',
+        loopSelection: false,
+        cursorWidth: 0,
+        height: $("#record").height()
+    });
+
+    microphone = Object.create(WaveSurfer.Microphone);
+
+    microphone.init({
+        wavesurfer: wavesurfer_mic
+    });
 }
 
-function confirmExit(){
-    if (needsConfirmation){
+/* handle user navigation and edits */
+function confirmExit() {
+    if (needsConfirmation) {
         return "You have unsaved changes! Your changes will be lost unless you save them. "
     }
 }
@@ -197,11 +235,11 @@ function confirmExit(){
 function discardChanges() {
     //only true when changes have been made
     if (needsConfirmation) {
-        var url = '/clouddj/undo_all/'+song_id+'/';
+        var url = '/clouddj/undo_all/' + song_id + '/';
         var csrf_token = $("input[name=csrfmiddlewaretoken]").val();
         $.ajax(
             {
-                url:url ,
+                url: url,
                 type: "POST",
                 data: {"csrfmiddlewaretoken": csrf_token},
                 async: false
@@ -215,8 +253,7 @@ window.onbeforeunload = confirmExit;
 window.addEventListener('unload', discardChanges);
 
 
-/**********************************************************************************************************************/
-/*Posting*/
+/* Posting */
 
 $('#file-input').change(function () {
     var imageFile = document.getElementById('file-input').files[0];
@@ -236,11 +273,12 @@ $('#file-input').change(function () {
     };
 });
 
+/* helper functions */
 function isEmpty(map) {
-   for(var key in map) {
-      if (map.hasOwnProperty(key)) {
-         return false;
-      }
-   }
-   return true;
+    for (var key in map) {
+        if (map.hasOwnProperty(key)) {
+            return false;
+        }
+    }
+    return true;
 }

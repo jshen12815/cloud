@@ -369,4 +369,3 @@ def get_post_song(request, id):
     content_type = guess_type(post.song.file.name)
     return HttpResponse(post.song.file, content_type=content_type)
 
-
