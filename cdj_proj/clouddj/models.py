@@ -108,13 +108,16 @@ class Playlist(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class Competition(models.Model):
-    creator = models.ForeignKey(Profile)
+    creator = models.ForeignKey(Profile, 'created')
     # judges can rate submissions
-    judges = models.ManyToManyField(Profiles, related_name='judging')
+    judges = models.ManyToManyField(Profile, related_name='judging')
     participants = models.ManyToManyField(Profile, related_name='participating')
     submissions = models.ManyToManyField(Post, related_name='comp')
     description = models.CharField(max_length=420)
-    # add base sound files to edit
+    # add base sound file(s) to edit
+    # add status (not started, in progress, completed)
+    start = models.DateTimeField(auto_now_add=False)
+    end = models.DateTimeField(auto_now_add=False)
 
     # returns posts ranked from 1 to last
     def rankings(self):
