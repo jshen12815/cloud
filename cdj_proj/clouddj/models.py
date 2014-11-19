@@ -108,7 +108,7 @@ class Playlist(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class Competition(models.Model):
-    creator = models.ForeignKey(Profile, 'created')
+    creator = models.ForeignKey(Profile, related_name='created')
     # judges can rate submissions
     judges = models.ManyToManyField(Profile, related_name='judging')
     participants = models.ManyToManyField(Profile, related_name='participating')
