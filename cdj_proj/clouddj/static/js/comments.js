@@ -17,6 +17,8 @@ $(".comm-form").submit(function( event ) {
 
         success: function( data ) {
             form.find("[type=text]").val('');
+            var count = parseInt(form.parent().next().find("[data-toggle=collapse]").html());
+            form.parent().next().find("[data-toggle=collapse]").html((count + 1).toString());
             var comment = data['comment'];
             var username = data['username'];
             var user_id = data['user_id'];

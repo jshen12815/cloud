@@ -49,6 +49,11 @@ def delete_post(request, id):
     post_to_delete = get_object_or_404(Post, profile=request.user.profile, id=id)
     delete(request, post_to_delete.song.id)
     post_to_delete.delete()
+
+    """data = {"post_id": id}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")"""
+
     return redirect(request.META['HTTP_REFERER'])
 
 

@@ -60,8 +60,10 @@
                                         <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10006; Delete</button>
                                     </a>
                                 {% endif %}
-                                <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}"> &#9998; {{post.comment_set.count}}</a>
-                                <span class="pull-right dim-text">&#10084; 6 &nbsp;</span>
+
+                                <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}"> {{post.comment_set.count}}</a>
+                                <span class="dim-text pull-right">&#9998; &nbsp;</span>
+                                <span class="pull-right dim-text">&#10084; &nbsp; 6 &nbsp; | &nbsp;</span>
                             </p>
                             <div id="{{post.id}}" class="collapse">
                                 {% for comment in post.comment_set.all reversed %}
