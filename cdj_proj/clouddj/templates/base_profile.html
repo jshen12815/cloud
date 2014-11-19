@@ -44,19 +44,20 @@
                             <div class="comment-box">
                                 <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
                                     <div class="textbox-wrapper">
-                                        <input type="text" name="comm" class="textbox" placeholder=" Comment...">
+                                        <input type="text" name="comm" class="textbox song-text" placeholder=" Comment...">
                                     </div>
                                     {% csrf_token %}
                                 </form>
                             </div>
-                            <p style="margin-top: 10px; width: 200px">
-                                <button type="button" class="btn btn-default btn-xs my-btn"> &#10084; Like</button>
+                            <p style="margin-top: 10px; width: 600px">
+                                <button type="button" class="btn btn-default btn-xs my-btn page-text"> &#10084; Like</button>
                                 {% if post.profile.user == user %}
                                     <a href="{% url 'delete_post' post.id %}">
-                                        <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn"> &#10006; Delete</button>
+                                        <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn page-text"> &#10006; Delete</button>
                                     </a>
                                 {% endif %}
-                                <button type="button" data-toggle="collapse" data-target="#{{post.id}}" class="btn btn-default btn-xs my-btn"> &#9998; Comments</button>
+                                <a class="page-text pull-right" data-toggle="collapse" data-target="#{{post.id}}"> &#9998; {{post.comment_set.count}}</a>
+                                <span class="pull-right page-text">&#10084; 6 &nbsp;</span>
                             </p>
                             <div id="{{post.id}}" class="collapse">
                                 {% for comment in post.comment_set.all reversed %}
