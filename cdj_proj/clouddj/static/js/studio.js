@@ -214,7 +214,8 @@ function initAudio() {
         container: '#waveform-mic',
         waveColor: 'dimgray',
         loopSelection: false,
-        cursorWidth: 0
+        cursorWidth: 0,
+        height: $("#record").height()
     });
 
     microphone = Object.create(WaveSurfer.Microphone);
