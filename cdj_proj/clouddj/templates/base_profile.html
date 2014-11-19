@@ -65,7 +65,7 @@
                                 {% endif %}
                                 {% if post.profile.user == user %}
                                     <a href="{% url 'delete_post' post.id %}">
-                                        <button type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10006; Delete</button>
+                                        <button type="button" class="btn btn-default btn-xs my-btn dark-text del-btn"> &#10006; Delete</button>
                                     </a>
                                 {% endif %}
                                 <!-- comment related -->

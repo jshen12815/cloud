@@ -50,11 +50,9 @@ def delete_post(request, id):
     delete(request, post_to_delete.song.id)
     post_to_delete.delete()
 
-    """data = {"post_id": id}
+    data = {"post_id": id}
 
-    return HttpResponse(json.dumps(data), content_type="application/json")"""
-
-    return redirect(request.META['HTTP_REFERER'])
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @login_required
@@ -253,13 +251,11 @@ def like(request, id):
         post.save()
         data["unliked"] = "True"
         return HttpResponse(json.dumps(data), content_type="application/json")
-        #return redirect(request.META['HTTP_REFERER'])
 
     data["liked"] = "True"
     post.likes.add(request.user.profile)
     post.save()
     return HttpResponse(json.dumps(data), content_type="application/json")
-    #return redirect(request.META['HTTP_REFERER'])
 
 
 
