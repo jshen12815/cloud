@@ -2,7 +2,7 @@ $(document).ready(function() {
 $(".like-btn").click(function( event ) {
 
     var form = $(".comm-form");
-    var url = form.parent().next().find(".like-btn").parent().attr("href");
+    var url = $(this).parent().attr("href");
     var csrf_name = form.find("[type=hidden]").attr("name");
 
     $.ajax({
