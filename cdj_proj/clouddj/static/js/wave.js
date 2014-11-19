@@ -60,10 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    wavesurfer.on('region-dblclick', function(region){
-        region.remove();
-    });
-
 
     /* Minimap plugin */
     wavesurfer.initMinimap({
