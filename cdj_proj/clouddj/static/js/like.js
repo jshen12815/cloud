@@ -20,10 +20,12 @@ $(".like-btn").click(function( event ) {
             var count = parseInt($("#"+post_id).prev().find(".like-count").html());
             if (data['liked'] == "True") {
                 like_button.addClass("lit-like");
+                like_button.html("&#10084 Unlike");
                 $("#"+post_id).prev().find(".like-count").html((count + 1).toString());
             }
             if (data['unliked'] == "True") {
                 like_button.removeClass("lit-like");
+                like_button.html("&#10084 Like");
                 $("#"+post_id).prev().find(".like-count").html((count - 1).toString());
             }
         }

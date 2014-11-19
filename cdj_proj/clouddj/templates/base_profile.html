@@ -60,7 +60,7 @@
                                     </a>
                                 {% else %}
                                     <a href="{% url 'like' post.id %}">
-                                       <button type="button" class="btn btn-default btn-xs lit-like dark-text like-btn"> &#10084; Like</button>
+                                       <button type="button" class="btn btn-default btn-xs lit-like dark-text like-btn"> &#10084; Unlike</button>
                                     </a>
                                 {% endif %}
                                 {% if post.profile.user == user %}
