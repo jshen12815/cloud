@@ -239,6 +239,21 @@ def add_comment(request, id):
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+@login_required
+def like(request, id):
+
+    post = get_object_or_404(Post, id=id)
+
+    if request.user.profile in post.likes.all():
+        post.likes.remove(request.user.profile)
+        post.save()
+        return redirect(request.META['HTTP_REFERER'])
+
+    post.likes.add(request.user.profile)
+    post.save()
+
+    return redirect(request.META['HTTP_REFERER'])
+
 
 
 

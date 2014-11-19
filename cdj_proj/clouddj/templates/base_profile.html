@@ -33,7 +33,7 @@
                                 <div class="col-md-1 username-text">
                                 {{post.profile.user.username}}
                                 </div>
-                                <div class="pull-right dim-text">3 hours</div>
+                                <div class="pull-right dim-text">{{post.date}}</div>
                             </div>
 
                             <div style="width: 200px" class="song-title">
@@ -54,7 +54,9 @@
                                 </form>
                             </div>
                             <p style="margin-top: 10px; width: 590px">
-                                <button type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10084; Like</button>
+                                <a href="{% url 'like' post.id %}">
+                                   <button type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10084; Like</button>
+                                </a>
                                 {% if post.profile.user == user %}
                                     <a href="{% url 'delete_post' post.id %}">
                                         <button id="del-btn" type="button" class="btn btn-default btn-xs my-btn dark-text"> &#10006; Delete</button>
@@ -63,7 +65,7 @@
 
                                 <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}"> {{post.comment_set.count}}</a>
                                 <span class="dim-text pull-right">&#9998; &nbsp;</span>
-                                <span class="pull-right dim-text">&#10084; &nbsp; 6 &nbsp; | &nbsp;</span>
+                                <span class="pull-right dim-text">&#10084; &nbsp; {{post.likes.count}} &nbsp; | &nbsp;</span>
                             </p>
                             <div id="{{post.id}}" class="collapse">
                                 {% for comment in post.comment_set.all reversed %}
