@@ -47,6 +47,7 @@ class Post(models.Model):
     song = models.OneToOneField(Song)
     plays = models.IntegerField(default=0)
     genre = models.CharField(max_length=255)
+    likes = models.ManyToManyField(Profile, related_name="post_likes", blank=True)
     hashtags = models.ManyToManyField(Hashtag, related_name='posts')
     
     def __unicode__(self):
@@ -54,7 +55,7 @@ class Post(models.Model):
 
     @staticmethod
     def get_posts_containing(user, query):
-        return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query))
+        return reversed(Post.objects.filter(Q(text__contains=query) | Q(title__contains=query)))
 
     @staticmethod
     def get_stream_posts(user):

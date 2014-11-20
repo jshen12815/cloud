@@ -49,7 +49,10 @@ def delete_post(request, id):
     post_to_delete = get_object_or_404(Post, profile=request.user.profile, id=id)
     delete(request, post_to_delete.song.id)
     post_to_delete.delete()
-    return redirect(request.META['HTTP_REFERER'])
+
+    data = {"post_id": id}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @login_required
@@ -234,6 +237,26 @@ def add_comment(request, id):
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+@login_required
+def like(request, id):
+
+    post = get_object_or_404(Post, id=id)
+    data = {}
+    data['post_id'] = id
+    data['liked'] = "False"
+    data['unliked'] = "False"
+
+    if request.user.profile in post.likes.all():
+        post.likes.remove(request.user.profile)
+        post.save()
+        data["unliked"] = "True"
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
+    data["liked"] = "True"
+    post.likes.add(request.user.profile)
+    post.save()
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 
 
@@ -363,3 +386,4 @@ def get_post_song(request, id):
 
     content_type = guess_type(post.song.file.name)
     return HttpResponse(post.song.file, content_type=content_type)
+
