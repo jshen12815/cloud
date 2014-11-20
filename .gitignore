@@ -14,6 +14,7 @@ cdj_proj/media
 .idea
 *.*~
 *~
+.DS_Store
 local_settings.py
 *.py[cod]
 migrations
