@@ -9,6 +9,7 @@
          {{block.super}}
          <form action = "{% url 'upload' %}" method="post" enctype="multipart/form-data" class="form-signin" role="form">
             <h2 class="form-signin-heading">upload music</h2>
+            <input type="text" name="name" class="form-control" placeholder="Project name"  required="">
             <input type="file" name="file" class="form-control" placeholder="upload file" required="" autofocus="">
             <!--<a class = "white" href = "{% url 'stream' %}">cancel</a>-->
             <div class="row">

@@ -37,8 +37,8 @@ def upload(request):
         form = UploadMusicForm(request.POST, request.FILES, instance=song)
         if form.is_valid():
             song = form.save()
-            name = get_root(song.file.name).replace("music/", "")
-            song.name = name
+            #name = get_root(song.file.name).replace("music/", "")
+            song.name = request.POST['name']
             song.save()
             return redirect('/clouddj/studio')
 
@@ -62,8 +62,8 @@ def studio(request, proj_id=None):
     if len(proj.song_set.all()) > 1:
         undo_all(request, song.id)
 
-    name = get_root(song.file.name).replace("music/", "")
-    song.name = name
+    #name = get_root(song.file.name).replace("music/", "")
+    #song.name = name
     context = {'song': song, 'type': get_content_type(song.file.name), 'user': request.user, 'projects': projects}
     add_empty_forms(context)
     return render(request, 'studio.html', context)
