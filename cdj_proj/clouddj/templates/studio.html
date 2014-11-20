@@ -109,7 +109,7 @@
         <div class="col-md-3">
             <a class="delete btn btn-danger pull-right" href="{% url 'delete'  song.id %}">delete</a>&nbsp;&nbsp;
             <form class="music_form pull-right" method="post" action="{% url 'undo' song.id %}">
-                <input class="btn btn-danger" type="submit" value="undo">
+                <input class="btn btn-danger" type="submit" value="undo">&nbsp;&nbsp;&nbsp;
                 {% csrf_token %}
             </form>
         </div>
