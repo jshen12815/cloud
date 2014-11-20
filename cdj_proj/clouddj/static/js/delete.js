@@ -9,6 +9,7 @@ $(".del-btn").click(function( event ) {
         success: function( data ) {
 
             var post_id = data['post_id'];
+            $("#"+post_id).parent().parent().next().remove();
             $("#"+post_id).parent().parent().remove();
         }
     });
