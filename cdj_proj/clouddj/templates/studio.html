@@ -24,6 +24,7 @@
 
 
     <div class="row title">
+        {{form.errors}}
         <div class="col-md-8 title">
             <h1 class="page-header project-title">{{ song.name }} </h1>
         </div>
@@ -292,15 +293,15 @@
                                          src="{% static 'images/default.jpg' %}" alt="song photo">
                                 </div>
                                 <input id="file-input" type="file" name="photo" class="form-control"
-                                       placeholder="choose photo" required="" autofocus="">
+                                       placeholder="choose photo" autofocus="">
                             </div>
                             <div class="col-md-4">
                                 <input type="text" name="title" class="form-control song-title-tags"
-                                       placeholder="Name track">
+                                       placeholder="Name track" required="">
                                 <input type="text" name="genre" class="form-control song-title-tags"
-                                       placeholder="Add genre">
+                                       placeholder="Add genre" required="">
                                 <textarea type="text" name="text" class="form-control description-box"
-                                          placeholder="Describe track"></textarea>
+                                          placeholder="Describe track" required=""></textarea>
                             </div>
                         </div>
                     </div>

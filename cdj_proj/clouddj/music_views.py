@@ -28,17 +28,12 @@ def upload(request):
     if request.method == 'GET':
         form = UploadMusicForm()
     else:
-        new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
-        # new_project = Project(status="in_progress")
-        new_project.save()
-
-        song = Song(project=new_project)
-
-        form = UploadMusicForm(request.POST, request.FILES, instance=song)
+        form = UploadMusicForm(request.POST, request.FILES)
         if form.is_valid():
+            new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress")
+            new_project.save()
             song = form.save()
-            #name = get_root(song.file.name).replace("music/", "")
-            song.name = request.POST['name']
+            song.project = new_project
             song.save()
             return redirect('/clouddj/studio')
 
@@ -62,8 +57,6 @@ def studio(request, proj_id=None):
     if len(proj.song_set.all()) > 1:
         undo_all(request, song.id)
 
-    #name = get_root(song.file.name).replace("music/", "")
-    #song.name = name
     context = {'song': song, 'type': get_content_type(song.file.name), 'user': request.user, 'projects': projects}
     add_empty_forms(context)
     return render(request, 'studio.html', context)
@@ -273,7 +266,7 @@ def repeat(request, song_id):
 
     start = float(form.cleaned_data['start']) * 1000
     end = float(form.cleaned_data['end']) * 1000
-    iters = int(form.cleaned_data['iters'])
+    iters = int(form.cleaned_data['iters']) + 1
 
     lower_seg = seg[:start]
     upper_seg = seg[end:]

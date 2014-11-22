@@ -35,16 +35,16 @@ class Song(models.Model):
     name = models.CharField(max_length=255)
     file = models.FileField(upload_to="music")
     edit_number = models.IntegerField(default=0)
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, null=True)
 
 
 class Post(models.Model):
-    profile = models.ForeignKey(Profile, related_name='posts')
+    profile = models.ForeignKey(Profile, null=True, related_name='posts')
     text = models.CharField(max_length=255)
     title = models.CharField(max_length=255, default='')
-    date = models.DateTimeField(auto_now_add=True)
-    photo = models.ImageField(upload_to='album-art', default='album-art/default.jpg', blank=True)
-    song = models.OneToOneField(Song)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+    photo = models.ImageField(upload_to='album-art', default='album-art/default.jpg')
+    song = models.OneToOneField(Song, null=True)
     plays = models.IntegerField(default=0)
     genre = models.CharField(max_length=255)
     likes = models.ManyToManyField(Profile, related_name="post_likes", blank=True)

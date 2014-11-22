@@ -30,16 +30,19 @@ def home(request):
 
 @login_required
 def add_post(request, id):
+    form = PostForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return redirect(request.META['HTTP_REFERER'])
 
     song = get_object_or_404(Song, id=id)
     song.project.status = "complete"
     song.project.save()
-    new_post = Post(profile=request.user.profile, date=datetime.now(), song=song)
-    form = PostForm(request.POST, request.FILES, instance=new_post)
-    if not form.is_valid():
-        return redirect(request.META['HTTP_REFERER'])
 
-    form.save()
+    new_post = form.save()
+    new_post.profile = request.user.profile
+    new_post.song = song
+    new_post.save()
+
     return redirect("/clouddj/stream")
 
 

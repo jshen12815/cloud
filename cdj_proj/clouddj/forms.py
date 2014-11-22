@@ -6,12 +6,11 @@ from clouddj.models import *
 class UploadMusicForm(forms.ModelForm):
     class Meta:
         model = Song
-        fields = ('file',)
+        fields = ('file','name')
         exclude = ('edit_number', 'project', )
 
     def clean_file(self):
         form_file = self.cleaned_data.get('file')
-        #ext = get_ext(form_file.name)
         ext = os.path.splitext(form_file.name)[1]
 
         valid_extentions = ['.mp3', '.wav', '.ogg']
@@ -167,6 +166,8 @@ class RegistrationForm(forms.Form):
 
 
 class PostForm(forms.ModelForm):
+    photo = forms.FileField(required=False)
+
     class Meta:
         model = Post
         exclude = ('profile', 'plays', 'date', 'song', 'hashtags' )
