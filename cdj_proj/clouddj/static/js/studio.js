@@ -282,3 +282,11 @@ function isEmpty(map) {
     }
     return true;
 }
+
+$(".help-btn").tooltip({
+    html: true,
+    placement: "bottom",
+    title: function() {
+        return "<ul><li>Click and drag to select region of song</li><li>Click on region to play it</li><li>Shift + Click to loop play</li><li>Ctrl + Click to delete region</li></ul>";
+    }
+});

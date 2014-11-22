@@ -26,8 +26,8 @@
     <div class="row title">
         {{form.errors}}
         <div class="col-md-8 title">
-            <h1 class="page-header project-title">{{ song.name }} </h1>
-        </div>
+           <h1 style="display:inline;float:left" class="page-header project-title">{{ song.name }} </h1><div class="help-btn" data-toggle="tooltip" data-delay="1000"><span class="glyphicon glyphicon-question-sign"></span></div>
+        </div><br/>
         <div class="col-md-4 control">
             <div class="row">
                 <div class="col-md-offset-6 col-md-3">
@@ -96,7 +96,7 @@
         <div class="col-md-9">
             <form id="record_form" class="music_form" action="{% url 'record' song.id %}">
                 <div class="row record">
-                    <div class="col-md-1 mic">
+                    <div class="col-md-1 mic" data-toggle="tooltip" data-placement="left" data-html="true" title="Record voice at selected point of song" data-delay="1000">
                         <img id="record" src="{% static 'images/mic128.png' %}" onclick="toggleRecording(this);"
                              alt="mic">
                     </div>
@@ -108,7 +108,7 @@
             </form>
         </div>
         <div class="col-md-3">
-            <a class="delete btn btn-danger pull-right" href="{% url 'delete'  song.id %}">delete</a>&nbsp;&nbsp;
+            <a class="delete btn btn-danger pull-right" href="{% url 'delete'  song.id %}"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;&nbsp;
             <form class="music_form pull-right" method="post" action="{% url 'undo' song.id %}">
                 <input class="btn btn-danger" type="submit" value="undo">&nbsp;&nbsp;&nbsp;
                 {% csrf_token %}
@@ -124,7 +124,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="slider">
+                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase volume" data-delay="1000">
                         <div class="shadowtext"> Amplify</div>
                         <form class="music_form" action="{% url 'amplify' song.id %}">
                             <label class="slider-label"></label>
@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="col-md-offset-2">
-                    <div class="slider">
+                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase tempo and pitch" data-delay="1000">
                         <div class="shadowtext"> Speed</div>
                         <label id="slider-label4" class="slider-label"></label>
                         <input id="slider-input" class="slider-input" type="range" min="0" value="0"
@@ -145,7 +145,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="slider">
+                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase lower frequency volumes" data-delay="1000">
                         <div class="shadowtext"> Bass</div>
                         <form class="music_form" action="{% url 'bass' song.id %}">
                             <label class="slider-label"></label>
@@ -156,7 +156,7 @@
                     </div>
                 </div>
                 <div class="col-md-offset-2">
-                    <div class="slider">
+                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase rate of playback" data-delay="1000">
                         <div class="shadowtext"> Tempo</div>
                         <form class="music_form" action="{% url 'tempo' song.id %}">
                             <label class="slider-label isRight"></label>
@@ -170,7 +170,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="slider">
+                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase high frequency volumes" data-delay="1000">
                         <div class="shadowtext"> Treble</div>
                         <form class="music_form" action="{% url 'treble' song.id %}">
                             <label class="slider-label isRight"></label>
@@ -181,7 +181,7 @@
                     </div>
                 </div>
                 <div class="col-md-offset-2">
-                    <div class="slider">
+                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase pitch" data-delay="1000">
                         <div class="shadowtext"> Pitch</div>
                         <label id="slider-label" class="slider-label isRight"></label>
                         <input id="slider-input" class="slider-input" type="range" min="0" value="0"
@@ -197,7 +197,7 @@
             <br>
 
             <form class="music_form" action="{% url 'repeat' song.id %}" method="post">
-                <div class="inputnum">
+                <div class="inputnum"data-toggle="tooltip" data-placement="left" data-html="true" title="Repeat selection <itr> times" data-delay="1000">
                     <div class="shadowtext"> Repeat &nbsp;</div>
                     <input class="edittext" type="text" name="iters" placeholder="itr">
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
@@ -206,7 +206,7 @@
             </form>
 
             <form class="music_form" action="{% url 'reverse' song.id %}" method="post">
-                <div class="inputnum">
+                <div class="inputnum" data-toggle="tooltip" data-placement="left" data-html="true" title="Reverse selection" data-delay="1000">
                     <div class="shadowtext"> Reverse &nbsp; </div>
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
                 </div>
@@ -214,7 +214,7 @@
             </form>
 
             <form class="music_form" action="{% url 'slice' song.id %}" method="post">
-                <div class="inputnum">
+                <div class="inputnum" data-toggle="tooltip" data-placement="left" data-html="true" title="Remove selection" data-delay="1000">
                     <div class="shadowtext"> Slice &nbsp; </div>
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
                 </div>
@@ -238,13 +238,13 @@
                 <div class="typelabel"> Filters</div>
                 <br>
 
-                <div class="inputdouble">
+                <div class="inputdouble" data-toggle="tooltip" data-placement="left" data-html="true" title="Attenuate frequencies below <freq> Hz" data-delay="1000">
                     <div class="shadowtext"> High Pass</div>
-                    <input class="edittext" type="text" name="high_cutoff">
+                    <input class="edittext" type="text" name="high_cutoff" placeholder="freq">
                 </div>
-                <div class="inputdouble">
+                <div class="inputdouble" data-toggle="tooltip" data-placement="left" data-html="true" title="Attenuate frequencies above <freq> Hz" data-delay="1000">
                     <div class="shadowtext"> Low Pass</div>
-                    <input class="edittext" type="text" name="low_cutoff">
+                    <input class="edittext" type="text" name="low_cutoff" placeholder="freq">
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
                 </div>
                 {% csrf_token %}
@@ -253,14 +253,14 @@
             <div class="typelabel"> Fade</div>
             <br>
 
-            <div class="inputdouble">
+            <div class="inputdouble" data-toggle="tooltip" data-placement="left" data-html="true" title="Fade beginning by amount of seconds selected" data-delay="1000">
                 <form class="music_form" action="{% url 'fade_in' song.id %}" method="post">
                     <div class="shadowtext"> In &nbsp;</div>
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
                     {% csrf_token %}
                 </form>
             </div>
-            <div class="inputdouble">
+            <div class="inputdouble" data-toggle="tooltip" data-placement="left" data-html="true" title="Fade ending by amount of seconds selected" data-delay="1000">
                 <form class="music_form" action="{% url 'fade_out' song.id %}" method="post">
                     <div class="shadowtext"> Out &nbsp; </div>
                     <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">

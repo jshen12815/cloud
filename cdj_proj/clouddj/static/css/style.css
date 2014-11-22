@@ -108,3 +108,10 @@ body {
 #drop.wavesurfer-dragover {
     border-color: #333;
 }
+
+.help-btn{
+    background: transparent;
+    float:left;
+    color:#428bca;
+    padding: 2px;
+}
