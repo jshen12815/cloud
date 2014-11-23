@@ -68,3 +68,10 @@ background-color: white;
 #rate > input:checked ~ label {
   color: rgb(255, 255, 255);
 }
+
+
+
+
+#demo {
+width: 200px;
+}

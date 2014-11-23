@@ -13,7 +13,7 @@
 
 {% block body %}
     {{block.super}}
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="sidebar">
                 {% block labels %}
@@ -42,9 +42,42 @@
                             <div style="width: 200px" class="song-text">
                                 {{post.text}}
                             </div>
-                            <audio controls id="audio_controls">
--                               <source id="audio_src" src="{% url 'get_post_song' post.id %}" type="{{ type }}">
--                           </audio>
+
+
+
+
+
+    <div class="container">
+    <div class="row">
+    
+    <div id="demo">
+        <div id="waveform">
+            <div class="progress progress-striped active" id="progress-bar">
+                <div class="progress-bar progress-bar-info"></div>
+            </div>
+
+            <!-- Here be the waveform -->
+        </div>
+
+        <div class="controls">
+           
+            <button class="btn btn-primary" data-action="play">
+                <i class="glyphicon glyphicon-play"></i>
+                Play
+                /
+                <i class="glyphicon glyphicon-pause"></i>
+                Pause
+            </button>
+        </div>
+    </div>
+
+
+    <audio controls style="display:none" id="audio_controls">
+        <source id="audio_src" src="{% url 'get_post_song' post.id %}" type="{{ type }}">
+        Your browser does not support the audio element.
+    </audio>
+
+
                             <div class="comment-box">
                                 <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
                                     <div class="textbox-wrapper">
@@ -95,3 +128,27 @@
     </div>
    <input type="hidden" value="{{ csrf_token }}" id="csrf">
 {% endblock body %}
+
+
+
+
+{% block more_scripts %}
+    <script src="{% static 'js/recordJs/recorder.js' %}"></script>
+    <script src="{% static 'js/recordJs/recorderWorker.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/wavesurfer.js' %}"></script>
+
+    <script src="{% static 'js/wavesurfer/src/webaudio.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/audioelement.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/drawer.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/drawer.canvas.js' %}"></script>
+
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.timeline.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.regions.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.minimap.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.microphone.js' %}"></script>
+
+    <script src="{% static 'js/postwave.js' %}"></script>
+
+    <script src="{% static 'js/studio.js' %}"></script>
+
+{% endblock more_scripts %}
