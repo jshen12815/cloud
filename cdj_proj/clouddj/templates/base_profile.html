@@ -8,32 +8,74 @@
 {% endblock %}
 
 {% block bodytag %}
-<body style="background-color: white">
+<body class = "backgroundcolor">
 {% endblock bodytag %}
 
 {% block body %}
     {{block.super}}
     <div class="container">
-        <div class="row">
-            <div class="sidebar">
+        <div class="column">
+            <div class="col-sm-3 col-md-3 sidebar">
                 {% block labels %}
                 {% endblock %}
             </div>
 
-            <div class="col-md-11 main pull-left">
+            <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left">
                 {% for post in posts %}
-                    <div class="row post-div">
-                        <div class="col-md-2">
+                    {% if post.photo %}
+                        <img class = "postpropic" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}" width="170" height="170">
+                        {% endif %}
+                    <div class="postblock" id = "topblock">
+
+
+                        <div id="content">
+                      <div id="left">
+                            <div class="photo">
                             {% if post.photo %}
-                                <img class="pull-right" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}" width="120" height="120">
+                                <img border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}" width="120" height="120">
                             {% endif %}
                         </div>
-                        <div class="col-md-10">
-                            <div class="row">
-                                <div class="col-md-1 username-text">
-                                {{post.profile.user.username}}
+                      </div>
+
+                      <div id="right">
+                                    <button id = "pause" class="pause" data-action="play">
+                                            
+                                            <i class="glyphicon glyphicon-play"></i>
+
+                                            <i class="glyphicon glyphicon-pause"></i>
+
+                                        </button>
+                                <div class="row">
+                                <div id="demo">
+
+                                    <div id="waveform">
+
+
+                                        <div class="progress progress-striped active" id="progress-bar">
+                                            <div class="progress-bar progress-bar-info"></div>
+                                        </div>
+
+                                        <!-- Here be the waveform -->
+                                    </div>
+                                        
+                                    
+                              
+                                        
+                                    
                                 </div>
-                                <div class="pull-right dim-text">{{post.date}}</div>
+                            </div>
+                      </div>
+                    </div>
+                </div>
+                    <div class = "postblock">
+                        
+                        <div class="photo">
+                            <div class="row">
+                                <div class="username-text">
+                                {{post.profile.user.username}}
+
+                                </div>
+                             <div class="pull-right dim-text">{{post.date}}</div>
                             </div>
 
                             <div style="width: 200px" class="song-title">
@@ -42,40 +84,14 @@
                             <div style="width: 200px" class="song-text">
                                 {{post.text}}
                             </div>
+                            
 
 
 
-
-
-    <div class="container">
-    <div class="row">
-    
-    <div id="demo">
-        <div id="waveform">
-            <div class="progress progress-striped active" id="progress-bar">
-                <div class="progress-bar progress-bar-info"></div>
-            </div>
-
-            <!-- Here be the waveform -->
-        </div>
-
-        <div class="controls">
-           
-            <button class="btn btn-primary" data-action="play">
-                <i class="glyphicon glyphicon-play"></i>
-                Play
-                /
-                <i class="glyphicon glyphicon-pause"></i>
-                Pause
-            </button>
-        </div>
-    </div>
-
-
-    <audio controls style="display:none" id="audio_controls">
-        <source id="audio_src" src="{% url 'get_post_song' post.id %}" type="{{ type }}">
-        Your browser does not support the audio element.
-    </audio>
+                            <audio controls style="display:none" id="audio_controls">
+                                <source id="audio_src" src="{% url 'get_post_song' post.id %}" type="{{ type }}">
+                                Your browser does not support the audio element.
+                            </audio>
 
 
                             <div class="comment-box">
@@ -121,8 +137,9 @@
                             </div>
                         </div>
                     </div>
-                <hr style="width:730px">
+
                 {% endfor %}
+
             </div>
         </div>
     </div>

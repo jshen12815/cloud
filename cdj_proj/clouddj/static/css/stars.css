@@ -73,5 +73,12 @@ background-color: white;
 
 
 #demo {
-width: 200px;
+width: 500px;
+}
+
+
+.songinfo {
+   list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
