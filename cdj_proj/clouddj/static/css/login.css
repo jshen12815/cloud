@@ -56,7 +56,9 @@ body {
 }
 
 .frgtpwd {
-  color: blue;
+  position: relative;
+  right: -260px;
+  top: -45px
 }
 
 .trans-btn {

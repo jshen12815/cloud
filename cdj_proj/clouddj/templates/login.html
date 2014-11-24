@@ -24,7 +24,7 @@
 		{% endif %}
 		{{ form.username|add_class:"form-control"|attr:"placeholder:Username"|attr:"required:" }}
 		{{ form.password|add_class:"form-control"|attr:"placeholder:Password"|attr:"required:" }}
-        <a href="{% url 'password_reset' %}">forgot password</a>
+        <a href="{% url 'password_reset' %}"><span class="glyphicon glyphicon-question-sign frgtpwd"></span></a>
         <input type="submit" class="btn btn-lg my-primary-btn btn-block signup" value="Login" />
 		<input type="hidden" name="next" value="{{ next }}" />
         {% csrf_token %}

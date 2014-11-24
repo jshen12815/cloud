@@ -117,3 +117,14 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.nav-text {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    font-size: 15px;
+}
+
+.nav-proj-name {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    font-size: 25px;
+    color: #6FE1D5;
+}

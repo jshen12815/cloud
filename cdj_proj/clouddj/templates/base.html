@@ -59,26 +59,26 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'home' %}">cloudDJ</a>
+          <a class="navbar-brand" href="{% url 'home' %}"><p class="nav-proj-name">cl&#9729;udDJ</p></a>
         </div>
         <div class="navbar-left">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'stream' %}">Stream</a></li>
-                <li><a href="#">Explore</a></li>
-                <li><a href="{% url 'upload' %}">Upload</a></li>
-                <li><a href="{% url 'studio' %}">Studio</a></li>
+                <li><a class="nav-text" href="{% url 'stream' %}">Stream</a></li>
+                <li><a class="nav-text" href="#">Explore</a></li>
+                <li><a class="nav-text" href="{% url 'upload' %}">Upload</a></li>
+                <li><a class="nav-text" href="{% url 'studio' %}">Studio</a></li>
             </ul>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             {% if not user.is_authenticated %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'register' %}">Signup</a></li>
+                    <li><a class="nav-text" href="{% url 'login' %}">Login</a></li>
+                    <li><a class="nav-text" href="{% url 'register' %}">Signup</a></li>
                 </ul>
             {% else %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li><a class="nav-text" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
             {% endif %}
           </ul>
