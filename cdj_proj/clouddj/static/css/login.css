@@ -94,3 +94,8 @@ a:visited {
     background-color: #6FE1D5;
     border-color: #6FE1D5;
 }
+
+#login-btn {
+    position: relative;
+    top: -30px;
+}
