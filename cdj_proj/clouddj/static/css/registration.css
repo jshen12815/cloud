@@ -75,8 +75,11 @@ body {
 }
 
 #signup-btn {
+  color: #fff;
   position: relative;
-  left: 1400%;
+  left: 1750%;
+  background-color: rgba(255,255,255,.3);
+  background: rgba(255,255,255,.5);
 }
 
 #signup-header {
@@ -90,4 +93,18 @@ body {
     text-align: center;
     font-size: 16px;
     color: #FFFFFF;
+}
+
+.my-primary-btn {
+    color: #fff;
+    background-color: #6FE1D5;
+    border-color: #6FE1D5;
+}
+
+a:link {
+    color: #6FE1D5;
+}
+
+a:visited {
+    color: #6FE1D5;
 }
