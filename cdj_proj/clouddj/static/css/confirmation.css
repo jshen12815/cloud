@@ -1,0 +1,20 @@
+/* Confirmation pages */
+.needs-confirm-text {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    font-size: 150%;
+    color: white;
+}
+
+.confirm-text {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    font-size: 150%;
+    color: white;
+}
+
+a:link {
+    color: #6FE1D5;
+}
+
+a:visited {
+    color: #6FE1D5;
+}

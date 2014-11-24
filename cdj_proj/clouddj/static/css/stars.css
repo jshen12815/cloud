@@ -68,3 +68,17 @@ background-color: white;
 #rate > input:checked ~ label {
   color: rgb(255, 255, 255);
 }
+
+
+
+
+#demo {
+width: 500px;
+}
+
+
+.songinfo {
+   list-style-type: none;
+    margin: 0;
+    padding: 0;
+}

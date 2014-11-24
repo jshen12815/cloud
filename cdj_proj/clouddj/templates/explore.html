@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block body %}
-    <div data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+   <!-- <div data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
         {{block.super}}
         <div class="container-fluid">
             <div class="row">
@@ -92,7 +92,7 @@
                             </div> -->
                         </div>
                     </div>
-                    <div  class = "comments">
+                    <!--<div  class = "comments">
                         <a class = "commentername"> usernamehere{{comment.user.username}} </a>
                         {{comment}} hiiiii
                         </br>
@@ -112,6 +112,56 @@
                             <br/>
                             <br/>
                             {{song}}
+
+                        
+
+
+
+
+
+    <div id="wave-timeline">hello
+    </div>
+    <div id="demo">
+        <div id="waveform">
+            <div class="progress progress-striped active" id="progress-bar">
+                <div class="progress-bar progress-bar-info"></div>
+            </div>
+
+            Here be the waveform -->
+       <!-- </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" data-action="back">
+                <i class="glyphicon glyphicon-step-backward"></i>
+                Backward
+            </button>
+
+            <button class="btn btn-primary" data-action="play">
+                <i class="glyphicon glyphicon-play"></i>
+                Play
+                /
+                <i class="glyphicon glyphicon-pause"></i>
+                Pause
+            </button>
+
+            <button class="btn btn-primary" data-action="forth">
+                <i class="glyphicon glyphicon-step-forward"></i>
+                Forward
+            </button>
+
+            <button class="btn btn-primary" data-action="toggle-mute">
+                <i class="glyphicon glyphicon-volume-off"></i>
+                Toggle Mute
+            </button>
+        </div>
+    </div>
+
+
+
+
+
+
+
                             </br>
                             <img class = "liked" src="{{ STATIC_URL }}/grumblr/images/heart.png" >
                             <a class = "rating" href="/grumblr/dislike/{{grumble.id}}/">{{grumble.date_created}} </a>
@@ -169,5 +219,28 @@
             </div>
             </div>
         </div>
-    </div>
+    </div>-->
 {% endblock body %}
+
+
+
+{% block more_scripts %}
+    <script src="{% static 'js/recordJs/recorder.js' %}"></script>
+    <script src="{% static 'js/recordJs/recorderWorker.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/wavesurfer.js' %}"></script>
+
+    <script src="{% static 'js/wavesurfer/src/webaudio.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/audioelement.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/drawer.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/src/drawer.canvas.js' %}"></script>
+
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.timeline.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.regions.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.minimap.js' %}"></script>
+    <script src="{% static 'js/wavesurfer/plugin/wavesurfer.microphone.js' %}"></script>
+
+    <script src="{% static 'js/wave.js' %}"></script>
+
+    <script src="{% static 'js/studio.js' %}"></script>
+
+{% endblock more_scripts %}
