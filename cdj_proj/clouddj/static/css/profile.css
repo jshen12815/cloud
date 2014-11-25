@@ -165,3 +165,11 @@ a:visited {
     margin-top: 10%;
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
+
+.follow-btn {
+    background-color: #00FF00;
+    margin-top: 5px;
+    color: black;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+}

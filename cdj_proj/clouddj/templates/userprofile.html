@@ -18,6 +18,13 @@
                         <img class = "propic" src="{% static 'images/propic.png' %}" >
                         <p class="sidebar-username">{{prof_owner.user.username}}</p>
                         <span class="glyphicon glyphicon-user sidebar-content"></span><a type="button" data-toggle="modal" data-target="#follower_modal"> {{prof_owner.followers.count}}</a>
+                        {% if user.profile != prof_owner %}
+                            <form action="{% url 'edit-profile' %}">
+                                <button type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn">
+                                    <span class="glyphicon glyphicon-ok-circle"></span> Follow
+                                </button>
+                            </form>
+                        {% endif %}
                         {% if user.profile == prof_owner %}
                             <form action="{% url 'edit-profile' %}">
                                 <button type="submit" class="btn btn-default btn-sm my-btn dark-text">
@@ -49,30 +56,45 @@
                                         </ul>
                                         <div class="tab-content">
                                             <div role="tabpanel" class="tab-pane active" id="followers">
-                                                My Followers
+                                                {% for follower in prof_owner.followers.all %}
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            {% if follower.about.picture %}
+                                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.id %}" alt="{{follower.username}}" width="40" height="40">
+                                                            {% else %}
+                                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{follower.username}}" width="40" height="40">
+                                                            {% endif %}
+                                                        </div>
+                                                        <div style="width:500px" class="col-md-2">
+                                                            <a style="color: black" href="{% url 'profile' follower.id %}">
+                                                                <h2 class="panel-title post-header"><b>{{follower.username}}</b></h2>
+                                                            </a>
+                                                            <p >{{follower.about.location}}</p>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
                                             </div>
                                             <div role="tabpanel" class="tab-pane active" id="following">
-                                                My Following
+                                                {% for following in prof_owner.following.all %}
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            {% if following.picture %}
+                                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' following.id %}" alt="{{following.username}}" width="40" height="40">
+                                                            {% else %}
+                                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{following.username}}" width="40" height="40">
+                                                            {% endif %}
+                                                        </div>
+                                                        <div style="width:500px" class="col-md-2">
+                                                            <a style="color: black" href="{% url 'profile' following.id %}">
+                                                                <h2 class="panel-title post-header"><b>{{following.username}}</b></h2>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
-                                {% for follower in prof_owner.followers.all %}
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            {% if follower.about.picture %}
-                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.about.id %}" alt="{{follower.username}}" width="40" height="40">
-                                            {% else %}
-                                                <img class="profpic img-rounded" border="0" src="{% static 'images/post2.jpg' %}" alt="{{follower.username}}" width="40" height="40">
-                                            {% endif %}
-                                        </div>
-                                        <div style="width:500px" class="col-md-2">
-                                            <a style="color: black" href="{% url 'profile' follower.id %}">
-                                                <h2 class="panel-title post-header"><b>{{follower.username}}</b></h2>
-                                            </a>
-                                            <p >{{follower.about.location}}</p>
-                                        </div>
-                                    </div>
-                                {% endfor %}
+
                                 </div>
                             </div>
                         </div>
