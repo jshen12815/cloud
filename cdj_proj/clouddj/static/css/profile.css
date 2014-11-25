@@ -153,3 +153,8 @@ a:visited {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
     margin-top: 10px;
 }
+
+.sidebar-content {
+    color: black;
+    margin-bottom: 15px;
+}

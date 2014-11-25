@@ -23,7 +23,7 @@ $(".comm-form").submit(function( event ) {
             var username = data['username'];
             var user_id = data['user_id'];
             var post_id = data['post_id'];
-            $("#"+post_id).addClass("in");
+            //$("#"+post_id).addClass("in");
             $("#"+post_id).append("\
                                   <div class='row'>\
                                     <div class='col-md-1'>\
