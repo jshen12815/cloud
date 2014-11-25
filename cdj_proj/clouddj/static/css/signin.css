@@ -656,3 +656,15 @@ a:visited {
 }
 
 
+/* edit profile stuff */
+.my-panel {
+    width: 90%;
+    margin-top: 50px;
+}
+
+
+.save-prof-btn {
+    background-color: #6FE1D5;
+    border-color: #6FE1D5;
+    margin-left: 90%;
+}
