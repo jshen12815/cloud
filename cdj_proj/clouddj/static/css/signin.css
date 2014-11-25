@@ -658,13 +658,18 @@ a:visited {
 
 /* edit profile stuff */
 .my-panel {
-    width: 90%;
+    width: 70%;
     margin-top: 50px;
+}
+
+.my-panel-body {
+    height: 200%;
 }
 
 
 .save-prof-btn {
     background-color: #6FE1D5;
     border-color: #6FE1D5;
+    margin-top: 20px;
     margin-left: 90%;
 }
