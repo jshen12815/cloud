@@ -4,18 +4,8 @@
 {% load widget_tweaks %}
 
 
-{% block bodytag %}
-<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
-{% endblock bodytag %}
 {% block body %}
-
-
-
-
          {{block.super}}
-
-	
-
         <form action = "{% url 'edit-profile' %}" method="post" enctype="multipart/form-data" class="form-signin" role="form">
 			{% for error in form.non_field_errors %}
 			<p style="color:red">{{error}}</p>
@@ -59,7 +49,7 @@
                     <p style="color:red">{{ form.password2.errors }}</p>
                 {% endif %}
             </div>            
-        	<button class="btn btn-lg btn-primary btn-block signup" type="submit">Save</button>
+        	<button class="btn btn-md my-primary-btn btn-block signup" type="submit">Save</button>
             {% csrf_token %}
          </form>
      

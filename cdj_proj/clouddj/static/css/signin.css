@@ -643,4 +643,10 @@ a:visited {
     color: #6FE1D5;
 }
 
+.my-dropdown {
+    margin-top: -8px;
+    margin-right: 30px;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+}
+
 
