@@ -173,3 +173,11 @@ a:visited {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
     font-weight: bold;
 }
+
+.unfollow-btn {
+    background-color: red;
+    margin-top: 5px;
+    color: black;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    font-weight: bold;
+}

@@ -331,15 +331,22 @@ def profile(request, id):
 @login_required
 @transaction.atomic
 def follow(request, id):
-    user = get_object_or_404(User, username=id).profile
+    user = get_object_or_404(Profile, id=id)
     logged_in = request.user.profile
-    if request.method == 'GET':
-        return redirect(reverse('home'))
+    data = {}
+    data['followed'] = "False"
+    data['unfollowed'] = "False"
+
     if logged_in in user.followers.all():
         user.followers.remove(logged_in)
+        data['unfollowed'] = "True"
     else:    
         user.followers.add(logged_in)
-    return redirect(request.META.get('HTTP_REFERER'))
+        data['followed'] = "True"
+
+    user.save()
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 # returns list of recommended songs
 @login_required

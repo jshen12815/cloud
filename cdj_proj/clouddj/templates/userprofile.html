@@ -19,8 +19,8 @@
                         <p class="sidebar-username">{{prof_owner.user.username}}</p>
                         <span class="glyphicon glyphicon-user sidebar-content"></span><a type="button" data-toggle="modal" data-target="#follower_modal"> {{prof_owner.followers.count}}</a>
                         {% if user.profile != prof_owner %}
-                            <form action="{% url 'edit-profile' %}">
-                                <button type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn">
+                            <form action="{% url 'follow' prof_owner.id %}">
+                                <button id="follow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn">
                                     <span class="glyphicon glyphicon-ok-circle"></span> Follow
                                 </button>
                             </form>
@@ -28,8 +28,8 @@
                         {% if user.profile == prof_owner %}
                             <form action="{% url 'edit-profile' %}">
                                 <button type="submit" class="btn btn-default btn-sm my-btn dark-text">
-                                <span class="glyphicon glyphicon-edit"></span> Edit
-                            </button>
+                                    <span class="glyphicon glyphicon-edit"></span> Edit
+                                </button>
                             </form>
                         {% endif %}
                     </ul>
