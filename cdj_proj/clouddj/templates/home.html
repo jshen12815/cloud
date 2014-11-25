@@ -1,46 +1,23 @@
-{% extends "base_profile.html" %}
+{% extends "base.html" %}
 
 {% load staticfiles %}
 
-{% block labels %}
-    <ul class="profile">
-        <img class = "propic" src="{% static 'images/propic.png' %}" >
+{% block bodytag %}
+<body data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
 
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            your music
-        </div>
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            playlists
-        </div>
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            following
-        </div>
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            stream
-        </div>
-        <div class="yourfavorites">
-            your favorites
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
+{% block body %}
+         {{block.super}}
+         <img  class = "mainpic"  src="{% static 'images/clouddj.jpg' %}">
+         <div class = "details">
+            <div class ="col-sm-4 col-md-4">
+                <img  class = "mainpic"  src="{% static 'images/upload.jpg' %}">
             </div>
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
+            <div class ="col-sm-4 col-md-4">
+                <img  class = "mainpic"  src="{% static 'images/stream.jpg' %}">
             </div>
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
+            <div class ="col-sm-4 col-md-4">
+                <img  class = "mainpic"  src="{% static 'images/createown.jpg' %}">
             </div>
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
-            </div>
-        </div>
-    </ul>
-
-{% endblock labels %}
+         </div>
+{% endblock body %}

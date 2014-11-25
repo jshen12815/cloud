@@ -25,7 +25,7 @@ def home(request):
     context['search_form'] = SearchForm()
     context['user'] = request.user
     context['profiles'] = profiles
-    return render(request, 'index.html', context)
+    return render(request, 'home.html', context)
 
 
 @login_required
@@ -147,7 +147,7 @@ def stream(request):
         context['type'] = get_content_type(song.file.name)
         context['projects'] = projects
 
-    return render(request, 'home.html', context)
+    return render(request, 'stream.html', context)
 
 
 @transaction.atomic
@@ -326,7 +326,7 @@ def profile(request, id):
 
     context['user'] = request.user
 
-    return render(request, 'userprofile.html', context)
+    return render(request, 'profile.html', context)
 
 @login_required
 @transaction.atomic

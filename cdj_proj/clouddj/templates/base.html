@@ -130,7 +130,14 @@
                                 <a role="menuitem" tabindex="-1" href="{% url 'profile' user.id %}"><span class="glyphicon glyphicon-user"></span> Profile</a>
                             </li>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{% url 'studio' %}"><span class="glyphicon glyphicon-music"></span> Studio</a>
+                                <a role="menuitem" tabindex="-1" href="{% url 'studio' %}"><span class="glyphicon glyphicon-headphones"></span> Studio</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-music"></span> Playlists</a>
+                                <hr>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><span class="glyphicon glyphicon-volume-off"></span> Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -138,9 +145,8 @@
             </div>
             <div class="nav navbar-nav navbar-left">
                 <form method="get" action="{% url 'search' %}">
-                    <span class="glyphicon glyphicon-search search-button"></span>
+                    <span class="glyphicon glyphicon-search search-icon"></span>
                     <input type="text" class="nav-form-control" name="text" placeholder="Search...">
-
                     {% if search_form.errors %}
                         <p style="color:red">{{ search.text.errors }}</p>
                     {% endif %}
