@@ -90,6 +90,10 @@ a:visited {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
 
+.date-text {
+    margin-left: 25%;
+}
+
 .comment-username {
     color: dimgray;
     font-size: 12px;
