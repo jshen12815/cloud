@@ -649,4 +649,10 @@ a:visited {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
 
+.search-button {
+    position: relative;
+    right: 30px;
+    color: dimgray;
+}
+
 

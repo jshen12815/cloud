@@ -139,6 +139,7 @@
             <div class="nav navbar-nav navbar-left">
                 <form method="get" action="{% url 'search' %}">
                     <input type="text" class="nav-form-control" name="text" placeholder="Search...">
+                    <span class="glyphicon glyphicon-search search-button"></span>
                     {% if search_form.errors %}
                         <p style="color:red">{{ search.text.errors }}</p>
                     {% endif %}
