@@ -1,61 +1,30 @@
-{% extends "base_profile.html" %}
+{% extends "base.html" %}
 
 {% load staticfiles %}
 
-{% block labels %}
-    <ul class="profile">
-        <img class = "propic" src="{% static 'images/propic.png' %}" >
+{% block stylesheets %}
+    {{block.super}}
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock %}
 
 
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            {{user.user.username}}'s music
-        </div>
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            {{user.user.username}}'s playlists
-        </div>
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            following
-        </div>
-        <div class="sideoptions">
-            <img class = "sideicons" src="{% static 'images/icon.png' %}" >
-            stream
-        </div>
-        <div class="yourfavorites">
-            {{user.user.username}}'s favorites
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
-            </div>
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
-            </div>
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
-            </div>
-            <div class = "favorite">
-                <img class = "favoriteicons" src="{% static 'images/icon.png' %}" >
-                name here
+{% block body %}
+    {{block.super}}
+    <div class="container">
+        <div class="column">
+            <div class="col-sm-3 col-md-3 sidebar">
+                {% block labels %}
+                    <ul class="profile">
+                        <img class = "propic" src="{% static 'images/propic.png' %}" >
+                        <p class="sidebar-username">{{user.username}}</p>
+                        <form action="{% url 'edit-profile' %}">
+                            <button type="submit" class="btn btn-default btn-sm my-btn dark-text">
+                            <span class="glyphicon glyphicon-edit"></span> Edit
+                        </button>
+                        </form>
+                    </ul>
+                {% endblock labels %}
             </div>
         </div>
-
-        <form action="{% url 'follow' user.user.username %}" method="post">
-          {% if following %}
-            <div>
-                <input type="submit" class="btn btn-lg btn-primary signup" value="unfollow {{user.user.username}}">
-            </div>
-          {% else %}
-            <div>
-                <input type="submit" class="btn btn-lg btn-primary signup" value="follow {{user.user.username}}">
-            </div>
-          {% endif %}
-          {% csrf_token %}
-        </form>  
-
-    </ul>
-
-{% endblock labels %}
+    </div>
+{% endblock %}

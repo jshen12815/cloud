@@ -316,16 +316,17 @@ def edit_profile(request):
     return render(request, 'editprofile.html', context)
 
 @login_required
-def show_profile(request, id):
-    user = get_object_or_404(User, username=id)
-    logged_in = request.user.profile
-    if (user.id == request.user.id):
-        return redirect(reverse('home'))        
-    else:
-        context = {}
-        context['user'] = Profile.objects.get(user=user)
-        context['following'] = logged_in in user.profile.followers.all()
-        return render(request, 'userprofile.html', context)
+def profile(request, id):
+    context = {}
+
+    user_to_view = get_object_or_404(User, id=id)
+
+    context['search'] = SearchForm()
+    context['prof_owner'] = user_to_view
+
+    context['user'] = request.user
+
+    return render(request, 'userprofile.html', context)
 
 @login_required
 @transaction.atomic

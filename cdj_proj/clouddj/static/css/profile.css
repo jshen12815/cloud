@@ -145,3 +145,11 @@ a:visited {
 .lit-like {
     background-color: #6FE1D5;
 }
+
+/* sidebar stuff */
+.sidebar-username {
+    color: black;
+    font-size: 25px;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    margin-top: 10px;
+}
