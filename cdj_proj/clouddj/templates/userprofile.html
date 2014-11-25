@@ -51,13 +51,13 @@
                                                 <a href="#followers" aria-controls="followers" role="tab" data-toggle="tab">Followers {{prof_owner.followers.count}}</a>
                                             </li>
                                             <li role="presentation">
-                                                <a href="#following" aria-controls="following" role="tab" data-toggle="tab">Following {{prof_owner.followers.count}}</a>
+                                                <a href="#following" aria-controls="following" role="tab" data-toggle="tab">Following {{prof_owner.following.count}}</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
                                             <div role="tabpanel" class="tab-pane active" id="followers">
                                                 {% for follower in prof_owner.followers.all %}
-                                                    <div class="row">
+                                                    <div class="row follow-div">
                                                         <div class="col-md-1">
                                                             {% if follower.about.picture %}
                                                                 <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.id %}" alt="{{follower.username}}" width="40" height="40">
@@ -67,16 +67,16 @@
                                                         </div>
                                                         <div style="width:500px" class="col-md-2">
                                                             <a style="color: black" href="{% url 'profile' follower.id %}">
-                                                                <h2 class="panel-title post-header"><b>{{follower.username}}</b></h2>
+                                                                <h2 class="panel-title post-header"><b>{{follower.user.username}}</b></h2>
                                                             </a>
-                                                            <p >{{follower.about.location}}</p>
+                                                            <span class="glyphicon glyphicon-user modal-user-icon"></span> {{follower.followers.count}}
                                                         </div>
                                                     </div>
                                                 {% endfor %}
                                             </div>
                                             <div role="tabpanel" class="tab-pane active" id="following">
                                                 {% for following in prof_owner.following.all %}
-                                                    <div class="row">
+                                                    <div class="row follow-div">
                                                         <div class="col-md-1">
                                                             {% if following.picture %}
                                                                 <img class="profpic img-rounded" border="0" src="{% url 'photo' following.id %}" alt="{{following.username}}" width="40" height="40">
@@ -86,8 +86,9 @@
                                                         </div>
                                                         <div style="width:500px" class="col-md-2">
                                                             <a style="color: black" href="{% url 'profile' following.id %}">
-                                                                <h2 class="panel-title post-header"><b>{{following.username}}</b></h2>
+                                                                <h2 class="panel-title post-header"><b>{{following.user.username}}</b></h2>
                                                             </a>
+                                                            <span class="glyphicon glyphicon-user modal-user-icon"></span> {{following.followers.count}}
                                                         </div>
                                                     </div>
                                                 {% endfor %}

@@ -181,3 +181,11 @@ a:visited {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
     font-weight: bold;
 }
+
+.follow-div {
+    margin-top: 10px;
+}
+
+.modal-user-icon {
+    color: dimgray;
+}
