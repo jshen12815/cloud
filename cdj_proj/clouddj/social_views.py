@@ -319,7 +319,7 @@ def edit_profile(request):
 def profile(request, id):
     context = {}
 
-    user_to_view = get_object_or_404(User, id=id)
+    user_to_view = get_object_or_404(Profile, id=id)
 
     context['search'] = SearchForm()
     context['prof_owner'] = user_to_view

@@ -78,10 +78,12 @@ body {
 
 a:link {
     color: #6FE1D5;
+    text-decoration: none;
 }
 
 a:visited {
     color: #6FE1D5;
+    text-decoration: none;
 }
 
 .username-text {
@@ -157,4 +159,9 @@ a:visited {
 .sidebar-content {
     color: black;
     margin-bottom: 15px;
+}
+
+.follow-modal {
+    margin-top: 10%;
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
