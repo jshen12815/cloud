@@ -4,6 +4,7 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
+  font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
   padding-top: 50px;
   background-color: #ECECEC;
 }
@@ -28,7 +29,7 @@ body {
 
 .navbar-default .navbar-brand {
 
-  font-family: 'Avenir', serif;
+  ffont-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
         font-size: 25px;
         font-weight: lighter;
         color: #6FE1D5
@@ -210,7 +211,7 @@ body {
 }
 
 .form-signin {
-  font-family: 'Avenir', serif;
+  font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
         font-size: 25px;
         font-weight: 100;
         color: #FFFFFF;
@@ -629,5 +630,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf7f7', end
     font-weight: bold;
 }
 
+
+.cloud {
+    color: #6FE1D5;
+}
 
 

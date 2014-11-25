@@ -8,6 +8,11 @@ body {
 }
 
 
+.my-nav {
+    border-color: #101010;
+    background-color: #6FE1D5;
+}
+
 /*
  * Global add-ons
  */
@@ -121,10 +126,10 @@ body {
 .nav-text {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
     font-size: 15px;
+    color: white;
 }
 
 .nav-proj-name {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
     font-size: 25px;
-    color: #6FE1D5;
 }
