@@ -1,9 +1,6 @@
 'use strict';
 
-// Create an instance
-var wavesurfer = Object.create(WaveSurfer);
 
-// Init & load audio file
 document.addEventListener('DOMContentLoaded', function () {
 
     var waves = $(".waveform");
