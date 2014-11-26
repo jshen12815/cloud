@@ -51,7 +51,7 @@
 
     <div id="wave-timeline">
     </div>
-    <div id="demo">
+    <div>
         <div id="waveform">
             <div class="progress progress-striped active" id="progress-bar">
                 <div class="progress-bar progress-bar-info"></div>
@@ -138,7 +138,7 @@
                     <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase tempo and pitch" data-delay="1000">
                         <div class="shadowtext"> Speed</div>
                         <label id="slider-label4" class="slider-label"></label>
-                        <input id="slider-input" class="slider-input" type="range" min="0" value="0"
+                        <input  class="slider-input" type="range" min="0" value="0"
                                max="100">
                     </div>
                 </div>
@@ -249,7 +249,7 @@
                 </div>
                 {% csrf_token %}
             </form>
-
+            <br/>
             <div class="typelabel"> Fade</div>
             <br>
 
