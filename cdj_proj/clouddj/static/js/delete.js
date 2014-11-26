@@ -5,7 +5,7 @@ $(".del-btn").click(function( event ) {
 
     $.ajax({
         url: url,
-
+        type: 'POST',
         success: function( data ) {
 
             var post_id = data['post_id'];
