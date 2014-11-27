@@ -1,1 +1,1 @@
-web: gunicorn cdj_proj.wsgi
+web: gunicorn cdj_proj.wsgi --log-file -
