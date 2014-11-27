@@ -335,6 +335,7 @@ def profile(request, id):
     context['prof_owner'] = user_to_view
 
     context['user'] = request.user
+    context['posts'] = Post.get_user_posts(user_to_view)
 
     return render(request, 'profile.html', context)
 
