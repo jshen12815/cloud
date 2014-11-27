@@ -388,23 +388,3 @@ def recommended_songs(profile):
     print list(Post.objects.order_by('-plays')[:num_songs])
     return list(Post.objects.order_by('-plays')[:num_songs])
 
-
-# should maybe get rid of this and import music_views?
-@login_required
-def get_song(request, id):
-    song = get_object_or_404(Song, id=id)
-    if not song.file:
-        raise Http404
-
-    content_type = guess_type(song.file.name)
-    return HttpResponse(song.file, content_type=content_type)
-
-@login_required
-def get_post_song(request, id):
-    post = get_object_or_404(Post, id=id)
-    if not post.song.file:
-        raise Http404
-
-    content_type = guess_type(post.song.file.name)
-    return HttpResponse(post.song.file, content_type=content_type)
-
