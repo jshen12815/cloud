@@ -150,6 +150,16 @@ def stream(request):
     return render(request, 'stream.html', context)
 
 
+@login_required
+def explore(request):
+    context = {}
+    context['search_form'] = SearchForm()
+    context['user'] = request.user
+    context['profile'] = request.user.profile
+
+    return render(request, 'explore.html', context)
+
+
 @transaction.atomic
 def register(request):
     context = {}

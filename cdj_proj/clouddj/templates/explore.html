@@ -10,39 +10,27 @@
 <body class = "backgroundcolor">
 {% endblock bodytag %}
 
-{% block body %}
-    {{block.super}}
-    <div class="container">
-        <div class="column">
-            <div class="col-sm-3 col-md-3 sidebar">
-                {% block labels %}
-                    <h1>Search</h1>
-                    <ul class="nav nav-pills nav-stacked">
-                        <li role="presentation" class="active">
-                            <a aria-controls="tracks" role="tab" data-toggle="tab" href="#">
-                                <span class="sidebar-text">Trending</span>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a aria-controls="people" role="tab" data-toggle="tab" class="sidebar-text" href="#">
-                                <span class="sidebar-text">Suggested Tracks</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="tracks" style="margin-left: 200px">
-                        {{message}}
-                        </div>
-                        <div role="tabpanel" class="tab-pane active" id="people" style="margin-left: 200px">
-                        PEOPLES
-                        </div>
-                    </div>
-                {% endblock %}
-            </div>
-        </div>
 
+{% block labels %}
+    <ul class="nav nav-pills nav-stacked">
+        <li role="presentation" class="active">
+            <a aria-controls="tracks" role="tab" data-toggle="tab" href="#">
+                <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Trending Tracks</span>
+            </a>
+        </li>
+        <li role="presentation">
+            <a aria-controls="people" role="tab" data-toggle="tab" class="sidebar-text" href="#">
+                <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Suggested Tracks</span>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="tracks" style="margin-left: 200px">
+        </div>
+        <div role="tabpanel" class="tab-pane active" id="people" style="margin-left: 200px">
+        </div>
     </div>
-{% endblock body %}
+{% endblock %}
 
 
 

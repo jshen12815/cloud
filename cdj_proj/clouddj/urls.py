@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^$', 'clouddj.social_views.home', name='home'),
     url(r'^search$', 'clouddj.social_views.search', name='search'),
     url(r'^stream$', 'clouddj.social_views.stream', name='stream'),
+    url(r'^explore$', 'clouddj.social_views.explore', name='explore'),
     url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset',
         {'post_reset_redirect': '/clouddj/accounts/password_reset/mailed/'}, name="password_reset"),
     url(r'^accounts/password_reset/mailed/$', 'django.contrib.auth.views.password_reset_done'),

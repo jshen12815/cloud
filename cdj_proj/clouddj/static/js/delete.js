@@ -5,6 +5,9 @@ $(".del-btn").click(function( event ) {
 
     $.ajax({
         url: url,
+        data: {
+            "csrfmiddlewaretoken": $("#csrf").val()
+        },
         type: 'POST',
         success: function( data ) {
 

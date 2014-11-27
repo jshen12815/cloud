@@ -4,22 +4,20 @@
 {% block bodytag %}
 <body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
 {% endblock bodytag %}
+
 {% block body %}
-     
-         {{block.super}}
-         <form action = "{% url 'upload' %}" method="post" enctype="multipart/form-data" class="form-signin" role="form">
-            <h2 class="form-signin-heading">Upload music</h2>
-            <input type="text" name="name" class="form-control" placeholder="Project name"  required="" autofocus="">
-            <input type="file" name="file" class="form-control" placeholder="upload file" required="">
-            {{form.file.errors}}
-            <div class="row">
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-md upload-btn">
-                        <span class="glyphicon glyphicon-cloud-upload"></span> Upload
-                    </button>
-                </div>
+     <form action = "{% url 'upload' %}" method="post" enctype="multipart/form-data" class="form-signin" role="form">
+        <h2 class="form-signin-heading">Upload music</h2>
+        <input type="text" name="name" class="form-control" placeholder="Project name"  required="" autofocus="">
+        <input type="file" name="file" class="form-control" placeholder="upload file" required="">
+        {{form.file.errors}}
+        <div class="row">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-md upload-btn">
+                    <span class="glyphicon glyphicon-cloud-upload"></span> Upload
+                </button>
             </div>
-            {% csrf_token %}
-         </form>
-    
+        </div>
+        {% csrf_token %}
+     </form>
 {% endblock body %}
