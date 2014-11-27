@@ -64,7 +64,7 @@
             {% if user.is_authenticated %}
             <div class="dropdown my-dropdown">
                 <button class="btn btn-md btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                        data-toggle="dropdown" aria-expanded="true">
+                        data-toggle="dropdown" aria-expanded="true" style="margin-top:-5px">
                     <span class="glyphicon glyphicon-user"></span>
                     {{user.username}}
                     <span class="caret"></span>
@@ -92,7 +92,7 @@
             {% endif %}
         </div>
         <div class="nav navbar-nav navbar-left">
-            <form method="get" action="{% url 'search' %}">
+            <form method="get" action="{% url 'search' %}" style="margin-top:-5px">
                 <span class="glyphicon glyphicon-search search-icon"></span>
                 <label style="display:none" for="search"></label>
                 <input id="search" type="text" class="nav-form-control" name="text" placeholder="Search...">

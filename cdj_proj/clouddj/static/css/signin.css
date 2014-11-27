@@ -504,9 +504,6 @@ body {
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: center;
-  display: flex;
-  flex-direction: column;
-  flex-orient: column;
   justify-content: center;
   align-items: center;
   height: 100%;
