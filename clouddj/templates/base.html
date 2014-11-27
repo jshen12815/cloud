@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'images/icon/headphones.ico' %}">
+
+    <title>{% block title %}cloudDJ{% endblock %}</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    {% block stylesheets %}
+    <link href="{% static 'css/signin.css' %}" rel="stylesheet">
+    <link href="{% static 'css/stars.css' %}" rel="stylesheet">
+    <link href="{% static 'css/ribbon.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <link href="{% static 'css/confirmation.css' %}" rel="stylesheet">
+    <link href="{% static 'css/navbar.css' %}" rel="stylesheet">
+    {% endblock %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style id="holderjs-style" type="text/css"></style>
+
+</head>
+
+{% block navbar %}
+<div class="navbar navbar-inverse navbar-fixed-top mynavbar" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand clouddj" href="{% url 'home' %}">
+                <p class="nav-proj-name nav-text">cl&#9729;ud<span class="cloud">DJ</span></p>
+            </a>
+        </div>
+        <div class="nav navbar-nav navbar-left ">
+            {% if user.is_authenticated %}
+            <a class="baractions" href="{% url 'stream' %}"><span class="nav-text">Stream</span></a>
+            <a class="baractions" href="{% url 'explore' %}"><span class="nav-text">Explore</span></a>
+            {% endif %}
+        </div>
+        {% if not user.is_authenticated %}
+        <div class="nav navbar-nav navbar-right addpad">
+            <a class="baractions" href="{% url 'login' %}"><span class="nav-text">Login</span></a>
+            <a class="baractions" href="{% url 'register' %}"><span class="nav-text">Signup</span></a>
+        </div>
+        {% endif %}
+        <div class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            <div class="dropdown my-dropdown">
+                <button class="btn btn-md btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                        data-toggle="dropdown" aria-expanded="true" style="margin-top:-5px">
+                    <span class="glyphicon glyphicon-user"></span>
+                    {{user.username}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="{% url 'profile' user.id %}"><span
+                                class="glyphicon glyphicon-user"></span> Profile</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="{% url 'studio' %}"><span
+                                class="glyphicon glyphicon-headphones"></span> Studio</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-music"></span>
+                            Playlists</a>
+                        <hr>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><span
+                                class="glyphicon glyphicon-volume-off"></span> Logout</a>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <div class="nav navbar-nav navbar-left">
+            {% if user.is_authenticated %}
+            <form method="get" action="{% url 'search' %}" style="margin-top:-5px">
+                <span class="glyphicon glyphicon-search search-icon"></span>
+                <label style="display:none" for="search"></label>
+                <input id="search" type="text" class="nav-form-control" name="text" placeholder="Search...">
+                {% if search_form.errors %}
+                <p style="color:red">{{ search.text.errors }}</p>
+                {% endif %}
+                {% csrf_token %}
+            </form>
+            {% endif %}
+        </div>
+        <div class="nav navbar-nav navbar-left ">
+            {% if user.is_authenticated %}
+            <a class="baractions" href="{% url 'upload' %}"><span class="nav-text">Upload</span></a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock navbar %}
+
+
+{% block bodytag %}
+<body>
+{% endblock bodytag %}
+
+
+{% block body %}
+<div class="container">
+    <div class="column">
+        {% block sidebar %}
+        <div class="col-sm-3 col-md-3 sidebar">
+            {% block labels %}
+            <ul class="profile">
+                <img class="propic" src="{% static 'images/propic.png' %}">
+            </ul>
+            {% endblock %}
+        </div>
+        {% endblock sidebar %}
+
+        {% block page-posts %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left">
+            {% for post in posts %}
+            {% if post.photo %}
+            <img class="postpropic" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
+                 width="170" height="170">
+            {% endif %}
+            <div class="postblock" id="topblock">
+                <div id="content">
+                    <div id="left">
+                        <div class="photo">
+                            {% if post.photo %}
+                            <img border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
+                                 width="120" height="120">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div id="right">
+                        {% with post.id|stringformat:"s" as post_id %}
+                        <button id="{{ 'play-'|add:post_id }}" class="pause" data-action="play">
+                            <i class="glyphicon glyphicon-play"></i>|
+                            <i class="glyphicon glyphicon-pause"></i>
+                        </button>
+                        <div class="row">
+                            <div id="demo">
+                                <div class="waveform" id="{{ 'waveform-'|add:post_id }}">
+                                    <div class="progress progress-striped active" id="{{ 'progressbar-'|add:post_id }}">
+                                        <div class="progress-bar progress-bar-info"></div>
+                                    </div>
+                                    <!-- Here be the waveform -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="postblock">
+                <div class="photo">
+                    <div class="row">
+                        <div class="username-text col-md-2">
+                            {{post.profile.user.username}}
+                        </div>
+                        <div class="pull-right dim-text col-md-8">{{post.date}}</div>
+                    </div>
+                    <div style="width: 200px" class="song-title">
+                        {{post.title}}
+                    </div>
+                    <div style="width: 200px" class="song-text">
+                        {{post.text}}
+                    </div>
+                    <audio controls style="display:none" id="audio_controls">
+                        <source id="{{ 'audiosrc-'|add:post_id }}" src="{% url 'get_song' post.song.id %}"
+                                type="{{ type }}">
+                        Your browser does not support the audio element.
+                    </audio>
+
+                    <div class="comment-box">
+                        <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
+                            <div class="textbox-wrapper">
+                                <label style="display:none" for="{{ 'comment-'|add:post_id }}"></label>
+                                <input id="{{ 'comment-'|add:post_id }}" type="text" name="comm"
+                                       class="textbox song-text" placeholder=" Comment...">
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                    {% endwith %}
+                    <p style="margin-top: 10px; width: 590px">
+                        {% if profile not in post.likes.all %}
+                        <a href="{% url 'like' post.id %}">
+                            <button type="button" class="btn btn-default btn-xs my-btn dark-text like-btn"> &#10084;
+                                Like
+                            </button>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'like' post.id %}">
+                            <button type="button" class="btn btn-default btn-xs lit-like dark-text like-btn"> &#10084;
+                                Unlike
+                            </button>
+                        </a>
+                        {% endif %}
+                        {% if post.profile.user == user %}
+                        <a href="{% url 'delete_post' post.id %}">
+                            <button type="button" class="btn btn-default btn-xs my-btn dark-text del-btn"> &#10006;
+                                Delete
+                            </button>
+                        </a>
+                        {% endif %}
+
+                        <a href="{% url 'get_song' post.song.id %}" download="{{ post.title|slugify|add:'.mp3' }}">
+                            <button type="button" class="btn btn-default btn-xs my-btn dark-text">
+                                <span class="glyphicon glyphicon-download"></span> Download
+                            </button>
+                        </a>
+
+                        <!-- comment related -->
+                        <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}">
+                            {{post.comment_set.count}}</a>
+                        <span class="dim-text pull-right">&#9998; &nbsp;</span>
+                        <!-- like related -->
+                        <span class="pull-right dim-text">&nbsp; | &nbsp;</span>
+                        <span class="pull-right dim-text like-count">{{post.likes.count}}</span>
+                        <span class="pull-right dim-text">&#10084; &nbsp;  </span>
+                    </p>
+                    <div id="{{post.id}}" class="collapse">
+                        {% for comment in post.comment_set.all reversed %}
+                        <div class="comment-username">
+                            {{comment.profile.user.username}}
+                        </div>
+                        <div style="width: 200px" class="comment-text">
+                            {{comment.text}}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endblock page-posts %}
+    </div>
+</div>
+
+{% endblock body %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static  'js/bootstrap.min.js' %}"></script>
+<script src="/static/js/follow-unfollow.js" type="text/javascript"></script>
+{% block more_scripts %}
+<script src="{% static 'js/wavesurfer/src/wavesurfer.js' %}"></script>
+
+<script src="{% static 'js/wavesurfer/src/webaudio.js' %}"></script>
+<script src="{% static 'js/wavesurfer/src/audioelement.js' %}"></script>
+<script src="{% static 'js/wavesurfer/src/drawer.js' %}"></script>
+<script src="{% static 'js/wavesurfer/src/drawer.canvas.js' %}"></script>
+
+<script src="/static/js/comments.js" type="text/javascript"></script>
+<script src="/static/js/delete.js" type="text/javascript"></script>
+<script src="/static/js/like.js" type="text/javascript"></script>
+<script src="/static/js/playpause.js" type="text/javascript"></script>
+
+<script src="{% static 'js/postwave.js' %}"></script>
+
+
+{% endblock more_scripts %}
+</body>
+</html>

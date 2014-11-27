@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block stylesheets %}
+    <link href="{% static 'css/registration.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block navbar %}{% endblock navbar %}
+
+{% block bodytag %}
+<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
+{% block body %}
+     <div class="btn-group"><a href="{% url 'login' %}">
+        <button id="signup-btn" class="btn btn-md btn-block" type="submit">Log in</button></a>
+    </div>
+
+    {% for error in form.non_field_errors %}
+        <p style="color:red">{{error}}</p>
+    {% endfor %}
+    <form method="post" action="{% url 'register' %}" class="signup-form">
+        <h2 id="signup-header" class="form-signin-heading">
+            <center>cl&#9729;ud<span class="cloud">DJ</span></center>
+        </h2>
+        <p class="slogan"> Create and share music you love. </p>
+        <p class="slogan"> With people you love. </p>
+        <div>
+            {{ form.username|add_class:"form-control"|attr:"placeholder:Username"|attr:"required:" }}
+            {% if form.username.errors %}
+                <p style="color:red">{{ form.username.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password1|add_class:"form-control"|attr:"placeholder:Password"|attr:"required:" }}
+            {% if form.password1.errors %}
+                <p style="color:red">{{ form.password1.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password2|add_class:"form-control"|attr:"placeholder:Confirm Password"|attr:"required:" }}
+            {% if form.password2.errors %}
+                <p style="color:red">{{ form.password2.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.email|add_class:"form-control"|attr:"placeholder:Email"|attr:"required:" }}
+            {% if form.email.errors %}
+                <p style="color:red">{{ form.email.errors }}</p>
+            {% endif %}
+        </div>
+        <button class="btn btn-lg my-primary-btn btn-block signup" type="submit">Sign up</button>
+        {% csrf_token %}
+    </form>
+
+
+{% endblock body %}

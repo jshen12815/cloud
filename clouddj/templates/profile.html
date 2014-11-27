@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+    {{block.super}}
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block bodytag %}
+<body class = "backgroundcolor">
+{% endblock bodytag %}
+
+{% block labels %}
+    <ul class="profile">
+        <img class = "propic" src="{% static 'images/propic.png' %}" >
+        <p class="sidebar-username">{{prof_owner.user.username}}</p>
+        <span class="glyphicon glyphicon-user sidebar-content"></span><a type="button" data-toggle="modal" data-target="#follower_modal"> {{prof_owner.followers.count}}</a>
+        {% if user.profile != prof_owner %}
+            <form action="{% url 'follow' prof_owner.id %}">
+                <button id="follow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn">
+                    <span class="glyphicon glyphicon-ok-circle"></span> Follow
+                </button>
+            </form>
+        {% endif %}
+        {% if user.profile == prof_owner %}
+            <form action="{% url 'edit-profile' %}">
+                <button type="submit" class="btn btn-default btn-sm my-btn dark-text">
+                    <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
+            </form>
+        {% endif %}
+    </ul>
+    <!-- Follower Modal -->
+    <div class="modal fade follow-modal" id="follower_modal" tabindex="-1" role="dialog" aria-labelledby="followerLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-head">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h2 class="modal-title" id="followerLabel">&#9729;</h2>
+                </div>
+                <div class="modal-body">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#followers" aria-controls="followers" role="tab" data-toggle="tab">Followers {{prof_owner.followers.count}}</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#following" aria-controls="following" role="tab" data-toggle="tab">Following {{prof_owner.following.count}}</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="followers">
+                                {% for follower in prof_owner.followers.all %}
+                                    <div class="row follow-div">
+                                        <div class="col-md-1">
+                                            {% if follower.about.picture %}
+                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.id %}" alt="{{follower.username}}" width="40" height="40">
+                                            {% else %}
+                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{follower.username}}" width="40" height="40">
+                                            {% endif %}
+                                        </div>
+                                        <div style="width:500px" class="col-md-2">
+                                            <a style="color: black" href="{% url 'profile' follower.id %}">
+                                                <h2 class="panel-title post-header"><b>{{follower.user.username}}</b></h2>
+                                            </a>
+                                            <span class="glyphicon glyphicon-user modal-user-icon"></span> {{follower.followers.count}}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div role="tabpanel" class="tab-pane active" id="following">
+                                {% for following in prof_owner.following.all %}
+                                    <div class="row follow-div">
+                                        <div class="col-md-1">
+                                            {% if following.picture %}
+                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' following.id %}" alt="{{following.username}}" width="40" height="40">
+                                            {% else %}
+                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{following.username}}" width="40" height="40">
+                                            {% endif %}
+                                        </div>
+                                        <div style="width:500px" class="col-md-2">
+                                            <a style="color: black" href="{% url 'profile' following.id %}">
+                                                <h2 class="panel-title post-header"><b>{{following.user.username}}</b></h2>
+                                            </a>
+                                            <span class="glyphicon glyphicon-user modal-user-icon"></span> {{following.followers.count}}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock labels %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block bodytag %}
+<body class = "backgroundcolor">
+{% endblock bodytag %}
+
+{% block body %}
+    <div class="panel panel-default my-panel">
+        <div class="panel-body my-panel-body">
+            <h2>Edit Profile</h2>
+            <hr>
+            <form enctype="multipart/form-data" class="control_form" method="post" action="">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div id="images">
+                                    <img class="img-rounded modal-photo" border="0"
+                                         src="{% static 'images/default.jpg' %}" alt="song photo">
+                                </div>
+                                <input id="file-input" type="file" name="photo" class="form-control"
+                                       placeholder="choose photo" autofocus="">
+                    </div>
+                    <div class="col-md-5">
+                        <div>
+                            {{ form.new_username|add_class:"form-control"|attr:"placeholder:New Username" }}
+                            {% if form.new_username.errors %}
+                                <p style="color:red">{{ form.new_username.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {{ form.new_email|add_class:"form-control"|attr:"placeholder:New E-mail" }}
+                            {% if form.new_email.errors %}
+                                <p style="color:red">{{ form.new_email.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {{ form.passwordc|add_class:"form-control"|attr:"placeholder:Current Password" }}
+                            {% if form.passwordc.errors %}
+                                <p style="color:red">{{ form.passwordc.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {{ form.password1|add_class:"form-control"|attr:"placeholder:New Password" }}
+                            {% if form.password1.errors %}
+                                <p style="color:red">{{ form.password1.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {{ form.password2|add_class:"form-control"|attr:"placeholder:Re-type New Password" }}
+                            {% if form.password2.errors %}
+                                <p style="color:red">{{ form.password2.errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+
+    <!--
+    <form action = "{% url 'edit-profile' %}" method="post" enctype="multipart/form-data" class="form-signin" role="form">
+        {% for error in form.non_field_errors %}
+        <p style="color:red">{{error}}</p>
+        {% endfor %}
+
+        {% for error in errors %}
+        <p style="color: red">{{error}}</p>
+        {% endfor %}
+
+        <h2 class="form-signin-heading">edit profile</h2>
+
+        <div>
+            {{ form.new_username|add_class:"form-control"|attr:"placeholder:New Username" }}
+            {% if form.new_username.errors %}
+                <p style="color:red">{{ form.new_username.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.new_email|add_class:"form-control"|attr:"placeholder:New E-mail" }}
+            {% if form.new_email.errors %}
+                <p style="color:red">{{ form.new_email.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.passwordc|add_class:"form-control"|attr:"placeholder:Current Password" }}
+            {% if form.passwordc.errors %}
+                <p style="color:red">{{ form.passwordc.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password1|add_class:"form-control"|attr:"placeholder:New Password" }}
+            {% if form.password1.errors %}
+                <p style="color:red">{{ form.password1.errors }}</p>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password2|add_class:"form-control"|attr:"placeholder:Re-type Password" }}
+            {% if form.password2.errors %}
+                <p style="color:red">{{ form.password2.errors }}</p>
+            {% endif %}
+        </div>
+        <button class="btn btn-md my-primary-btn btn-block signup" type="submit">Save</button>
+        {% csrf_token %}
+     </form>
+     -->
+     
+    
+{% endblock body %}

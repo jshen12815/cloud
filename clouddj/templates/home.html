@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block bodytag %}
+<body data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
+{% block body %}
+     <img  class = "mainpic"  src="{% static 'images/clouddj.jpg' %}">
+     <div class = "details">
+        <div class ="col-sm-4 col-md-4">
+            <img  class = "mainpic"  src="{% static 'images/upload.jpg' %}">
+        </div>
+        <div class ="col-sm-4 col-md-4">
+            <img  class = "mainpic"  src="{% static 'images/stream.jpg' %}">
+        </div>
+        <div class ="col-sm-4 col-md-4">
+            <img  class = "mainpic"  src="{% static 'images/createown.jpg' %}">
+        </div>
+     </div>
+{% endblock body %}

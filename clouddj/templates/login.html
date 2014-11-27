@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block stylesheets %}
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block navbar %}{% endblock navbar %}
+
+{% block bodytag %}
+<body class="signupbody" data-pinterest-extension-installed="cr1.3.4" bgcolor="#FFFFFF">
+{% endblock bodytag %}
+
+{% block body %}
+    <div class="btn-group"><a href="{% url 'register' %}">
+        <button id="signup-btn" class="btn btn-md btn-block" type="submit">Sign up</button></a>
+    </div>
+
+    <form method="post" action = "{% url 'login' %}" class="form-signin" role="form">
+        <h2 id="signup-header" class="form-signin-heading">
+            <center>cl&#9729;ud<span class="cloud">DJ</span></center>
+        </h2>
+        {% if form.errors %}
+		    <p style="color:red; text-align: left">
+		        Incorrect user name and password.
+		    </p>
+		{% endif %}
+		{{ form.username|add_class:"form-control"|attr:"placeholder:Username"|attr:"required:" }}
+		{{ form.password|add_class:"form-control"|attr:"placeholder:Password"|attr:"required:" }}
+        <a href="{% url 'password_reset' %}"><span class="glyphicon glyphicon-question-sign frgtpwd"></span></a>
+        <input id="login-btn" type="submit" class="btn btn-lg my-primary-btn btn-block signup" value="Login" />
+		<input type="hidden" name="next" value="{{ next }}" />
+        {% csrf_token %}
+    </form>
+
+
+{% endblock body %}
