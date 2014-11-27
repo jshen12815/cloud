@@ -51,8 +51,10 @@
             </a>
         </div>
         <div class="nav navbar-nav navbar-left ">
+            {% if user.is_authenticated %}
             <a class="baractions" href="{% url 'stream' %}"><span class="nav-text">Stream</span></a>
             <a class="baractions" href="{% url 'explore' %}"><span class="nav-text">Explore</span></a>
+            {% endif %}
         </div>
         {% if not user.is_authenticated %}
         <div class="nav navbar-nav navbar-right addpad">
@@ -92,6 +94,7 @@
             {% endif %}
         </div>
         <div class="nav navbar-nav navbar-left">
+            {% if user.is_authenticated %}
             <form method="get" action="{% url 'search' %}" style="margin-top:-5px">
                 <span class="glyphicon glyphicon-search search-icon"></span>
                 <label style="display:none" for="search"></label>
@@ -101,6 +104,7 @@
                 {% endif %}
                 {% csrf_token %}
             </form>
+            {% endif %}
         </div>
         <div class="nav navbar-nav navbar-left ">
             {% if user.is_authenticated %}
@@ -181,7 +185,8 @@
                         {{post.text}}
                     </div>
                     <audio controls style="display:none" id="audio_controls">
-                        <source id="{{ 'audiosrc-'|add:post_id }}" src="{% url 'get_song' post.song.id %}" type="{{ type }}">
+                        <source id="{{ 'audiosrc-'|add:post_id }}" src="{% url 'get_song' post.song.id %}"
+                                type="{{ type }}">
                         Your browser does not support the audio element.
                     </audio>
 
@@ -189,7 +194,8 @@
                         <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
                             <div class="textbox-wrapper">
                                 <label style="display:none" for="{{ 'comment-'|add:post_id }}"></label>
-                                <input id="{{ 'comment-'|add:post_id }}" type="text" name="comm" class="textbox song-text" placeholder=" Comment...">
+                                <input id="{{ 'comment-'|add:post_id }}" type="text" name="comm"
+                                       class="textbox song-text" placeholder=" Comment...">
                             </div>
                             {% csrf_token %}
                         </form>
