@@ -195,7 +195,8 @@
                     <div class="comment-box">
                         <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
                             <div class="textbox-wrapper">
-                                <input type="text" name="comm" class="textbox song-text" placeholder=" Comment...">
+                                <label for="search"></label>
+                                <input id="search" type="text" name="comm" class="textbox song-text" placeholder=" Comment...">
                             </div>
                             {% csrf_token %}
                         </form>
@@ -262,6 +263,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static  'js/bootstrap.min.js' %}"></script>
+<script src="/static/js/follow-unfollow.js" type="text/javascript"></script>
 {% block more_scripts %}
 <script src="{% static 'js/wavesurfer/src/wavesurfer.js' %}"></script>
 
@@ -274,7 +276,6 @@
 <script src="/static/js/delete.js" type="text/javascript"></script>
 <script src="/static/js/like.js" type="text/javascript"></script>
 <script src="/static/js/playpause.js" type="text/javascript"></script>
-<script src="/static/js/follow-unfollow.js" type="text/javascript"></script>
 
 <script src="{% static 'js/postwave.js' %}"></script>
 
