@@ -278,6 +278,40 @@ def repeat(request, song_id):
 
     return HttpResponse(json.dumps(response_text), content_type="application/json")
 
+@login_required
+def echo(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    seg = song_to_audioseg(song)
+    response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
+
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    form = EchoForm(request.POST)
+
+    if not form.is_valid():
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
+    delay = int(form.cleaned_data['delay']) * 1000
+    decay = int(form.cleaned_data['decay'])
+
+    segment = seg[start:end]
+    silence = AudioSegment.silent(duration=delay)
+    decayed_seg = segment - decay
+    new_segment = silence + decayed_seg
+
+    if (start + delay)/1000 >= len(seg)/1000:
+        seg += new_segment
+    else:
+        seg = seg.overlay(new_segment, start)
+
+    new_song = export_edit(seg, song)
+    response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
+
+    return HttpResponse(json.dumps(response_text), content_type="application/json")
+
 
 @login_required
 def tempo(request, song_id):

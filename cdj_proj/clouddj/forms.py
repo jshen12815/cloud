@@ -64,6 +64,13 @@ class RepeatForm(forms.Form):
     iters = forms.IntegerField()
 
 
+class EchoForm(forms.Form):
+    start = forms.FloatField()
+    end = forms.FloatField()
+    delay = forms.IntegerField()
+    decay = forms.IntegerField()
+
+
 class SpeedupForm(forms.Form):
     start = forms.FloatField()
     end = forms.FloatField()
