@@ -94,7 +94,8 @@
         <div class="nav navbar-nav navbar-left">
             <form method="get" action="{% url 'search' %}">
                 <span class="glyphicon glyphicon-search search-icon"></span>
-                <input type="text" class="nav-form-control" name="text" placeholder="Search...">
+                <label style="display:none" for="search"></label>
+                <input id="search" type="text" class="nav-form-control" name="text" placeholder="Search...">
                 {% if search_form.errors %}
                 <p style="color:red">{{ search.text.errors }}</p>
                 {% endif %}
@@ -148,18 +149,14 @@
                     </div>
                     <div id="right">
                         {% with post.id|stringformat:"s" as post_id %}
-                        {% with "waveform-"|add:post_id as waveform_id %}
-                        {% with "progressbar-"|add:post_id as progressbar_id %}
-                        {% with "audiosrc-"|add:post_id as audiosrc_id %}
-                        {% with "play-"|add:post_id as play_id %}
-                        <button id="{{ play_id }}" class="pause" data-action="play">
+                        <button id="{{ 'play-'|add:post_id }}" class="pause" data-action="play">
                             <i class="glyphicon glyphicon-play"></i>|
                             <i class="glyphicon glyphicon-pause"></i>
                         </button>
                         <div class="row">
                             <div id="demo">
-                                <div class="waveform" id="{{ waveform_id }}">
-                                    <div class="progress progress-striped active" id="{{ progressbar_id }}">
+                                <div class="waveform" id="{{ 'waveform-'|add:post_id }}">
+                                    <div class="progress progress-striped active" id="{{ 'progressbar-'|add:post_id }}">
                                         <div class="progress-bar progress-bar-info"></div>
                                     </div>
                                     <!-- Here be the waveform -->
@@ -184,23 +181,20 @@
                         {{post.text}}
                     </div>
                     <audio controls style="display:none" id="audio_controls">
-                        <source id="{{ audiosrc_id }}" src="{% url 'get_song' post.song.id %}" type="{{ type }}">
+                        <source id="{{ 'audiosrc-'|add:post_id }}" src="{% url 'get_song' post.song.id %}" type="{{ type }}">
                         Your browser does not support the audio element.
                     </audio>
-                    {% endwith %}
-                    {% endwith %}
-                    {% endwith %}
-                    {% endwith %}
-                    {% endwith %}
+
                     <div class="comment-box">
                         <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
                             <div class="textbox-wrapper">
-                                <label for="search"></label>
-                                <input id="search" type="text" name="comm" class="textbox song-text" placeholder=" Comment...">
+                                <label style="display:none" for="{{ 'comment-'|add:post_id }}"></label>
+                                <input id="{{ 'comment-'|add:post_id }}" type="text" name="comm" class="textbox song-text" placeholder=" Comment...">
                             </div>
                             {% csrf_token %}
                         </form>
                     </div>
+                    {% endwith %}
                     <p style="margin-top: 10px; width: 590px">
                         {% if profile not in post.likes.all %}
                         <a href="{% url 'like' post.id %}">
