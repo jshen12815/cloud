@@ -225,11 +225,15 @@
             <div class="typelabel"> Effects</div>
             <br>
 
-            <div class="inputnum">
-                <div class="shadowtext"> Reverb</div>
-                <input class="edittext" type="text">
-                <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
-            </div>
+            <form class="music_form" action="{% url 'echo' song.id %}" method="post">
+                <div class="inputnum" data-toggle="tooltip" data-placement="left" data-html="true" title="Repeat selection after <delay> secs with a decay of <dec> dB" data-delay="1000">
+                    <div class="shadowtext"> Echo &nbsp;</div>
+                    <input class="edittext" type="text" name="delay" placeholder="delay">
+                    <input class="edittext" type="text" name="decay" placeholder="dec">
+                    <input class="btn btn-default btn-xs pull-right" type="submit" value="apply">
+                </div>
+                {% csrf_token %}
+            </form>
         </div>
 
         <div class="col-md-3">

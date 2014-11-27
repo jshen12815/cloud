@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^fade_in/(?P<song_id>\d+)/$', 'clouddj.music_views.fade_in', name='fade_in'),
     url(r'^slice/(?P<song_id>\d+)/$', 'clouddj.music_views.slice', name='slice'),
     url(r'^repeat/(?P<song_id>\d+)/$', 'clouddj.music_views.repeat', name='repeat'),
+    url(r'^echo/(?P<song_id>\d+)/$', 'clouddj.music_views.echo', name='echo'),
     url(r'^reverse/(?P<song_id>\d+)/$', 'clouddj.music_views.reverse', name='reverse'),
     url(r'^amplify/(?P<song_id>\d+)/$', 'clouddj.music_views.amplify', name='amplify'),
     url(r'^tempo/(?P<song_id>\d+)/$', 'clouddj.music_views.tempo', name='tempo'),
