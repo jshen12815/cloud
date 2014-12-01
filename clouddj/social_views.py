@@ -17,6 +17,7 @@ from mimetypes import guess_type
 from django.contrib.auth import update_session_auth_hash
 import json
 from clouddj.music_views import get_root, get_content_type, delete
+import datetime
 
 
 def home(request):
@@ -35,6 +36,7 @@ def add_post(request, id):
         return redirect(request.META['HTTP_REFERER'])
 
     song = get_object_or_404(Song, id=id)
+
     song.project.status = "complete"
     song.project.save()
 
@@ -42,6 +44,15 @@ def add_post(request, id):
     new_post.profile = request.user.profile
     new_post.song = song
     new_post.save()
+
+    # if it's a competition post, add it to competition submissions
+    competition = song.project.competition
+    if competition:
+        # check if it's still in time range
+        time = datetime.time
+        if start <= time and time <= end:
+            competition.submissions.add(new_post)
+            competition.participants.add(request.user.profile)
 
     return redirect("/clouddj/stream")
 
@@ -389,3 +400,66 @@ def recommended_songs(profile):
     print list(Post.objects.order_by('-plays')[:num_songs])
     return list(Post.objects.order_by('-plays')[:num_songs])
 
+#########################
+### Competition stuff ###
+#########################
+
+@login_required
+def create_competition(request):
+    pass
+
+@login_required
+def edit_competition(request, id):
+    # Can only edit BEFORE the competition starts
+    pass
+
+# just add to regular rate...
+@login_required
+def rate_competition_submission(request, id):
+    pass
+
+# display competition page -> submissions
+@login_required
+def competition(request, id):
+    # show creator, judges, description, then submissions
+    # don't accept submissions, or release base music until comp starts
+    # if competition is done, show like the winners and stuff
+    context = {'competition': get_object_or_404(Competition, id=id)}
+
+    # WRITE COMPETITION.HTML
+    return render(request, 'competition.html', context)
+
+## We could just put it under 'explore'
+# shows all competitions
+@login_required
+def list_competitions(request):
+    # don't care if it's get or post
+    context = {}
+    context['competitions'] = Competition.objects.all()
+
+    # WRITE LISTCOMPETITIONS.HTML or add this to 'explore'
+    return render(request, 'listcompetitions.html', context)        
+
+# adds base sound for competition to the user's studio
+@login_required
+def join_competition(request, id):
+    if request.method == 'GET':
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    profile = get_object_or_404(Profile, user=request.user)
+    competition = get_object_or_404(Competition, id=id)
+    form = UploadMusicForm(request.POST, request.FILES)
+    if form.is_valid():
+        new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress",
+                              competition=competition)
+        new_project.save()
+        song = form.save()
+        song.project = new_project
+        song.save()
+        return redirect(reverse('studio'))
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+# change 'add_post'
+# Now it posts your stuff, and also adds it to competition submissions
