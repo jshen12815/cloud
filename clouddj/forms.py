@@ -245,7 +245,7 @@ class CompetitionForm(forms.ModelForm):
         exclude = ('creator', 'participants', 'submissions')
 
         widgets = {
-            'judges': forms.TextInput(max_length=4200, attrs={'class':'form-control'}),
+            'judges': forms.TextInput(attrs={'class':'form-control'}),
             'description': forms.TextInput(attrs={'class':'form-control'}),
             'start': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''}),
             'end': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''})

@@ -29,7 +29,7 @@ class Hashtag(models.Model):
 class Project(models.Model):
     profile = models.ForeignKey(Profile)
     status = models.CharField(max_length=255)  # in_progress vs. complete
-    competition = models.ForeignKey(Competition, blank=True, null=True) 
+    competition = models.ForeignKey('Competition', blank=True, null=True) 
 
 
 class Song(models.Model):
