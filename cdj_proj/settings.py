@@ -91,11 +91,10 @@ USE_TZ = True
 LOGIN_URL = '/clouddj/login'
 LOGIN_REDIRECT_URL = '/'
 
-#UNCOMMENT FOR EMAIL ENABLING AND CONFIGURE
-#EMAIL_HOST = 'smtp.andrew.cmu.edu'
-#EMAIL_HOST_USER = #andrew id     
-#EMAIL_HOST_PASSWORD = #andrew password
-#EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'clouddj.webapp@gmail.com'     
+EMAIL_HOST_PASSWORD = 'alisonistaylorswiftsmiddlename'
+EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
@@ -108,3 +107,8 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
