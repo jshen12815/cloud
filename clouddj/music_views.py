@@ -1,5 +1,6 @@
 # Music editing-related actions
 import os
+from django.conf import settings
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -325,10 +326,8 @@ def tempo(request, song_id):
     form = SpeedupForm(request.POST)
 
     if not form.is_valid():
-        print form.errors
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    print form.cleaned_data['multiplier']
     changed = seg.speedup(form.cleaned_data['multiplier'], crossfade=0)
 
     new_song = export_edit(changed, song)
@@ -548,7 +547,7 @@ def get_ext(filename):
     if len(L) == 0:
         return ''
 
-    return L[-1]
+    return '.'+L[-1]
 
 def get_root(filename):
     L = filename.split('.')
