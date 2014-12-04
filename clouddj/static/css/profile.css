@@ -162,7 +162,8 @@ a:visited {
 }
 
 .follow-modal {
-    margin-top: 10%;
+    margin-top: 50%;
+    margin-left: 50%;
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
 

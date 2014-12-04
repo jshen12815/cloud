@@ -31,8 +31,12 @@
             </form>
         {% endif %}
     </ul>
-    <!-- Follower Modal -->
-    <div class="modal fade follow-modal" id="follower_modal" tabindex="-1" role="dialog" aria-labelledby="followerLabel" aria-hidden="true">
+{% endblock labels %}
+
+{% block body %}
+{{block.super}}
+<!-- Follower Modal -->
+    <div class="modal fade" id="follower_modal" tabindex="-1" role="dialog" aria-labelledby="followerLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header modal-head">
@@ -43,7 +47,6 @@
                 </div>
                 <div class="modal-body">
                     <div role="tabpanel">
-                        <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active">
                                 <a href="#followers" aria-controls="followers" role="tab" data-toggle="tab">Followers {{prof_owner.followers.count}}</a>
@@ -97,4 +100,4 @@
             </div>
         </div>
     </div>
-{% endblock labels %}
+{% endblock body %}
