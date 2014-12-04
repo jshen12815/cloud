@@ -45,9 +45,9 @@ LOGIN_URL = '/clouddj/login'
 LOGIN_REDIRECT_URL = '/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 if not DEBUG:
     import dj_database_url
