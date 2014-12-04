@@ -29,6 +29,7 @@ class Hashtag(models.Model):
 class Project(models.Model):
     profile = models.ForeignKey(Profile)
     status = models.CharField(max_length=255)  # in_progress vs. complete
+    competition = models.ForeignKey('Competition', blank=True, null=True) 
 
 
 class Song(models.Model):
@@ -49,6 +50,8 @@ class Post(models.Model):
     genre = models.CharField(max_length=255)
     likes = models.ManyToManyField(Profile, related_name="post_likes", blank=True)
     hashtags = models.ManyToManyField(Hashtag, related_name='posts')
+    overallrating = models.IntegerField(default=0)
+    numratings = models.IntegerField(default=0)
     
     def __unicode__(self):
         return self.profile.user.username + ": "+self.text
@@ -102,7 +105,7 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
-    numratings = models.IntegerField(default=0)
+
     profile= models.ForeignKey(Profile)
     post = models.ForeignKey(Post)
     rating = models.IntegerField()
@@ -121,6 +124,7 @@ class Competition(models.Model):
     submissions = models.ManyToManyField(Post, related_name='comp')
     description = models.CharField(max_length=420)
     # add base sound file(s) to edit
+    base_sound = models.FileField(upload_to='music')
     # add status (not started, in progress, completed)
     start = models.DateTimeField(auto_now_add=False)
     end = models.DateTimeField(auto_now_add=False)

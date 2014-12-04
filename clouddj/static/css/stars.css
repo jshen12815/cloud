@@ -44,29 +44,33 @@ background-color: white;
 
 /* - - - - - RATE */
 
+#rate {
+  margin-right: 10px;
+}
+
 #rate:not(:checked) > label {
   cursor:pointer;
   float: right;
 
   display: block;
   
-  color: rgba(255, 255, 255, .4);
+  color: rgba(100, 100, 100, .4);
 
   text-align: center;
 }
 #rate:not(:checked) > label:hover,
 #rate:not(:checked) > label:hover ~ label {
-  color: rgba(255, 255, 255, .6);
+  color: rgba(100, 100, 100, .6);
 }
 #rate > input:checked + label:hover,
 #rate > input:checked + label:hover ~ label,
 #rate > input:checked ~ label:hover,
 #rate > input:checked ~ label:hover ~ label,
 #rate > label:hover ~ input:checked ~ label {
-  color: rgba(255, 255, 255, .8);
+  color: rgba(100, 100, 100, .8);
 }
 #rate > input:checked ~ label {
-  color: rgb(255, 255, 255);
+  color: rgb(100, 100, 100);
 }
 
 

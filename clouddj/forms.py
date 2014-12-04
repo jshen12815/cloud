@@ -7,7 +7,7 @@ class UploadMusicForm(forms.ModelForm):
     class Meta:
         model = Song
         fields = ('file','name')
-        exclude = ('edit_number', 'project', )
+        exclude = ('edit_number', 'project',)
 
     def clean_file(self):
         form_file = self.cleaned_data.get('file')
@@ -31,6 +31,8 @@ class RecordForm(forms.Form):
             raise forms.ValidationError("Must use positive values.")
 
         return cleaned_data
+
+
 
 
 class FilterForm(forms.Form):
@@ -237,3 +239,35 @@ class EditForm(forms.Form):
         # Generally return the cleaned data we got from the cleaned_data
         # dictionary
         return new_username
+
+class CompetitionForm(forms.ModelForm):
+    class Meta:
+        model = Competition
+        fields = ('judges', 'description', 'start', 'end', 'base_sound')
+        exclude = ('creator', 'participants', 'submissions')
+
+        widgets = {
+            'judges': forms.TextInput(attrs={'class':'form-control'}),
+            'description': forms.TextInput(attrs={'class':'form-control'}),
+            'start': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''}),
+            'end': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''})
+        }
+
+    def clean_end(self):
+        start = self.cleaned_data['start']
+        end = self.cleaned_data['end']
+
+        if start > end:
+            raise forms.ValidationError("Competition must end after it starts")
+
+        return end
+
+    def clean_base_sound(self):
+        base_file = self.cleaned_data.get('base_sound')
+        ext = os.path.splitext(base_file.name)[1]
+
+        valid_extentions = ['.mp3', '.wav', '.ogg']
+        if not ext in valid_extentions:
+            raise forms.ValidationError("Invalid file type.")
+
+        return base_file
