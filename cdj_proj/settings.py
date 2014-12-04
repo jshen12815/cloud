@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
-<<<<<<< HEAD
+
 import dj_database_url
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
@@ -21,8 +21,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-=======
->>>>>>> 52f6d5acbcac45b78a04889956470fe2e6833fc5
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 import os
