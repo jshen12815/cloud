@@ -7,10 +7,17 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
+import dj_database_url
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['team-clouddj.herokuapp.com']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,8 +31,12 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
-
+AWS_STORAGE_BUCKET_NAME = 'clouddj'
+AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
+AWS_SECRET_ACCESS_KEY = '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'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
+STATIC_URL = S3_URL
 
 # Application definition
 
@@ -38,6 +49,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'clouddj',
     'widget_tweaks',
+    'storages',
+    'boto',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,16 +71,9 @@ WSGI_APPLICATION = 'cdj_proj.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'clouddj',
-        'USER': 'webapps',
-        'PASSWORD': 'fun',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+DATABASES = {}
+DATABASES['default'] =  dj_database_url.config()
+DATABASES['default']['ENGINE']='django.db.backends.postgresql_psycopg2'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -85,13 +91,20 @@ USE_TZ = True
 LOGIN_URL = '/clouddj/login'
 LOGIN_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#UNCOMMENT FOR EMAIL ENABLING AND CONFIGURE
+#EMAIL_HOST = 'smtp.andrew.cmu.edu'
+#EMAIL_HOST_USER = #andrew id     
+#EMAIL_HOST_PASSWORD = #andrew password
+#EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = 'staticfiles'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
