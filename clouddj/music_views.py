@@ -544,8 +544,15 @@ def get_content_type(filename):
 
 
 def get_ext(filename):
-    return os.path.splitext(filename)[1]
+    L = filename.split('.')
+    if len(L) == 0:
+        return ''
 
+    return L[-1]
 
 def get_root(filename):
-    return os.path.splitext(filename)[0]
+    L = filename.split('.')
+    if len(L) == 0:
+        return ''
+
+    return '.'.join(L[:len(L)-1])

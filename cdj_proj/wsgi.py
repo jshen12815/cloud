@@ -11,7 +11,17 @@ from django.core.wsgi import get_wsgi_application
 from dj_static import Cling
 
 import os
+
+import settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cdj_proj.settings")
 
 from django.core.wsgi import get_wsgi_application
+<<<<<<< HEAD
 application = Cling(get_wsgi_application())
+=======
+
+if settings.DEBUG:
+    application = get_wsgi_application()
+else:
+    application = Cling(get_wsgi_application())
+>>>>>>> 52f6d5acbcac45b78a04889956470fe2e6833fc5
