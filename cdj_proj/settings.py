@@ -92,8 +92,8 @@ LOGIN_URL = '/clouddj/login'
 LOGIN_REDIRECT_URL = '/'
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'sexydjxxx69'     
-EMAIL_HOST_PASSWORD = 'xxx has 3 letters in it'
+EMAIL_HOST_USER = 'clouddj.webapp@gmail.com'     
+EMAIL_HOST_PASSWORD = 'alisonistaylorswiftsmiddlename'
 EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
