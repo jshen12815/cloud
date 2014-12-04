@@ -10,10 +10,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import dj_database_url
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
-ALLOWED_HOSTS = ['team-clouddj.herokuapp.com']
+ALLOWED_HOSTS = []
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -108,3 +108,8 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
