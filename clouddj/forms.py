@@ -1,6 +1,7 @@
 import os
 from django import forms
 from clouddj.models import *
+from django.forms.widgets import RadioSelect
 
 
 class UploadMusicForm(forms.ModelForm):
@@ -179,7 +180,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        exclude = ('profile', 'plays', 'date', 'song', 'hashtags' )
+        exclude = ('profile', 'plays', 'date', 'song', 'hashtags', 'numratings','overallratings' )
         widgets = {
             'photo': forms.FileInput()
         }
@@ -271,3 +272,4 @@ class CompetitionForm(forms.ModelForm):
             raise forms.ValidationError("Invalid file type.")
 
         return base_file
+

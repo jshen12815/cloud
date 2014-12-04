@@ -7,6 +7,13 @@
 {% endblock bodytag %}
 
 {% block body %}
+
+<script type="text/javascript">
+    function getWorkerPath(){
+        return "{% static 'js/recordJs/recorderWorker.js' %}";
+    }
+</script>
+
     <div class="container-fluid">
     <div class="row">
     <div class="col-sm-3 col-md-2 sidebar" style="background-color: gray">
