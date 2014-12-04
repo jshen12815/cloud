@@ -33,6 +33,8 @@ class RecordForm(forms.Form):
         return cleaned_data
 
 
+
+
 class FilterForm(forms.Form):
     start = forms.FloatField(required=False)
     end = forms.FloatField(required=False)

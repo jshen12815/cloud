@@ -261,6 +261,35 @@ def add_comment(request, id):
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+
+
+
+@login_required
+def rate(request,id):
+    post = get_object_or_404(Post, id = id)
+    
+    data = {}
+    data['post_id'] = id
+    
+
+    #ratings
+    numratings = models.IntegerField(default=0)
+    grouprating = models.IntegerField(default=0)
+    myrating = models.IntegerField(default=0)
+    print "hi"
+    if id:
+        rating=Rating.objects.get(id=id)
+        num_ratings = rating.numratings
+        cur_rating = rating.rating
+        my_rating = request.POST['rating']
+        new_ratings = (num_ratings * cur_rating) + new_rating
+        new_num_ratings = num_ratings + 1
+        new_rating = new_ratings/new_num_ratings
+        rating.rating = new_rating
+        rating.numratings = new_num_ratings
+        rating.save
+    return redirect(request.META.get('HTTP_REFERER'))
+
 @login_required
 def like(request, id):
 
@@ -284,21 +313,7 @@ def like(request, id):
 
 
 
-@login_required
-def rate(request,id):
-    print "hi"
-    if id:
-        rating=Rating.objects.get(id=id)
-        num_ratings = rating.numratings
-        cur_rating = rating.rating
-        my_rating = request.POST['rating']
-        new_ratings = (num_ratings * cur_rating) + new_rating
-        new_num_ratings = num_ratings + 1
-        new_rating = new_ratings/new_num_ratings
-        rating.rating = new_rating
-        rating.numratings = new_num_ratings
-        rating.save
-    return redirect(request.META.get('HTTP_REFERER'))
+
 
 @login_required
 @transaction.atomic

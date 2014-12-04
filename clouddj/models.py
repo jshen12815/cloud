@@ -50,6 +50,8 @@ class Post(models.Model):
     genre = models.CharField(max_length=255)
     likes = models.ManyToManyField(Profile, related_name="post_likes", blank=True)
     hashtags = models.ManyToManyField(Hashtag, related_name='posts')
+    overallrating = models.IntegerField(default=0)
+    numratings = models.IntegerField(default=0)
     
     def __unicode__(self):
         return self.profile.user.username + ": "+self.text
@@ -103,7 +105,7 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
-    numratings = models.IntegerField(default=0)
+
     profile= models.ForeignKey(Profile)
     post = models.ForeignKey(Post)
     rating = models.IntegerField()
