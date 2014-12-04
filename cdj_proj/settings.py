@@ -91,11 +91,10 @@ USE_TZ = True
 LOGIN_URL = '/clouddj/login'
 LOGIN_REDIRECT_URL = '/'
 
-#UNCOMMENT FOR EMAIL ENABLING AND CONFIGURE
-#EMAIL_HOST = 'smtp.andrew.cmu.edu'
-#EMAIL_HOST_USER = #andrew id     
-#EMAIL_HOST_PASSWORD = #andrew password
-#EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'sexydjxxx69'     
+EMAIL_HOST_PASSWORD = 'xxx has 3 letters in it'
+EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
