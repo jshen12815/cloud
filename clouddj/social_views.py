@@ -440,12 +440,63 @@ def recommended_songs(profile):
 
 @login_required
 def create_competition(request):
-    pass
+    if request.method == 'GET':
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    competition = Competition(creator=request.user.profile)
+    form = CompetitionForm(request.POST, request.FILES, instance=competition)
+
+    if not form.is_valid():
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    competition = form.save()
+
+    judges = form.cleaned_data['judges'].split(' ')
+    for judge in judges:
+        if User.objects.filter(username=judge):
+            j = User.objects.get(username=judge)
+            competition.judges.add(Profile.objects.get(user=j))
+
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
 def edit_competition(request, id):
     # Can only edit BEFORE the competition starts
-    pass
+    if request.method == 'GET':
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    competition = get_object_or_404(Competition, id=id)
+    if request.user.profile != competition.creator or \
+       competition.start >= datetime.time:
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    form = EditCompetitionForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    # don't save the new form instance
+
+    if form.cleaned_data['base_sound']:
+        competition.base_sound = form.cleaned_data['base_sound']
+    if form.cleaned_data['start'] and form.cleaned_data['end']:
+        competition.start = form.cleaned_data['start']
+        competition.end = form.cleaned_data['end']
+    if form.cleaned_data['description']:
+        competition.description = form.cleaned_data['description']
+
+    aj = form.cleaned_data['addJudges'].split(' ')
+    for judge in aj:
+        if User.objects.filter(username=judge):
+            j = User.objects.get(username=judge)
+            competition.judges.add(Profile.objects.get(user=j))
+
+    rj = form.cleaned_data['removeJudges'].split(' ')
+    for judge in rj:
+        if User.objects.filter(username=judge):
+            j = User.objects.get(username=judge)
+            competition.judges.remove(Profile.objects.get(user=j))
+
+    competition.save()
 
 # just add to regular rate...
 @login_required
