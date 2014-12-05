@@ -18,6 +18,7 @@ from django.contrib.auth import update_session_auth_hash
 import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
+import math
 
 
 def home(request):
@@ -56,6 +57,46 @@ def add_post(request, id):
             competition.participants.add(request.user.profile)
 
     return redirect("/clouddj/stream")
+
+
+
+@login_required
+def rate(request,id):
+
+    post = get_object_or_404(Post, id = id)
+    print post.text
+    print post.id
+    print post.overallrating
+    data = {}
+    data['post_id'] = id
+    rating=request.POST['rateval']
+    #overall rating numratings
+    newrating = Rating(profile=request.user.profile, rating=rating, post=post)
+    newrating.save()
+    if id:
+        numratings=int(post.numratings)
+        if (post.overallrating == None):
+            overallrating = 0.0
+        else:
+            overallrating = float(post.overallrating)
+        new_ratings = (numratings * overallrating) 
+        new_ratingsa = new_ratings+ int(rating)
+        new_num_ratings = numratings + 1
+        new_rating = new_ratingsa/new_num_ratings
+        post.overallrating = new_rating
+        post.numratings = new_num_ratings
+        post.showrating = int(post.overallrating)
+        post.save()
+        print "rate"
+        print newrating.rating
+        print "num"
+        print post.numratings
+        print "overall"
+        print post.overallrating
+        print "show"
+        print post.showrating
+    return redirect(request.META.get('HTTP_REFERER'))
+
 
 
 @login_required
@@ -264,51 +305,6 @@ def add_comment(request, id):
 
 
 
-
-@login_required
-def rate(request,id):
-    pass
-'''
-    if not request.POST.get('comm', False):
-        return
-
-    post = get_object_or_404(Post, id=id)
-
-    new_comment = Comment(profile=request.user.profile, post=post, text=request.POST['comm'])
-    new_comment.save()
-
-    data = {"comment": new_comment.text, "username": new_comment.profile.user.username, "post_id": id,
-            "user_id": str(new_comment.profile.user.id)}
-
-    return HttpResponse(json.dumps(data), content_type="application/json")
-'''
-
-
-#    post = get_object_or_404(Post, id = id)
-
- 
-#   data = {}
- #   data['post_id'] = id
-    
-
-    #ratings
-  
-  #  numratings = models.IntegerField(default=0)
- #   grouprating = models.IntegerField(default=0)
- #   myrating = models.IntegerField(default=0)
- #   print "hi"
- #   if id:
- #       rating=Rating.objects.get(id=id)
- #       num_ratings = rating.numratings
- #       cur_rating = rating.rating
- #       my_rating = request.POST['rating']
- #       new_ratings = (num_ratings * cur_rating) + new_rating
-  #      new_num_ratings = num_ratings + 1
-   #     new_rating = new_ratings/new_num_ratings
-  #      rating.rating = new_rating
-  #      rating.numratings = new_num_ratings
-  #      rating.save
-   # return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
 def like(request, id):
