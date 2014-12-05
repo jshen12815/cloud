@@ -18,6 +18,7 @@ from django.contrib.auth import update_session_auth_hash
 import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
+import math
 
 
 def home(request):
@@ -63,24 +64,36 @@ def rate(request,id):
 
     post = get_object_or_404(Post, id = id)
     print post.text
+    print post.id
+    print post.overallrating
     data = {}
     data['post_id'] = id
-    rating=reqest.POST['rateval']
-    
+    rating=request.POST['rateval']
     #overall rating numratings
-    rating = Rating(profile=request.user.profile, rating=rating, post=post)
-    rating.save()
-
-    print "hi"
+    newrating = Rating(profile=request.user.profile, rating=rating, post=post)
+    newrating.save()
     if id:
-        numratings=post.numratings
-        overallrating = post.overallrating
-        new_ratings = (numratings * overallrating) + rating
-        new_num_ratings = num_ratings + 1
-        new_rating = new_ratings/new_num_ratings
+        numratings=int(post.numratings)
+        if (post.overallrating == None):
+            overallrating = 0.0
+        else:
+            overallrating = float(post.overallrating)
+        new_ratings = (numratings * overallrating) 
+        new_ratingsa = new_ratings+ int(rating)
+        new_num_ratings = numratings + 1
+        new_rating = new_ratingsa/new_num_ratings
         post.overallrating = new_rating
         post.numratings = new_num_ratings
+        post.showrating = int(post.overallrating)
         post.save()
+        print "rate"
+        print newrating.rating
+        print "num"
+        print post.numratings
+        print "overall"
+        print post.overallrating
+        print "show"
+        print post.showrating
     return redirect(request.META.get('HTTP_REFERER'))
 
 

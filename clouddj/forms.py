@@ -180,7 +180,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        exclude = ('profile', 'plays', 'date', 'song', 'hashtags', 'numratings','overallratings' )
+        exclude = ('profile', 'plays', 'date', 'song', 'hashtags', 'numratings','overallratings', 'showrating' )
         widgets = {
             'photo': forms.FileInput()
         }
