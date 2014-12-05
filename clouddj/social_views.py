@@ -63,13 +63,19 @@ def add_post(request, id):
 @login_required
 def rate(request,id):
 
+
     post = get_object_or_404(Post, id = id)
+    print post.id
     data = {}
     data['post_id'] = id
     rating=request.POST['rateval']
     #overall rating numratings
+
+    if request.user.profile in post.rating_set.all():
+        pass
     newrating = Rating(profile=request.user.profile, rating=rating, post=post)
     newrating.save()
+
     if id:
         numratings=int(post.numratings)
         if (post.overallrating == None):
