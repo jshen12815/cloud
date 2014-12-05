@@ -19,6 +19,7 @@ import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
 import math
+from pydub import *
 
 
 def home(request):
@@ -51,8 +52,8 @@ def add_post(request, id):
     competition = song.project.competition
     if competition:
         # check if it's still in time range
-        time = datetime.time
-        if start <= time and time <= end:
+        time = datetime.datetime
+        if competition.start <= time and time <= competition.end:
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
@@ -510,8 +511,11 @@ def competition(request, id):
     # show creator, judges, description, then submissions
     # don't accept submissions, or release base music until comp starts
     # if competition is done, show like the winners and stuff
-    context = {'competition': get_object_or_404(Competition, id=id)}
+    context = {}
+    competition = get_object_or_404(Competition, id=id)
 
+    context['competition'] = competition
+    context['posts'] = competition.submissions.all()
     # WRITE COMPETITION.HTML
     return render(request, 'competition.html', context)
 
@@ -529,23 +533,47 @@ def list_competitions(request):
 # adds base sound for competition to the user's studio
 @login_required
 def join_competition(request, id):
-    if request.method == 'GET':
-        return redirect(request.META.get('HTTP_REFERER'))
+    #if request.method == 'GET':
+    #    return redirect(request.META.get('HTTP_REFERER'))
 
     profile = get_object_or_404(Profile, user=request.user)
     competition = get_object_or_404(Competition, id=id)
-    form = UploadMusicForm(request.POST, request.FILES)
-    if form.is_valid():
-        new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress",
-                              competition=competition)
-        new_project.save()
-        song = form.save()
-        song.project = new_project
-        song.save()
-        return redirect(reverse('studio'))
 
-    return redirect(request.META.get('HTTP_REFERER'))
+    new_project = Project(profile=profile, status="in_progress", competition=competition)
+    new_project.save()
+
+    # create copy of base music file
+    ext = get_ext(competition.base_sound.name)
+    root = get_root(competition.base_sound.path)
+
+    audio_seg = AudioSegment.from_file(competition.base_sound.path, format=ext[1:])
+    new_path = root + "_" + request.user.username + ext
+    f = audio_seg.export(new_path)
+    f.close()
+
+    song = Song(name=competition.title, file=new_path, project=new_project)
+    song.save()
+
+    return redirect(reverse('studio'))
 
 
 # change 'add_post'
 # Now it posts your stuff, and also adds it to competition submissions
+
+########################
+### helper functions ###
+########################
+
+def get_ext(filename):
+    L = filename.split('.')
+    if len(L) == 0:
+        return ''
+
+    return '.'+L[-1]
+
+def get_root(filename):
+    L = filename.split('.')
+    if len(L) == 0:
+        return ''
+
+    return '.'.join(L[:len(L)-1])

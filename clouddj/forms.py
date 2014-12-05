@@ -254,12 +254,16 @@ class CompetitionForm(forms.ModelForm):
         fields = ('title', 'description', 'start', 'end', 'base_sound')
         #exclude = ('creator', 'participants', 'submissions', 'judges')
 
+        dateTimeOptions = {
+            'format': 'mm/dd/yyyy HH:ii'
+        }
+
         widgets = {
             # 'judges': forms.TextInput(attrs={'class':'form-control'}),
             'title': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'title'}),
             'description': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'description'}),
-            'start': DateTimeWidget(bootstrap_version=3),#forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''}),
-            'end': DateTimeWidget(bootstrap_version=3)#forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''})
+            'start': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions),
+            'end': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions)
         }
 
     def clean_end(self):

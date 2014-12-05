@@ -7,7 +7,10 @@
 
 <a href="{% url 'create_competition' %}">Create your own competition!</a>
 
+<p>Competitions:</p>
+<ul>
 {% for competition in competitions %}
-
+<li><a href="{% url 'competition' competition.id %}">{{ competition.title }}</a></li>
 {% endfor %}
+</ul>
 {% endblock body %}

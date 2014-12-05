@@ -5,15 +5,17 @@
 
 
 {% block body %}
-{{ competition.creator }}
+<p>Creator: {{ competition.creator }}</p>
+<p>Judges: {% for judge in competition.judges.all %} {{ judge.user.username }} {% endfor %}</p>
+<p>Description: {{ competition.description }}</p>
 
-{{ competition.description }}
+<a href="{% url 'join_competition' competition.id %}">Join competition</a>
 
+<p>POSTS:</p>
 <ol>
 {% for post in competition.submissions.all %}
-	<li>
-		post.text
-	</li>
+<!-- show post stuff -->
+{{ post }}
 {% endfor %}
 </ol>
 {% endblock body %}
