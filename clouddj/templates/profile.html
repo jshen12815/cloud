@@ -15,7 +15,8 @@
     <ul class="profile">
         <img class = "propic" src="{% static 'images/propic.png' %}" >
         <p class="sidebar-username">{{prof_owner.user.username}}</p>
-        <span class="glyphicon glyphicon-user sidebar-content"></span><a type="button" data-toggle="modal" data-target="#follower_modal"> {{prof_owner.followers.count}}</a>
+        <span class="glyphicon glyphicon-user sidebar-content"></span>
+        <a type="button" data-toggle="modal" data-target="#follower_modal"> {{prof_owner.followers.count}}</a>
         {% if user.profile != prof_owner %}
             <form action="{% url 'follow' prof_owner.id %}">
                 <button id="follow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn">

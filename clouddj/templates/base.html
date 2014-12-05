@@ -135,7 +135,7 @@
         {% endblock sidebar %}
 
         {% block page-posts %}
-        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left">
+        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
             {% for post in posts %}
             {% if post.photo %}
             <img class="postpropic" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
@@ -337,6 +337,7 @@
 <script src="{% static 'js/wavesurfer/src/drawer.canvas.js' %}"></script>
 
 <script src="{% static 'js/comments.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/search.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/delete.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/like.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/playpause.js' %}" type="text/javascript"></script>
