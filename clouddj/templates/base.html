@@ -52,7 +52,7 @@
         </div>
         <div class="nav navbar-nav navbar-left ">
             {% if user.is_authenticated %}
-            <a class="baractions" href="{% url 'stream' %}"><span class="nav-text">Stream</span></a>
+            <a class="baractions" href="{% url 'stream' %}"><span class="nav-text" style="margin-top: -10px">Stream</span></a>
             <a class="baractions" href="{% url 'explore' %}"><span class="nav-text">Explore</span></a>
             {% endif %}
         </div>
