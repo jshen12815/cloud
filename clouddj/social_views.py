@@ -19,6 +19,7 @@ import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
 import math
+from pydub import *
 
 
 def home(request):
@@ -51,8 +52,8 @@ def add_post(request, id):
     competition = song.project.competition
     if competition:
         # check if it's still in time range
-        time = datetime.time
-        if start <= time and time <= end:
+        time = datetime.datetime
+        if competition.start <= time and time <= competition.end:
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
@@ -275,10 +276,15 @@ def search(request):
         return render(request, 'search.html', context)
 
     posts = Post.get_posts_containing(request.user.profile, form.cleaned_data['text'])
+    profiles = Profile.get_user_named(form.cleaned_data['text'])
+
+    if not profiles:
+        print "no users\n"
 
     context['message'] = str(int(len(posts))) + " result(s) found"
 
     context['posts'] = posts
+    context['profiles'] = profiles
 
     return render(request, 'search.html', context)
 
@@ -433,12 +439,72 @@ def recommended_songs(profile):
 
 @login_required
 def create_competition(request):
-    pass
+    context = {}
+    context['form'] = CompetitionForm()
+    context['judgeform'] = JudgesForm()
+
+    if request.method == 'GET':
+        return render(request, 'create_competition.html', context)
+
+    competition = Competition(creator=request.user.profile)
+    form = CompetitionForm(request.POST, request.FILES, instance=competition)
+    judgeform = JudgesForm(request.POST)
+
+    if not form.is_valid() or not judgeform.is_valid():
+        context['form'] = form
+        context['judgeform'] = judgeform
+        print form.errors
+        return render(request, 'create_competition.html', context)
+
+    competition = form.save()
+
+    judges = judgeform.cleaned_data['judges'].split(' ')
+    for judge in judges:
+        if User.objects.filter(username=judge):
+            j = User.objects.get(username=judge)
+            competition.judges.add(Profile.objects.get(user=j))
+
+    # redirect to competition page
+    return redirect(reverse('competition', kwargs={'id':competition.id}))
 
 @login_required
 def edit_competition(request, id):
     # Can only edit BEFORE the competition starts
-    pass
+    if request.method == 'GET':
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    competition = get_object_or_404(Competition, id=id)
+    if request.user.profile != competition.creator or \
+       competition.start >= datetime.time:
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    form = EditCompetitionForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    # don't save the new form instance
+
+    if form.cleaned_data['base_sound']:
+        competition.base_sound = form.cleaned_data['base_sound']
+    if form.cleaned_data['start'] and form.cleaned_data['end']:
+        competition.start = form.cleaned_data['start']
+        competition.end = form.cleaned_data['end']
+    if form.cleaned_data['description']:
+        competition.description = form.cleaned_data['description']
+
+    aj = form.cleaned_data['addJudges'].split(' ')
+    for judge in aj:
+        if User.objects.filter(username=judge):
+            j = User.objects.get(username=judge)
+            competition.judges.add(Profile.objects.get(user=j))
+
+    rj = form.cleaned_data['removeJudges'].split(' ')
+    for judge in rj:
+        if User.objects.filter(username=judge):
+            j = User.objects.get(username=judge)
+            competition.judges.remove(Profile.objects.get(user=j))
+
+    competition.save()
 
 # just add to regular rate...
 @login_required
@@ -451,8 +517,11 @@ def competition(request, id):
     # show creator, judges, description, then submissions
     # don't accept submissions, or release base music until comp starts
     # if competition is done, show like the winners and stuff
-    context = {'competition': get_object_or_404(Competition, id=id)}
+    context = {}
+    competition = get_object_or_404(Competition, id=id)
 
+    context['competition'] = competition
+    context['posts'] = competition.submissions.all()
     # WRITE COMPETITION.HTML
     return render(request, 'competition.html', context)
 
@@ -470,23 +539,47 @@ def list_competitions(request):
 # adds base sound for competition to the user's studio
 @login_required
 def join_competition(request, id):
-    if request.method == 'GET':
-        return redirect(request.META.get('HTTP_REFERER'))
+    #if request.method == 'GET':
+    #    return redirect(request.META.get('HTTP_REFERER'))
 
     profile = get_object_or_404(Profile, user=request.user)
     competition = get_object_or_404(Competition, id=id)
-    form = UploadMusicForm(request.POST, request.FILES)
-    if form.is_valid():
-        new_project = Project(profile=get_object_or_404(Profile, user=request.user), status="in_progress",
-                              competition=competition)
-        new_project.save()
-        song = form.save()
-        song.project = new_project
-        song.save()
-        return redirect(reverse('studio'))
 
-    return redirect(request.META.get('HTTP_REFERER'))
+    new_project = Project(profile=profile, status="in_progress", competition=competition)
+    new_project.save()
+
+    # create copy of base music file
+    ext = get_ext(competition.base_sound.name)
+    root = get_root(competition.base_sound.path)
+
+    audio_seg = AudioSegment.from_file(competition.base_sound.path, format=ext[1:])
+    new_path = root + "_" + request.user.username + ext
+    f = audio_seg.export(new_path)
+    f.close()
+
+    song = Song(name=competition.title, file=new_path, project=new_project)
+    song.save()
+
+    return redirect(reverse('studio'))
 
 
 # change 'add_post'
 # Now it posts your stuff, and also adds it to competition submissions
+
+########################
+### helper functions ###
+########################
+
+def get_ext(filename):
+    L = filename.split('.')
+    if len(L) == 0:
+        return ''
+
+    return '.'+L[-1]
+
+def get_root(filename):
+    L = filename.split('.')
+    if len(L) == 0:
+        return ''
+
+    return '.'.join(L[:len(L)-1])

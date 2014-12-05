@@ -105,12 +105,12 @@ body {
 }
 
 a:link {
-    color: #6FE1D5;
+    color: black;
     text-decoration: none;
 }
 
 a:visited {
-    color: #6FE1D5;
+    color: black;
     text-decoration: none;
 }
 
@@ -122,4 +122,18 @@ a:visited {
 
 .search-active {
     background-color: #6FE1D5;
+}
+
+.mytext {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+}
+.username {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.user-div {
+
+    margin-top: 50px;
+    margin-left: -400px;
 }

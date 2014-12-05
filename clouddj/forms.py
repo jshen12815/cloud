@@ -2,7 +2,7 @@ import os
 from django import forms
 from clouddj.models import *
 from django.forms.widgets import RadioSelect
-
+from datetimewidget.widgets import DateTimeWidget
 
 class UploadMusicForm(forms.ModelForm):
     class Meta:
@@ -241,17 +241,29 @@ class EditForm(forms.Form):
         # dictionary
         return new_username
 
+class JudgesForm(forms.Form):
+    judges = forms.CharField(max_length=4200, 
+                            label = 'Judges',
+                            widget = forms.TextInput(attrs={'class':'form-control', 'placeholder':'judges'}),
+                            required=False)
+
 class CompetitionForm(forms.ModelForm):
+
     class Meta:
         model = Competition
-        fields = ('judges', 'description', 'start', 'end', 'base_sound')
-        exclude = ('creator', 'participants', 'submissions')
+        fields = ('title', 'description', 'start', 'end', 'base_sound')
+        #exclude = ('creator', 'participants', 'submissions', 'judges')
+
+        dateTimeOptions = {
+            'format': 'mm/dd/yyyy HH:ii'
+        }
 
         widgets = {
-            'judges': forms.TextInput(attrs={'class':'form-control'}),
-            'description': forms.TextInput(attrs={'class':'form-control'}),
-            'start': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''}),
-            'end': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''})
+            # 'judges': forms.TextInput(attrs={'class':'form-control'}),
+            'title': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'title'}),
+            'description': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'description'}),
+            'start': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions),
+            'end': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions)
         }
 
     def clean_end(self):
@@ -273,3 +285,35 @@ class CompetitionForm(forms.ModelForm):
 
         return base_file
 
+class EditCompetitionForm(forms.ModelForm):
+    addJudges = forms.TextInput(attrs={'class':'form-control'})
+    removeJudges = forms.TextInput(attrs={'class':'form-control'})
+
+    class Meta:
+        model = Competition
+        fields = ('description', 'start', 'end', 'base_sound')
+
+    def clean_base_sound(self):
+        base_file = self.cleaned_data.get('base_sound')
+        if not base_file:
+            return None
+
+        ext = os.path.splitext(base_file.name)[1]
+
+        valid_extentions = ['.mp3', '.wav', '.ogg']
+        if not ext in valid_extentions:
+            raise forms.ValidationError("Invalid file type.")
+
+        return base_file
+
+    def clean_end(self):
+        start = self.cleaned_data['start']
+        end = self.cleaned_data['end']
+
+        if not start or not end:
+            return None
+
+        if start > end:
+            raise forms.ValidationError("Competition must end after it starts")
+
+        return end

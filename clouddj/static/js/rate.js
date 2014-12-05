@@ -13,20 +13,30 @@
 
 
 
-$(document).ready(function() {
+
 $(".starrate").click(function( event ) {
-    var url = "a"//$(this).parent().attr("url");
+   // var url = "a"//$(this).parent().attr("url");
     //var csrf_name = form.find("[type=hidden]").attr("name");
 
-    console.log($(this).parent().attr("post-id"));
+    //console.log($(this).parent().attr("post-id"));
 
 
-    $.ajax({
-        url: url,
+ //   $.ajax({//
+   //     url: url,
 
-        data: {
-            "csrfmiddlewaretoken": $("#csrf").val()
-        },
+   // $(".starrate").click(function( event ) {
+
+        var form = $(".rateform");
+        var url = $(this).parent().attr("href");
+        //var csrf_name = form.find("[type=hidden]").attr("name");
+        console.log(url);
+        
+        $.ajax({
+            url: url,
+
+            data: {
+                "csrfmiddlewaretoken": $("#csrf").val()
+            },
 
         type: "POST",
 
@@ -36,6 +46,6 @@ $(".starrate").click(function( event ) {
         }
     });
 
-    return false;
-});
+
+    });
 });
