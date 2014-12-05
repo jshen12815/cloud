@@ -51,15 +51,15 @@ class Post(models.Model):
     likes = models.ManyToManyField(Profile, related_name="post_likes", blank=True)
     hashtags = models.ManyToManyField(Hashtag, related_name='posts')
     overallrating = models.FloatField(default=0, blank=True, null=True)
-    showrating = models.IntegerField(default=0, blank=True, null= True)
+    showrating = models.IntegerField(default=0, blank=True, null=True)
     numratings = models.IntegerField(default=0, blank=True, null=True)
     
     def __unicode__(self):
         return self.profile.user.username + ": "+self.text
 
     @staticmethod
-    def get_posts_containing(user, query):
-        return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query))
+    def get_posts_containing(profile, query):
+        return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query) | Q(profile__user__username__contains=query))
 
     @staticmethod
     def get_stream_posts(user):
