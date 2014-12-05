@@ -64,9 +64,6 @@ def add_post(request, id):
 def rate(request,id):
 
     post = get_object_or_404(Post, id = id)
-    print post.text
-    print post.id
-    print post.overallrating
     data = {}
     data['post_id'] = id
     rating=request.POST['rateval']
@@ -87,14 +84,7 @@ def rate(request,id):
         post.numratings = new_num_ratings
         post.showrating = int(post.overallrating)
         post.save()
-        print "rate"
-        print newrating.rating
-        print "num"
-        print post.numratings
-        print "overall"
-        print post.overallrating
-        print "show"
-        print post.showrating
+
     return redirect(request.META.get('HTTP_REFERER'))
 
 
