@@ -44,11 +44,11 @@ background-color: white;
 
 /* - - - - - RATE */
 
-#rate {
+.rate {
   margin-right: 10px;
 }
 
-#rate:not(:checked) > label {
+.rate:not(:checked) + label {
   cursor:pointer;
   float: right;
 
@@ -58,18 +58,27 @@ background-color: white;
 
   text-align: center;
 }
-#rate:not(:checked) > label:hover,
-#rate:not(:checked) > label:hover ~ label {
+
+
+
+.rate:not(:checked) + label:hover,
+.rate:not(:checked) + label:hover ~ label {
   color: rgba(100, 100, 100, .6);
 }
-#rate > input:checked + label:hover,
-#rate > input:checked + label:hover ~ label,
-#rate > input:checked ~ label:hover,
-#rate > input:checked ~ label:hover ~ label,
-#rate > label:hover ~ input:checked ~ label {
+
+
+
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
   color: rgba(100, 100, 100, .8);
 }
-#rate > input:checked ~ label {
+
+
+
+.rate > input:checked ~ label {
   color: rgb(100, 100, 100);
 }
 

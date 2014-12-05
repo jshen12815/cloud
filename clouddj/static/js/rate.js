@@ -1,4 +1,4 @@
- /*
+ 
  $(document).ready(function() { 
     console.log("hellooo");
     var url = $(this).parent().attr("href");
@@ -7,10 +7,10 @@
 
    });
   });
-*/
 
 
 
+/*
 
 
 
@@ -48,4 +48,4 @@ $(".starrate").click(function( event ) {
 
 
     });
-});
+});*/

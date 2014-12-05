@@ -202,9 +202,6 @@
                             </div>
                             {% csrf_token %}
                         </form>
-<!--
-id="rate" class="rating"-->
-                        
 
                     
 
@@ -269,23 +266,23 @@ id="rate" class="rating"-->
 
 
                         {{post.id}}
-                     <form class = "rateform" id = "rateform" action = "{% url 'rate' post.id %}" method="post">
+                     <form class = "rateform" action = "{% url 'rate' post.id %}" method="post">
 
                         {% csrf_token %}
-                        <span id="rate" class="rating" post-id="{{ post.id }}">
+                        <span class="rate" post-id="{{ post.id }}">
                             {{post.id}}
-                          <input type="radio" class = "starrate" id="star_5" name="rateval"  value="5"{% if post.showrating = 5 %} checked {% endif %}/>
+                          <input type="radio" class = "starrate star_5" name="rateval" onclick = "this.form.submit();" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
                             <label for="star_5" title="Five">&#9733;</label>
                           <!-- FOURTH STAR -->
-                          <input type="radio" class = "starrate" id="star_4"  name="rateval" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4" title="Four">&#9733;</label>
+                          <input type="radio" class = "starrate star_4"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4" title="Four">&#9733;</label>
                           <!-- THIRD STAR -->
-                          <input type="radio" class = "starrate" id="star_3" name="rateval" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
+                          <input type="radio" class = "starrate star_3" name="rateval"  onclick = "this.form.submit();" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
                           <label for="star_3" title="Three">&#9733;</label>
                           <!-- SECOND STAR -->
-                          <input type="radio" class = "starrate" id="star_2" name="rateval" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
+                          <input type="radio" class = "starrate star_2" name="rateval"  onclick = "this.form.submit();" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
                           <label for="star_2" title="Two">&#9733;</label>
                           <!-- FIRST STAR -->
-                          <input type="radio" class = "starrate" id="star_1" name="rateval" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
+                          <input type="radio" class = "starrate star_1" name="rateval"  onclick = "this.form.submit();" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
                           <label for="star_1" title="One">&#9733;</label>
 
                       </span>
