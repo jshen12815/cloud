@@ -12,6 +12,10 @@ class Profile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+    @staticmethod
+    def get_user_named(query):
+        return Profile.objects.filter(Q(user__username__contains=query))
+
 
 class Hashtag(models.Model): 
     text = models.CharField(max_length=200, primary_key=True)

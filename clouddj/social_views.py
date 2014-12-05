@@ -279,10 +279,15 @@ def search(request):
         return render(request, 'search.html', context)
 
     posts = Post.get_posts_containing(request.user.profile, form.cleaned_data['text'])
+    profiles = Profile.get_user_named(form.cleaned_data['text'])
+
+    if not profiles:
+        print "no users\n"
 
     context['message'] = str(int(len(posts))) + " result(s) found"
 
     context['posts'] = posts
+    context['profiles'] = profiles
 
     return render(request, 'search.html', context)
 
