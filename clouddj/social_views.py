@@ -427,24 +427,33 @@ def recommended_songs(profile):
 
 @login_required
 def create_competition(request):
+    context = {}
+    context['form'] = CompetitionForm()
+    context['judgeform'] = JudgesForm()
+
     if request.method == 'GET':
-        return redirect(request.META.get('HTTP_REFERER'))
+        return render(request, 'create_competition.html', context)
 
     competition = Competition(creator=request.user.profile)
     form = CompetitionForm(request.POST, request.FILES, instance=competition)
+    judgeform = JudgesForm(request.POST)
 
-    if not form.is_valid():
-        return redirect(request.META.get('HTTP_REFERER'))
+    if not form.is_valid() or not judgeform.is_valid():
+        context['form'] = form
+        context['judgeform'] = judgeform
+        print form.errors
+        return render(request, 'create_competition.html', context)
 
     competition = form.save()
 
-    judges = form.cleaned_data['judges'].split(' ')
+    judges = judgeform.cleaned_data['judges'].split(' ')
     for judge in judges:
         if User.objects.filter(username=judge):
             j = User.objects.get(username=judge)
             competition.judges.add(Profile.objects.get(user=j))
 
-    return redirect(request.META.get('HTTP_REFERER'))
+    # redirect to competition page
+    return redirect(reverse('competition', kwargs={'id':competition.id}))
 
 @login_required
 def edit_competition(request, id):

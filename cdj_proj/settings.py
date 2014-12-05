@@ -95,6 +95,7 @@ if not DEBUG:
         'widget_tweaks',
         'storages',
         'boto',
+        'datetimewidget',
     )
 
     # Database

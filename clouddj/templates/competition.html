@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+
+{% block body %}
+{{ competition.creator }}
+
+{{ competition.description }}
+
+<ol>
+{% for post in competition.submissions.all %}
+	<li>
+		post.text
+	</li>
+{% endfor %}
+</ol>
+{% endblock body %}

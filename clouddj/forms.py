@@ -2,7 +2,7 @@ import os
 from django import forms
 from clouddj.models import *
 from django.forms.widgets import RadioSelect
-
+from datetimewidget.widgets import DateTimeWidget
 
 class UploadMusicForm(forms.ModelForm):
     class Meta:
@@ -241,19 +241,25 @@ class EditForm(forms.Form):
         # dictionary
         return new_username
 
+class JudgesForm(forms.Form):
+    judges = forms.CharField(max_length=4200, 
+                            label = 'Judges',
+                            widget = forms.TextInput(attrs={'class':'form-control', 'placeholder':'judges'}),
+                            required=False)
+
 class CompetitionForm(forms.ModelForm):
-    judges = forms.TextInput(attrs={'class':'form-control'})
 
     class Meta:
         model = Competition
-        fields = ('description', 'start', 'end', 'base_sound')
-        exclude = ('creator', 'participants', 'submissions', 'judges')
+        fields = ('title', 'description', 'start', 'end', 'base_sound')
+        #exclude = ('creator', 'participants', 'submissions', 'judges')
 
         widgets = {
             # 'judges': forms.TextInput(attrs={'class':'form-control'}),
-            'description': forms.TextInput(attrs={'class':'form-control'}),
-            'start': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''}),
-            'end': forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''})
+            'title': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'title'}),
+            'description': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'description'}),
+            'start': DateTimeWidget(bootstrap_version=3),#forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''}),
+            'end': DateTimeWidget(bootstrap_version=3)#forms.DateTimeInput(format='%m/%d/%Y %H:%M', attrs={'data-datetimepicker':''})
         }
 
     def clean_end(self):
