@@ -573,7 +573,7 @@ html {
 
 
 
-#right {
+.right {
   padding-left: 50px;
 }
 
@@ -648,7 +648,7 @@ a:visited {
 
 .search-icon {
     position: relative;
-    left: 690px;
+    left: 340px;
     color: dimgray;
 }
 

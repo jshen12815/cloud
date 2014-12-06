@@ -3,6 +3,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
@@ -19,7 +20,7 @@ import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
 import math
-
+from pydub import AudioSegment
 
 def home(request):
     profiles = Profile.objects.all()
@@ -52,7 +53,8 @@ def add_post(request, id):
     if competition:
         # check if it's still in time range
         time = datetime.datetime
-        if competition.start <= time and time <= competition.end:
+        if competition.start <= time and time <= competition.end and \
+           (request.user.profile not in competition.participants.all()):
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
@@ -378,10 +380,11 @@ def edit_profile(request):
     if form.cleaned_data['new_email'] != "":
         request.user.email = form.cleaned_data['new_email']
 
+    request.user.profile.photo = request.FILES['photo']
+
+    request.user.profile.save()
     request.user.save()
     update_session_auth_hash(request, request.user)
-
-    print "success\n"
 
     return render(request, 'editprofile.html', context)
 
@@ -392,7 +395,7 @@ def profile(request, id):
     user_to_view = get_object_or_404(Profile, id=id)
 
     context['search'] = SearchForm()
-    context['prof_owner'] = user_to_view
+    context['profile'] = user_to_view
 
     context['user'] = request.user
     context['posts'] = Post.get_user_posts(user_to_view)
@@ -561,6 +564,10 @@ def join_competition(request, id):
     profile = get_object_or_404(Profile, user=request.user)
     competition = get_object_or_404(Competition, id=id)
 
+    time = datetime.datetime
+    if (time < competition.start) or (profile in competition.participants.all()):
+        return redirect(request.META.get('HTTP_REFERER'))
+
     new_project = Project(profile=profile, status="in_progress", competition=competition)
     new_project.save()
 
@@ -599,3 +606,14 @@ def get_root(filename):
         return ''
 
     return '.'.join(L[:len(L)-1])
+
+
+@login_required
+def get_photo(request, id):
+
+    profile = get_object_or_404(Profile, id=id)
+    if not profile.photo:
+        raise Http404
+
+    content_type = guess_type(profile.photo.name)
+    return HttpResponse(profile.photo, content_type=content_type)

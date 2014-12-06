@@ -131,7 +131,7 @@
         <div class="col-sm-3 col-md-3 sidebar">
             {% block labels %}
             <ul class="profile">
-                <img class="propic" src="{% static 'images/propic.png' %}">
+                <img class="profpic" border="0" src="{% url 'photo' profile.id %}" alt="{{profile.user.username}}" width="250" height="250">
             </ul>
             {% endblock %}
         </div>
@@ -141,7 +141,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
             {% for post in posts %}
             {% if post.photo %}
-            <img class="postpropic" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
+            <img class="postpropic" border="0" src="{% url 'photo' profile.id %}" alt="{{post.profile.user.username}}"
                  width="170" height="170">
             {% endif %}
             <div class="postblock" id="topblock">
@@ -154,7 +154,26 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div id="right">
+                        <div class = "right">
+                            <div class="row">
+                                <div class="username-text col-md-2">
+                                    {{post.profile.user.username}}
+                                </div>
+                                <div class="pull-right dim-text ">{{post.date}} &nbsp;&nbsp;&nbsp;</div>
+                                <div style="width: 200px" class="song-title">
+                                    {{post.title}}
+                                </div>
+                                <div style="width: 200px" class="song-text">
+                                    {{post.text}}
+                                </div>
+                            </div>
+                         </div>
+                    
+
+
+                         <br>
+
+                    <div id="new">
                         {% with post.id|stringformat:"s" as post_id %}
                         <button id="{{ 'play-'|add:post_id }}" class="pause" data-action="play">
                             <i class="glyphicon glyphicon-play"></i>|
@@ -175,18 +194,7 @@
             </div>
             <div class="postblock">
                 <div class="photo">
-                    <div class="row">
-                        <div class="username-text col-md-2">
-                            {{post.profile.user.username}}
-                        </div>
-                        <div class="pull-right dim-text col-md-8">{{post.date}}</div>
-                    </div>
-                    <div style="width: 200px" class="song-title">
-                        {{post.title}}
-                    </div>
-                    <div style="width: 200px" class="song-text">
-                        {{post.text}}
-                    </div>
+                    
                     <audio controls style="display:none" id="audio_controls">
                         <source id="{{ 'audiosrc-'|add:post_id }}" src="{% url 'get_song' post.song.id %}"
                                 type="{{ type }}">
@@ -202,9 +210,6 @@
                             </div>
                             {% csrf_token %}
                         </form>
-<!--
-id="rate" class="rating"-->
-                        
 
                     
 
@@ -217,7 +222,27 @@ id="rate" class="rating"-->
 
                     </div>
                     {% endwith %}
-                    <p style="margin-top: 10px; width: 590px">
+                    <p style="margin-top: 10px; margin-bottom: 10px; width: 690px">
+                       
+                        <form class = "rateform" id = "rateform" action = "{% url 'rate' post.id %}" method="post">
+
+                        {% csrf_token %}
+                        <span class="rate" post-id="{{ post.id }}">
+                           
+                          <input type="radio" class = "starrate" id="star_5{{ post.id }}" name="rateval" onclick = "this.form.submit();" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
+                            <label for="star_5{{ post.id }}" >&#9733;</label>
+
+                          <input type="radio" class = "starrate" id="star_4{{ post.id }}"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4{{ post.id }}" title="Four">&#9733;</label>
+                          <input type="radio" class = "starrate" id="star_3{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
+                          <label for="star_3{{ post.id }}" >&#9733;</label>
+                          <input type="radio" class = "starrate" id="star_2{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
+                          <label for="star_2{{ post.id }}" >&#9733;</label>
+                          <input type="radio" class = "starrate" id="star_1{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
+                          <label for="star_1{{ post.id }}" >&#9733;</label>
+                          <span class = "numratings"> ({{ post.numratings }}) </span>
+                         </span>
+                    
+                        </form>
                         {% if profile not in post.likes.all %}
                         <a href="{% url 'like' post.id %}">
                             <button type="button" class="btn btn-default btn-xs my-btn dark-text like-btn"> &#10084;
@@ -245,58 +270,35 @@ id="rate" class="rating"-->
                             </button>
                         </a>
 
+                    </p>
+
+
+                    <p style="margin-top: -30px; margin-bottom:25px;">
+
                         <!-- comment related -->
                         <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}">
-                            {{post.comment_set.count}}</a>
+                            {{post.comment_set.count}} &nbsp; &nbsp;</a>
                         <span class="dim-text pull-right">   &#9998; &nbsp;</span>
                         <!-- like related -->
                         <span class="pull-right dim-text">   &nbsp; | &nbsp;</span>
                         <span class="pull-right dim-text like-count">{{post.likes.count}}</span>
-
-                   
-
-
-
                         <span class="pull-right dim-text">   &#10084; &nbsp;  </span>
-
-                        <!-- RATE -->
-                    
-
-
-
-
-
-
-
-                        {{post.id}}
-                     <form class = "rateform" id = "rateform" action = "{% url 'rate' post.id %}" method="post">
-
-                        {% csrf_token %}
-                        <span class="rate" post-id="{{ post.id }}">
-                           
-                          <input type="radio" class = "starrate" id="star_5{{ post.id }}" name="rateval" onclick = "this.form.submit();" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
-                            <label for="star_5{{ post.id }}" >&#9733;</label>
-                          <!-- FOURTH STAR -->
-                          <input type="radio" class = "starrate" id="star_4{{ post.id }}"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4{{ post.id }}" title="Four">&#9733;</label>
-                          <!-- THIRD STAR -->
-                          <input type="radio" class = "starrate" id="star_3{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
-                          <label for="star_3{{ post.id }}" >&#9733;</label>
-                          <!-- SECOND STAR -->
-                          <input type="radio" class = "starrate" id="star_2{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
-                          <label for="star_2{{ post.id }}" >&#9733;</label>
-                          <!-- FIRST STAR -->
-                          <input type="radio" class = "starrate" id="star_1{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
-                          <label for="star_1{{ post.id }}" >&#9733;</label>
-
-                      </span>
-                      <span> my rating is {% for rating in post.rating_set.all %} 
+                         <span class="pull-right dim-text">   &nbsp; | &nbsp;</span>
+                        <span class="pull-right dim-text like-count"> {% for rating in post.rating_set.all %} 
                         {% if rating.profile == profile %}
                             {{rating.rating}}
                         {% endif %}
-                        {% endfor %} work
-                         </span>
-                      <span title="number of ratings"> {{ post.numratings }} ratings</span>
-                        </form>
+                        {% endfor %}</span>
+                        <span class="pull-right dim-text" style="padding-right:10px">   &#9733;  </span>
+
+
+
+                        
+
+
+
+                        
+                     
                     </p>
                     <div id="{{post.id}}" class="collapse">
                         {% for comment in post.comment_set.all reversed %}
