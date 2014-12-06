@@ -19,9 +19,15 @@
         <a type="button" data-toggle="modal" data-target="#follower_modal"> {{profile.followers.count}}</a>
         {% if user.profile != profile %}
             <form action="{% url 'follow' profile.id %}">
-                <button id="follow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn">
-                    <span class="glyphicon glyphicon-ok-circle"></span> Follow
+                {% if user.profile in  profile.followers.all %}
+                <button id="unfollow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text unfollow-btn fu-btn">
+                    <span class="glyphicon glyphicon-ok-circle"></span> <span class="btn-text">Unfollow</span>
                 </button>
+                {% else %}
+                <button id="follow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn fu-btn">
+                    <span class="glyphicon glyphicon-ok-circle"></span> <span class="btn-text">Follow</span>
+                </button>
+                {% endif %}
             </form>
         {% endif %}
         {% if user.profile == profile %}
@@ -61,11 +67,7 @@
                                 {% for follower in profile.followers.all %}
                                     <div class="row follow-div">
                                         <div class="col-md-1">
-                                            {% if follower.about.picture %}
-                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.id %}" alt="{{follower.username}}" width="40" height="40">
-                                            {% else %}
-                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{follower.username}}" width="40" height="40">
-                                            {% endif %}
+                                            <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.id %}" alt="{{follower.user.username}}" width="40" height="40">
                                         </div>
                                         <div style="width:500px" class="col-md-2">
                                             <a style="color: black" href="{% url 'profile' follower.id %}">
@@ -80,11 +82,7 @@
                                 {% for following in profile.following.all %}
                                     <div class="row follow-div">
                                         <div class="col-md-1">
-                                            {% if following.picture %}
-                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' following.id %}" alt="{{following.username}}" width="40" height="40">
-                                            {% else %}
-                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{following.username}}" width="40" height="40">
-                                            {% endif %}
+                                            <img class="profpic img-rounded" border="0" src="{% url 'photo' following.id %}" alt="{{following.user.username}}" width="40" height="40">
                                         </div>
                                         <div style="width:500px" class="col-md-2">
                                             <a style="color: black" href="{% url 'profile' following.id %}">
@@ -102,3 +100,7 @@
         </div>
     </div>
 {% endblock body %}
+
+{% block more_scripts %}
+{{block.super}}
+{% endblock %}

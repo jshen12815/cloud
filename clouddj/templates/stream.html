@@ -12,6 +12,27 @@
 <body class="backgroundcolor">
 {% endblock bodytag %}
 
+{% block labels %}
+    <div class="sug-frd-text">
+        <span class="glyphicon glyphicon-user"></span> <span>Who to follow</span>
+    </div>
+    <hr>
+    {% for suggested in suggested_friends %}
+    <div class="sug-frd-div row">
+        <div class="col-md-4">
+            <img class="profpic" border="0" src="{% url 'photo' suggested.id %}" alt="{{suggested.user.username}}" width="70" height="70">
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'profile' suggested.id %}"><p style="color:black">{{suggested.user.username}}</p></a>
+            <span class="glyphicon glyphicon-user"></span> {{suggested.followers.count}}
+            <form action="{% url 'follow' suggested.id %}">
+                <button class="btn btn-default btn-xs my-btn dark-text" style="margin-top: 2px;">Follow</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock labels %}
+
 {% block body %}
 {{block.super}}
 <input type="hidden" value="{{ csrf_token }}" id="csrf">

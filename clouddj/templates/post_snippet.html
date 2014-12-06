@@ -1,0 +1,166 @@
+            {% load static %}
+
+            {% if post.profile.photo %}
+            <img class="postpropic" border="0" src="{% url 'photo' post.profile.id %}" alt="{{post.profile.user.username}}"
+                 width="170" height="170">
+            {% endif %}
+            <div class="postblock" id="topblock">
+                <div id="content">
+                    <div id="left">
+                        <div class="photo">
+                            {% if post.photo %}
+                            <img border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
+                                 width="120" height="120">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class = "right">
+                        <div class="row">
+                            <div class="pull-right dim-text ">{{post.date}} &nbsp;&nbsp;&nbsp;</div>
+                            <div style="width: 400px; padding-left: 100px;" class="song-title">
+                                {{post.title}}
+                                <span class="username-text">
+                                    {{post.profile.user.username}}
+                                </span> <a id="dropdownMenu1"><span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    {% for playlist in playlists %}
+                                        <li role="presentation">
+                                            <a role="menuitem" tabindex="-1" href="#"><span
+                                                class="glyphicon glyphicon-user"></span> {{playlist.name}}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div style="width: 200px; padding-left: 100px;" class="song-text">
+                                {{post.text}}
+                            </div>
+                            <div id="new">
+                                {% with post.id|stringformat:"s" as post_id %}
+                                <div class="row">
+                                    <div id="demo">
+                                        <button id="{{ 'play-'|add:post_id }}" class="pause" data-action="play">
+                                            <img  class = "playbutton"  src="{% static 'images/playpause.png' %}">
+                                        </button>
+                                        <div class="waveform" id="{{ 'waveform-'|add:post_id }}">
+                                            <div class="progress progress-striped active" id="{{ 'progressbar-'|add:post_id }}">
+                                                <div class="progress-bar progress-bar-info"></div>
+                                            </div>
+                                            <!-- Here be the waveform -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "aboutpost">
+                        <p style="margin-top: 20px; margin-bottom: 10px; width: 690px">
+                            <form class = "rateform" id = "rateform" action = "{% url 'rate' post.id %}" method="post">
+                                {% csrf_token %}
+                                <span class="rate" post-id="{{ post.id }}">
+                                    <input type="radio" class = "starrate" id="star_5{{ post.id }}" name="rateval" onclick = "this.form.submit();" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
+                                    <label for="star_5{{ post.id }}" title="Five">&#9733;</label>
+                                    <input type="radio" class = "starrate" id="star_4{{ post.id }}"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />
+                                    <label for="star_4{{ post.id }}" title="Four">&#9733;</label>
+                                    <input type="radio" class = "starrate" id="star_3{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
+                                    <label for="star_3{{ post.id }}" title="Three">&#9733;</label>
+                                    <input type="radio" class = "starrate" id="star_2{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
+                                    <label for="star_2{{ post.id }}" title="Two">&#9733;</label>
+                                    <input type="radio" class = "starrate" id="star_1{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
+                                    <label for="star_1{{ post.id }}" title="One">&#9733;</label>
+                                    <span class = "numratings"> ({{ post.numratings }}) </span>
+                                </span>
+                            </form>
+                            {% if profile not in post.likes.all %}
+                            <a href="{% url 'like' post.id %}">
+                                <button type="button" class="btn btn-default btn-xs my-btn dark-text like-btn"> &#10084;
+                                    Like
+                                </button>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'like' post.id %}">
+                                <button type="button" class="btn btn-default btn-xs lit-like dark-text like-btn"> &#10084;
+                                    Unlike
+                                </button>
+                            </a>
+                            {% endif %}
+                            {% if post.profile.user == user %}
+                            <a href="{% url 'delete_post' post.id %}">
+                                <button type="button" class="btn btn-default btn-xs my-btn dark-text del-btn"> &#10006;
+                                    Delete
+                                </button>
+                            </a>
+                            {% endif %}
+
+                            <a href="{% url 'get_song' post.song.id %}" download="{{ post.title|slugify|add:'.mp3' }}">
+                                <button type="button" class="btn btn-default btn-xs my-btn dark-text">
+                                    <span class="glyphicon glyphicon-download"></span> Download
+                                </button>
+                            </a>
+
+                            <a  data-toggle="collapse" data-target="#{{post.id}}">
+                                <button type="button" class="btn btn-default btn-xs my-btn dark-text">
+                                    <span class="glyphicon glyphicon-chevron-down"></span> Comments
+                                </button>
+                            </a>
+                        </p>
+                        <p style="margin-top: -30px; margin-bottom:25px;">
+                            <!-- comment related -->
+                            <span class="dim-text pull-right comment-count">
+                                {{post.comment_set.count}} &nbsp; &nbsp;</span>
+                            <span class="dim-text pull-right">   &#9998; &nbsp;</span>
+                            <!-- like related -->
+                            <span class="pull-right dim-text">   &nbsp; | &nbsp;</span>
+                            <span class="pull-right dim-text like-count">{{post.likes.count}}</span>
+                            <span class="pull-right dim-text">   &#10084; &nbsp;  </span>
+                            <span class="pull-right dim-text">   &nbsp; | &nbsp;</span>
+                            <span class="pull-right dim-text">{% for rating in post.rating_set.all %}
+                            {% if rating.profile == profile %}
+                                {{rating.rating}}
+                            {% endif %}
+                            {% endfor %}</span>
+                            <span class="pull-right dim-text" style="padding-right:10px">   &#9733;  </span>
+                        </p>
+                    </div>
+
+
+                    <div class = "Hashtaglist">
+                        {% for hashtag in post.hashtags.all  %}
+                        <a href = #>#{{ hashtag.text }}  </a>
+                        {% endfor %}
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="postblock" id = "commentblock">
+                <div class="photo">
+                    
+                    <audio controls style="display:none" id="audio_controls">
+                        <source id="{{ 'audiosrc-'|add:post_id }}" src="{% url 'get_song' post.song.id %}"
+                                type="{{ type }}">
+                        Your browser does not support the audio element.
+                    </audio>
+
+                    <div class="comment-box">
+                        <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
+                            <div class = "box">
+                                <label style="display:none" for="{{ 'comment-'|add:post_id }}"></label>
+                                <input id="{{ 'comment-'|add:post_id }}" type="text" name="comm"
+                                       class="textbox song-text" placeholder=" Comment...">
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                    {% endwith %}
+
+                    <div id="{{post.id}}" class="collapse commentshow">
+                        {% for comment in post.comment_set.all reversed %}
+                        <div class="comment-username">
+                            {{comment.profile.user.username}}
+                        </div>
+                        <div style="width: 200px" class="comment-text">
+                            {{comment.text}}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>

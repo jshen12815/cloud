@@ -4,6 +4,7 @@
 {% block stylesheets %}
     {{block.super}}
     <link href="{% static 'css/search.css' %}" rel="stylesheet">
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block bodytag %}
@@ -39,12 +40,16 @@
 {% block body %}
     {{block.super}}
     <div id="users-block" class="user-div" style="display:none">
-        <p class="mytext">{{profiles|length}} people found</p>
+        {% if profiles|length == 1 %}
+            <p class="mytext">{{profiles|length}} person found</p>
+        {% else %}
+            <p class="mytext">{{profiles|length}} people found</p>
+        {% endif %}
         <hr style="width: 200px;">
         {% for profile in profiles %}
             <div class="row">
                 <div class="col-md-8">
-                    <img class="profpic" border="0" src="{% static 'images/propic.png' %}" alt="{{profile.user.username}}" width="150" height="150">
+                    <img class="profpic" border="0" src="{% url 'photo' profile.id %}" alt="{{profile.user.username}}" width="150" height="150">
                 </div>
                 <div class="col-md-3 mytext">
                     <p class="mytext username"><a href="{% url 'profile' profile.id %}" >{{profile.user.username}}</a></p>

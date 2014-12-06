@@ -234,7 +234,7 @@ body {
 .playbutton {
     margin-right: 3px;
     margin-left: 3px;
-    width: 40px;
+    width: 52px;
 }
 
 .playbar {
@@ -286,7 +286,7 @@ body {
 }
 
 .textbox {
-    border: none;
+    border: solid 1px #A0a0a0;
     overflow: auto;
     outline: none;
     resize: none;

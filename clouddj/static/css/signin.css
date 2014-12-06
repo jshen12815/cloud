@@ -600,7 +600,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf7f7', end
 }
 
 #topblock {
-  height: 150px;
+  height: 260px;
+}
+#commentblock {
+background-color: #eeeeee;
 }
 
 
@@ -629,10 +632,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf7f7', end
 
 
 a:link {
+    color: black;
     text-decoration: none;
 }
 
 a:visited {
+    color: black;
     text-decoration: none;
 }
 
@@ -648,7 +653,7 @@ a:visited {
 
 .search-icon {
     position: relative;
-    left: 340px;
+    left: 244px;
     color: dimgray;
 }
 
@@ -669,4 +674,18 @@ a:visited {
     background-color: #6FE1D5;
     border-color: #6FE1D5;
     margin-left: 86%;
+}
+
+.sug-frd-text {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    color: gray;
+    margin-top: 20%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.playlist-panel {
+    width: 500px;
+    margin-left: 20%;
 }

@@ -8,7 +8,7 @@
 {% endblock bodytag %}
 
 {% block body %}
-<form enctype="multipart/form-data" class="control_form" method="post" action="">
+<form enctype="multipart/form-data" class="control_form" method="post" action="{% url 'edit-profile' %}">
     <div class="panel panel-default my-panel">
         <div class="panel-body my-panel-body">
             <h2>Edit Profile</h2>
@@ -16,11 +16,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="images">
-                                <img class="img-rounded modal-photo" border="0"
-                                     src="{% static 'images/default.jpg' %}" alt="song photo">
-                            </div>
-                            <input id="file-input" type="file" name="photo" class="form-control"
-                                   placeholder="choose photo" autofocus="">
+                        <img class="img-rounded modal-photo" border="0" src="{% static 'images/default-prof.jpg' %}" alt="song photo">
+                    </div>
+                    <input id="file-input" type="file" name="photo" class="form-control" placeholder="choose photo" autofocus="">
                 </div>
                 <div class="col-md-5">
                     <div>

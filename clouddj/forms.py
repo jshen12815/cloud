@@ -110,7 +110,7 @@ class PlaylistForm(forms.Form):
     playlist = forms.IntegerField()
 
     def clean(self):
-        cleaned_data = super(AddToPlaylistForm, self).clean()
+        cleaned_data = super(PlaylistForm, self).clean()
 
         return cleaned_data
 
@@ -212,7 +212,7 @@ class EditForm(forms.Form):
                                 widget = forms.PasswordInput(attrs = {"class": "form-control"}),
                                 required = False)
 
-    photo = forms.ImageField()
+    photo = forms.ImageField(required=False)
 
     # Customizes form validation for properties that apply to more
     # than one field.  Overrides the forms.Form.clean function.
@@ -245,6 +245,12 @@ class EditForm(forms.Form):
 
 class JudgesForm(forms.Form):
     judges = forms.CharField(max_length=4200, 
+                            label = 'Judges',
+                            widget = forms.TextInput(attrs={'class':'form-control', 'placeholder':'judges'}),
+                            required=False)
+
+class RemoveJudgesForm(forms.Form):
+    rjudges = forms.CharField(max_length=4200, 
                             label = 'Judges',
                             widget = forms.TextInput(attrs={'class':'form-control', 'placeholder':'judges'}),
                             required=False)
@@ -294,6 +300,17 @@ class EditCompetitionForm(forms.ModelForm):
     class Meta:
         model = Competition
         fields = ('description', 'start', 'end', 'base_sound')
+
+        dateTimeOptions = {
+            'format': 'mm/dd/yyyy HH:ii'
+        }
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'title'}),
+            'description': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'description'}),
+            'start': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions),
+            'end': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions)
+        }
 
     def clean_base_sound(self):
         base_file = self.cleaned_data.get('base_sound')
