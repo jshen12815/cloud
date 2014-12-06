@@ -20,9 +20,14 @@
         {% block sidebar %}
         <div class="col-sm-3 col-md-3 sidebar dark-text">
             {% block labels %}
-            <ul class="profile">
-                my competitions
+            <ul class="more">
+                My Competitions
             </ul>
+            {% for competition in competitions %}
+
+
+
+
             {% endblock %}
         </div>
         {% endblock sidebar %}
@@ -31,14 +36,20 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
             
 
+<div style = 'padding-top: 50px; margin-top: 50px;'>
 
-
-
-<a class = "create" href="{% url 'create_competition' %}">Create your own competition!</a>
+<a class = "createa"  href="{% url 'create_competition' %}">Create your own competition!</a>
+</div>
 <p> Competitions are a fun way to get connected with the community and challege your editing skills! </p>
+<a href= "{% url 'create_competition' %}" class="btn btn-md upload-btn compbtn">
+    <span class="glyphicon glyphicon-asterisk"></span>
+ Create Competition
+</a>
+
+
 <br>
 <br>
-<p class= "create">Current Competitions:</p>
+<p class= "create" >Current Competitions:</p>
 <br>
 
 	{% for competition in competitions %}
@@ -66,6 +77,8 @@
 
 
                      {% endif %}
+
+
 
 	
 	{% endfor %}

@@ -125,10 +125,9 @@ def rate(request,id):
         post.showrating = int(post.overallrating)
         post.save()
 
-    return HttpResponse(json.dumps(data), content_type="application/json")
-
-
-
+    data['rating'] = rating
+     return redirect(request.META.get('HTTP_REFERER'))
+    
 
 @login_required
 def delete_post(request, id):
