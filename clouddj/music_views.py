@@ -127,8 +127,8 @@ def record(request, song_id):
     recording = AudioSegment.from_file(temp_file, format='wav')
     start_time = float(form.cleaned_data['start'])
     start_time *= 1000
-    print(start_time)
-    print(len(seg))
+    # print(start_time)
+    # print(len(seg))
     if start_time / 1000 >= len(seg) / 1000:
         # append
         silent_secs = start_time - len(seg)
@@ -497,6 +497,76 @@ def amplify(request, song_id):
     upper_seg = seg[end:]
     middle_seg = seg[start:end]
     middle_seg = middle_seg.apply_gain(amp)
+    new_seg = lower_seg + middle_seg + upper_seg
+    new_song = export_edit(new_seg, song)
+
+    response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
+
+    return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+
+@login_required
+def speed(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    seg = song_to_audioseg(song)
+    temp_seg = AudioSegment.empty()
+    response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
+
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    form = AmplifyForm(request.POST)
+
+    if not form.is_valid():
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    speedx = form.cleaned_data['amplify']
+    if speedx < 0:
+        speedx = (-1.0 / speedx)
+
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
+
+    lower_seg = seg[:start]
+    upper_seg = seg[end:]
+    middle_seg = seg[start:end]
+
+    for i in xrange(0, len(middle_seg), 100):
+        temp_seg += middle_seg[i:i+int(speedx * 100)]
+
+
+    new_seg = lower_seg + temp_seg + upper_seg
+
+    new_song = export_edit(new_seg, song)
+
+    response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
+    return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+@login_required
+def strip_silence(request, song_id):
+
+    song = get_object_or_404(Song, id=song_id)
+    seg = song_to_audioseg(song)
+    response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
+
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    form = AmplifyForm(request.POST)
+
+    if not form.is_valid():
+        return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    thresh = int(form.cleaned_data['amplify'])
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
+
+    lower_seg = seg[:start]
+    upper_seg = seg[end:]
+    middle_seg = seg[start:end]
+
+    middle_seg = middle_seg.strip_silence(silence_thresh= -16)
+
     new_seg = lower_seg + middle_seg + upper_seg
     new_song = export_edit(new_seg, song)
 
