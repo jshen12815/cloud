@@ -26,3 +26,11 @@
   padding: 30px;
   padding-bottom: 80px;
 }
+
+.hashtagselector {
+border: solid 1px #A0A0A0;
+font-size: 14px;
+padding : 20px;
+background-color: #EEEEEE;
+
+}
