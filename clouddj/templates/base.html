@@ -140,8 +140,8 @@
         {% block page-posts %}
         <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
             {% for post in posts %}
-            {% if post.photo %}
-            <img class="postpropic" border="0" src="{% url 'photo' profile.id %}" alt="{{post.profile.user.username}}"
+            {% if post.profile.photo %}
+            <img class="postpropic" border="0" src="{% url 'photo' post.profile.id %}" alt="{{post.profile.user.username}}"
                  width="170" height="170">
             {% endif %}
             <div class="postblock" id="topblock">
@@ -190,14 +190,15 @@
                                 {% csrf_token %}
                                 <span class="rate" post-id="{{ post.id }}">
                                     <input type="radio" class = "starrate" id="star_5{{ post.id }}" name="rateval" onclick = "this.form.submit();" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
-                                    <label for="star_5{{ post.id }}" >&#9733;</label>
-                                    <input type="radio" class = "starrate" id="star_4{{ post.id }}"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4{{ post.id }}" title="Four">&#9733;</label>
+                                    <label for="star_5{{ post.id }}" title="Five">&#9733;</label>
+                                    <input type="radio" class = "starrate" id="star_4{{ post.id }}"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />
+                                    <label for="star_4{{ post.id }}" title="Four">&#9733;</label>
                                     <input type="radio" class = "starrate" id="star_3{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
-                                    <label for="star_3{{ post.id }}" >&#9733;</label>
+                                    <label for="star_3{{ post.id }}" title="Three">&#9733;</label>
                                     <input type="radio" class = "starrate" id="star_2{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
-                                    <label for="star_2{{ post.id }}" >&#9733;</label>
+                                    <label for="star_2{{ post.id }}" title="Two">&#9733;</label>
                                     <input type="radio" class = "starrate" id="star_1{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
-                                    <label for="star_1{{ post.id }}" >&#9733;</label>
+                                    <label for="star_1{{ post.id }}" title="One">&#9733;</label>
                                     <span class = "numratings"> ({{ post.numratings }}) </span>
                                 </span>
                             </form>
@@ -244,13 +245,11 @@
                             <span class="pull-right dim-text like-count">{{post.likes.count}}</span>
                             <span class="pull-right dim-text">   &#10084; &nbsp;  </span>
                             <span class="pull-right dim-text">   &nbsp; | &nbsp;</span>
-                            <span class="pull-right dim-text">
-                                {% for rating in post.rating_set.all %}
-                                    {% if rating.profile == profile %}
-                                        {{rating.rating}}
-                                    {% endif %}
-                                {% endfor %}
-                            </span>
+                            <span class="pull-right dim-text">{% for rating in post.rating_set.all %}
+                            {% if rating.profile == profile %}
+                                {{rating.rating}}
+                            {% endif %}
+                            {% endfor %}</span>
                             <span class="pull-right dim-text" style="padding-right:10px">   &#9733;  </span>
                         </p>
                     </div>
@@ -295,7 +294,7 @@
         {% endblock page-posts %}
     </div>
 </div>
-
+<input type="hidden" value="{{ csrf_token }}" id="csrf">
 {% endblock body %}
 
 <!-- Bootstrap core JavaScript
