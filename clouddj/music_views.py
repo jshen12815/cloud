@@ -528,8 +528,13 @@ def get_song(request, id):
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
-    logger.info('Song filepath:'+song.file.path +' ext:'+ext)
-    return AudioSegment.from_file(song.file.path, format=ext[1:])
+    path =song.file.path
+    logger.info('Song filepath1:'+path +' ext:'+ext)
+    fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+    if fs.exists(filename):
+        path = fs.path(filename)
+    logger.info('Song filepath2:'+path +' ext:'+ext)
+    return AudioSegment.from_file(path, format=ext[1:])
 
 
 def export_edit(audio_seg, old_song):
