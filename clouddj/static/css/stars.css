@@ -45,7 +45,7 @@ background-color: white;
 /* - - - - - RATE */
 
 .rate {
-  margin-right: 10px;
+  margin-right: 10px !important;
 }
 
 .rate:not(:checked) > label {
@@ -67,15 +67,15 @@ background-color: white;
 .rate > input:checked ~ label:hover,
 .rate > input:checked ~ label:hover ~ label,
 .rate > label:hover ~ input:checked ~ label {
-  color: rgba(100, 100, 100, .8);
+  color: rgba(100, 100, 100, .8) ;
 }
 .rate > input:checked ~ label {
-  color: rgb(100, 100, 100);
+  color: rgb(100, 100, 100) ;
 }
 
 
 .numratings {
-  margin-left: 680px;
+  margin-left: 660px;
   font-size: 12px;
 }
 
@@ -89,4 +89,29 @@ background-color: white;
    list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+
+.waveform {
+margin-left: 177px;
+width: 468px;
+margin-top: -76px;
+}
+
+.aboutpost {
+  margin-top: -8px;
+}
+
+
+
+.pause {
+background-color: #FFF;
+padding-left: 11px;
+border: none;
+border-radius: 50%;
+z-index: 10000000;
+}
+
+.commentshow {
+  margin-left: 30px;
 }

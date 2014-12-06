@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var options = {
         container     : element,
+        //scrollParent  : true,
         waveColor     : 'dimgray',
         progressColor : '#6FE1D5',
         loaderColor   : 'purple',
