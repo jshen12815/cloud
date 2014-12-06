@@ -143,9 +143,12 @@
                 <div class="col-md-offset-2">
                     <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase tempo and pitch" data-delay="1000">
                         <div class="shadowtext"> Speed</div>
-                        <label id="slider-label4" class="slider-label"></label>
-                        <input  class="slider-input" type="range" min="0" value="0"
-                               max="100">
+                        <form class="music_form" action="{% url 'speed' song.id %}">
+                            <label class="slider-label"></label>
+                            <input name="amplify" class="slider-input" type="range" min="-20" value="0"
+                               max="20">
+                            {% csrf_token %}
+                        </form>
                     </div>
                 </div>
             </div>
