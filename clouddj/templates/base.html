@@ -245,7 +245,7 @@
                             <span class="pull-right dim-text like-count">{{post.likes.count}}</span>
                             <span class="pull-right dim-text">   &#10084; &nbsp;  </span>
                             <span class="pull-right dim-text">   &nbsp; | &nbsp;</span>
-                            <span class="pull-right dim-text">{% for rating in post.rating_set.all %}
+                            <span class="pull-right dim-text user-rating">{% for rating in post.rating_set.all %}
                             {% if rating.profile == profile %}
                                 {{rating.rating}}
                             {% endif %}

@@ -114,7 +114,7 @@ class Rating(models.Model):
 
     profile= models.ForeignKey(Profile)
     post = models.ForeignKey(Post)
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=0)
 
 class Playlist(models.Model):
     posts = models.ManyToManyField(Post, related_name="playlist")

@@ -125,7 +125,8 @@ def rate(request,id):
         post.showrating = int(post.overallrating)
         post.save()
 
-    return redirect(request.META.get('HTTP_REFERER'))
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 
 
