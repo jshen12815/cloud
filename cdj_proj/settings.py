@@ -49,7 +49,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-if DEBUG:
+if not DEBUG:
     import dj_database_url
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
@@ -82,6 +82,7 @@ if DEBUG:
         'widget_tweaks',
         'storages',
         'boto',
+
     )
 
     # Database
