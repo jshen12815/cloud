@@ -20,8 +20,10 @@
                             <div style="width: 400px; padding-left: 100px;" class="song-title">
                                 {{post.title}}
                                 <span class="username-text">
-                                    {{post.profile.user.username}}
-                                </span> <a id="dropdownMenu1"><span class="caret"></span></a>
+
+                            <a href="{% url 'profile' post.profile.id %}">
+                                {{post.profile.user.username}}</a>
+                            </span> <a id="dropdownMenu1"><span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                                     {% for playlist in playlists %}
                                         <li role="presentation">
@@ -120,6 +122,13 @@
                             {% endfor %}</span>
                             <span class="pull-right dim-text" style="padding-right:10px">   &#9733;  </span>
                         </p>
+                    </div>
+
+
+                    <div class = "Hashtaglist">
+                        {% for hashtag in post.hashtags.all  %}
+                        <a href = #>#{{ hashtag.text }}  </a>
+                        {% endfor %}
                     </div>
                     <br>
                 </div>

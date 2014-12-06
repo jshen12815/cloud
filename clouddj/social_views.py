@@ -53,8 +53,11 @@ def add_post(request, id):
     if competition:
         # check if it's still in time range
         time = datetime.datetime
+        print "this is a competition!!!!!"
         if competition.start <= time and time <= competition.end and \
            (request.user.profile not in competition.participants.all()):
+            print "submissions"
+            print "participants"
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
@@ -257,11 +260,17 @@ def suggested_friends(profile):
 
 @login_required
 def explore(request):
+    num_hashtags = 10
+    num_tracks = 5
+
     context = {}
     context['search_form'] = SearchForm()
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['suggested_posts'] = recommended_songs(request.user.profile)
+    context['hashtags'] = Hashtag.trending(num_hashtags)
+    context['trending_tracks'] = Post.objects.all().order_by('-likes')[:num_tracks]
+
 
     return render(request, 'explore.html', context)
 

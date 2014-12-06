@@ -75,13 +75,21 @@
 	                                <div class="pull-right dim-text ">{{competition.start}} - {{competition.end}} &nbsp;&nbsp;&nbsp;</div>
 	                                <div style="width: 400px; padding-left: 20px;" class="song-title">
 	                                    <a href="{% url 'competition' competition.id %}">{{ competition.title }}</a>                            
-	                                    <span class="username-text">
-	                                    {{post.creator.profile.user.username}}
-	                                    </span>
+	           
+                                        <span class="username-text">
+
+                                        <a href="{% url 'profile' competition.creator.user.id %}">
+                                            <p style="color:black">{{competition.creator.user.username}}</p></a>
+                                        </span>                           
+
 	                                </div>
 	                                <div style="width: 200px; padding-left: 40px;" class="song-text">
 	                                    {{competition.description}}
 	                                </div>
+                                      <a style = "margin-right:20px;"href= "{% url 'join_competition' competition.id %}" class="btn btn-md upload-btn compbtn pull-right">
+        <span class="glyphicon glyphicon-asterisk"></span>
+         Join competition!
+        </a>
                              </div>
                          </div>
                      </div>
@@ -109,9 +117,11 @@
 	                                <div class="pull-right dim-text ">{{competition.start}} - {{competition.end}} &nbsp;&nbsp;&nbsp;</div>
 	                                <div style="width: 400px; padding-left: 20px;" class="song-title">
 	                                    <a href="{% url 'competition' competition.id %}">{{ competition.title }}</a>                            
-	                                    <span class="username-text">
-	                                    {{post.creator.profile.user.username}}
-	                                    </span>
+	                                                      <span class="username-text">
+
+                            <a href="{% url 'profile' competition.creator.user.id %}">
+                                <p style="color:black">{{competition.creator.user.username}}</p></a>
+                            </span> 
 	                                </div>
 	                                <div style="width: 200px; padding-left: 40px;" class="song-text">
 	                                    {{competition.description}}
