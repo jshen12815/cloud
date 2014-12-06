@@ -20,7 +20,7 @@ import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
 import math
-
+from pydub import AudioSegment
 
 def home(request):
     profiles = Profile.objects.all()
@@ -53,7 +53,8 @@ def add_post(request, id):
     if competition:
         # check if it's still in time range
         time = datetime.datetime
-        if competition.start <= time and time <= competition.end:
+        if competition.start <= time and time <= competition.end and \
+           (request.user.profile not in competition.participants.all()):
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
@@ -562,6 +563,10 @@ def join_competition(request, id):
 
     profile = get_object_or_404(Profile, user=request.user)
     competition = get_object_or_404(Competition, id=id)
+
+    time = datetime.datetime
+    if (time < competition.start) or (profile in competition.participants.all()):
+        return redirect(request.META.get('HTTP_REFERER'))
 
     new_project = Project(profile=profile, status="in_progress", competition=competition)
     new_project.save()
