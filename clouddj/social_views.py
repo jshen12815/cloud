@@ -211,6 +211,18 @@ def delete_from_playlist(request):
 
     return redirect(request.META.get('HTTP_REFERER'))
 
+
+@login_required
+def playlists(request):
+    context = {}
+    context['profile'] = request.user.profile
+    context['playlists'] = Playlist.objects.filter(profile=request.user.profile)
+    context['search_form'] = SearchForm()
+    context['playlist_form'] = PlaylistForm()
+
+    return render(request, 'playlists.html', context)
+
+
 @login_required
 def stream(request):
     context = {}
@@ -218,6 +230,7 @@ def stream(request):
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
+    context['playlists'] = Playlist.objects.filter(profile=request.user.profile)
     context['suggested_friends'] = suggested_friends(request.user.profile)
 
     profile = get_object_or_404(Profile, user=request.user)

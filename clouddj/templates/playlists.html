@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block bodytag %}
+<body class="backgroundcolor">
+{% endblock bodytag %}
+
+
+{% block labels %}
+    <h2>Playlists <span class="glyphicon glyphicon-music"></span></h2>
+    <button class="btn btn-default btn-xs my-btn dark-text" data-toggle="modal" data-target="#playlistForm">Create New</button>
+    <hr>
+    <div>
+        {% for playlist in playlists %}
+            <div style="margin-bottom: 20px;">
+                <h4>{{playlist.name}}</h4>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock labels %}
+
+
+{% block page-posts %}
+<form method="post" action="{% url 'create-playlist' %}">
+<div class="modal fade" id="playlistForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #6FE1D5">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Playlist Info</h4>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="nav-form-control" name="name" placeholder="Name...">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn my-primary-btn">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% csrf_token %}
+</form>
+
+{% for playlist in playlists %}
+<div class="panel panel-default playlist-panel">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{ playlist.name }}</h3>
+  </div>
+  <div class="panel-body">
+    {% for song in playlist.song_set.all %}
+      <div style="margin-bottom: 10px">
+          {{song.name}}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+{% endblock page-posts %}
