@@ -34,6 +34,8 @@ urlpatterns = [
     url(r'^delete-post/(?P<id>\d+)$', 'clouddj.social_views.delete_post', name='delete_post'),
     url(r'^like/(?P<id>\d+)$', 'clouddj.social_views.like', name='like'),
     url(r'^photo/(?P<id>\d+)$', 'clouddj.social_views.get_photo', name='photo'),
+    url(r'^playlists$', 'clouddj.social_views.playlists', name='playlists'),
+    url(r'^create-playlist$', 'clouddj.social_views.create_playlist', name='create-playlist'),
 
     # competition urls
     url(r'^create-competition$', 'clouddj.social_views.create_competition', name='create_competition'),
