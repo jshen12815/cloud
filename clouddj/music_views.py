@@ -1,5 +1,6 @@
 # Music editing-related actions
 import os
+from django.conf import settings
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,7 @@ from django.core.files import File
 from pydub import *
 from mimetypes import guess_type
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-
+from django.core.files.storage import FileSystemStorage
 from clouddj.forms import *
 
 
@@ -73,7 +74,7 @@ def save_song(request, song_id):
     f = audio_seg.export(final_song.file.path, format=ext[1:])
     f.close()
 
-    #delete all temp files - ** user cannot undo edits from a previous session **
+    # delete all temp files - ** user cannot undo edits from a previous session **
     undo_all(request, song_id)
 
     return redirect('/clouddj/studio/' + str(project.id))
@@ -87,10 +88,10 @@ def undo_all(request, song_id):
 
     # delete all temp files
     all_edits = project.song_set.all()
+
     for edit in all_edits:
         if not final_song == edit:
-            if os.path.isfile(edit.file.path):
-                os.remove(edit.file.path)
+            delete_file(edit.file.name)
             edit.delete()
 
 
@@ -99,14 +100,16 @@ def delete(request, song_id):
     undo_all(request, song_id)
     song = get_object_or_404(Song, id=song_id)
     song.project.delete()
-    if os.path.isfile(song.file.path):
-        os.remove(song.file.path)
+
+    delete_file(song.file.name)
     song.delete()
+
     return redirect('/clouddj/studio')
 
+
 # ##################################
-### Music Editing Functionality ###
-###################################
+# ## Music Editing Functionality ###
+# ##################################
 @login_required
 def record(request, song_id):
     song = get_object_or_404(Song, id=song_id)
@@ -154,7 +157,7 @@ def undo(request, song_id):
     new_song = get_object_or_404(Song, edit_number=previous_edit, project=song.project)
 
     #delete undone edit
-    os.remove(song.file.path)
+    delete_file(song.file.name)
     song.delete()
 
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
@@ -278,6 +281,7 @@ def repeat(request, song_id):
 
     return HttpResponse(json.dumps(response_text), content_type="application/json")
 
+
 @login_required
 def echo(request, song_id):
     song = get_object_or_404(Song, id=song_id)
@@ -302,7 +306,7 @@ def echo(request, song_id):
     decayed_seg = segment - decay
     new_segment = silence + decayed_seg
 
-    if (start + delay)/1000 >= len(seg)/1000:
+    if (start + delay) / 1000 >= len(seg) / 1000:
         seg += new_segment
     else:
         seg = seg.overlay(new_segment, start)
@@ -325,10 +329,8 @@ def tempo(request, song_id):
     form = SpeedupForm(request.POST)
 
     if not form.is_valid():
-        print form.errors
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    print form.cleaned_data['multiplier']
     changed = seg.speedup(form.cleaned_data['multiplier'], crossfade=0)
 
     new_song = export_edit(changed, song)
@@ -363,7 +365,7 @@ def bass(request, song_id):
     middle_bass = middle_bass.high_pass_filter(20)
 
     modify = -1 if amp > 0 else 1
-    middle_bass = middle_bass.apply_gain(amp+modify)
+    middle_bass = middle_bass.apply_gain(amp + modify)
 
     middle_seg = middle_seg.overlay(middle_bass)
 
@@ -400,7 +402,7 @@ def treble(request, song_id):
 
     middle_bass = middle_seg.low_pass_filter(20000)
     middle_bass = middle_bass.high_pass_filter(5200)
-    middle_bass = middle_bass.apply_gain(amp-1)
+    middle_bass = middle_bass.apply_gain(amp - 1)
 
     middle_seg = middle_seg.overlay(middle_bass)
 
@@ -487,8 +489,8 @@ def amplify(request, song_id):
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
     amp = int(form.cleaned_data['amplify'])
-    start = float(form.cleaned_data['start'])*1000
-    end = float(form.cleaned_data['end'])*1000
+    start = float(form.cleaned_data['start']) * 1000
+    end = float(form.cleaned_data['end']) * 1000
 
     lower_seg = seg[:start]
     upper_seg = seg[end:]
@@ -530,6 +532,7 @@ def export_edit(audio_seg, old_song):
     new_file_path = root + "-" + str(new_edit_number) + ext
 
     #export song to new file
+
     f = audio_seg.export(new_file_path, format=ext[1:])
     f.close()
 
@@ -550,9 +553,15 @@ def get_ext(filename):
 
     return '.'+L[-1]
 
+
 def get_root(filename):
     L = filename.split('.')
     if len(L) == 0:
         return ''
 
-    return '.'.join(L[:len(L)-1])
+    return '.'.join(L[:len(L) - 1])
+
+def delete_file(filename):
+    fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+    if fs.exists(filename):
+       fs.delete(filename)
