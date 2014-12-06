@@ -128,7 +128,8 @@ class Competition(models.Model):
     judges = models.ManyToManyField(Profile, related_name='judging')
     participants = models.ManyToManyField(Profile, related_name='participating')
     submissions = models.ManyToManyField(Post, related_name='comp')
-    description = models.CharField(max_length=420)
+    title = models.CharField(max_length=100, default='')
+    description = models.CharField(max_length=1000, default='')
     # add base sound file(s) to edit
     base_sound = models.FileField(upload_to='music')
     # add status (not started, in progress, completed)
@@ -137,4 +138,5 @@ class Competition(models.Model):
 
     # returns posts ranked from 1 to last
     def rankings(self):
-        return Rating.objects.filter(comp=self).order_by('-rating')
+        # does this even work lol
+        return Post.objects.filter(comp=self).order_by('-overallrating')

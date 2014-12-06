@@ -26,6 +26,8 @@
     <link href="{% static 'css/navbar.css' %}" rel="stylesheet">
     {% endblock %}
 
+    {% block morestylesheets %}
+    {% endblock %}
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -54,6 +56,7 @@
             {% if user.is_authenticated %}
             <a class="baractions" href="{% url 'stream' %}"><span class="nav-text" style="margin-top: -10px">Stream</span></a>
             <a class="baractions" href="{% url 'explore' %}"><span class="nav-text">Explore</span></a>
+            <a class="baractions" href="{% url 'list_competitions' %}"><span class="nav-text">Competitions</span></a>
             {% endif %}
         </div>
         {% if not user.is_authenticated %}
@@ -265,26 +268,33 @@ id="rate" class="rating"-->
 
 
 
-
-                     <form class = "rateform" action = "{% url 'rate' post.id %}" method="post">
+                        {{post.id}}
+                     <form class = "rateform" id = "rateform" action = "{% url 'rate' post.id %}" method="post">
 
                         {% csrf_token %}
-                        <span id="rate" class="rating">
-                          <input type="radio" class = "starrate" id="star_5" name="rateval" onclick="javascript: submit()" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
-                            <label for="star_5" title="Five">&#9733;</label>
+                        <span class="rate" post-id="{{ post.id }}">
+                           
+                          <input type="radio" class = "starrate" id="star_5{{ post.id }}" name="rateval" onclick = "this.form.submit();" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
+                            <label for="star_5{{ post.id }}" >&#9733;</label>
                           <!-- FOURTH STAR -->
-                          <input type="radio" class = "starrate" id="star_4" onclick="javascript: submit()" name="rateval" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4" title="Four">&#9733;</label>
+                          <input type="radio" class = "starrate" id="star_4{{ post.id }}"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4{{ post.id }}" title="Four">&#9733;</label>
                           <!-- THIRD STAR -->
-                          <input type="radio" class = "starrate" id="star_3" onclick="javascript: submit()"name="rateval" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
-                          <label for="star_3" title="Three">&#9733;</label>
+                          <input type="radio" class = "starrate" id="star_3{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
+                          <label for="star_3{{ post.id }}" >&#9733;</label>
                           <!-- SECOND STAR -->
-                          <input type="radio" class = "starrate" id="star_2" onclick="javascript: submit()"name="rateval" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
-                          <label for="star_2" title="Two">&#9733;</label>
+                          <input type="radio" class = "starrate" id="star_2{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
+                          <label for="star_2{{ post.id }}" >&#9733;</label>
                           <!-- FIRST STAR -->
-                          <input type="radio" class = "starrate" id="star_1" onclick="javascript: submit()" name="rateval" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
-                          <label for="star_1" title="One">&#9733;</label>
+                          <input type="radio" class = "starrate" id="star_1{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
+                          <label for="star_1{{ post.id }}" >&#9733;</label>
 
                       </span>
+                      <span> my rating is {% for rating in post.rating_set.all %} 
+                        {% if rating.profile == profile %}
+                            {{rating.rating}}
+                        {% endif %}
+                        {% endfor %} work
+                         </span>
                       <span title="number of ratings"> {{ post.numratings }} ratings</span>
                         </form>
                     </p>
@@ -314,6 +324,7 @@ id="rate" class="rating"-->
 <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/follow-unfollow.js' %}" type="text/javascript"></script>
+
 {% block more_scripts %}
 <script src="{% static 'js/wavesurfer/src/wavesurfer.js' %}"></script>
 
@@ -326,11 +337,14 @@ id="rate" class="rating"-->
 <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/delete.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/like.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'js/rate.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/playpause.js' %}" type="text/javascript"></script>
 
 <script src="{% static 'js/postwave.js' %}"></script>
 <script src="{% static 'js/editprofile.js' %}"></script>
 
+<script src="{% static 'js/rate.js' %}"></script>
 
 {% endblock more_scripts %}
 </body>
