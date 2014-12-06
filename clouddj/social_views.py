@@ -20,7 +20,7 @@ import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
 import math
-
+from pydub import AudioSegment
 
 def home(request):
     profiles = Profile.objects.all()
@@ -53,7 +53,8 @@ def add_post(request, id):
     if competition:
         # check if it's still in time range
         time = datetime.datetime
-        if competition.start <= time and time <= competition.end:
+        if competition.start <= time and time <= competition.end and \
+           (request.user.profile not in competition.participants.all()):
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
@@ -353,6 +354,7 @@ def edit_profile(request):
     context = {}
     errors = []
     context['errors'] = errors
+    context['profile'] = request.user.profile
 
     if request.method == 'GET':
         context['form'] = EditForm()
@@ -406,19 +408,14 @@ def profile(request, id):
 def follow(request, id):
     user = get_object_or_404(Profile, id=id)
     logged_in = request.user.profile
-    data = {}
-    data['followed'] = "False"
-    data['unfollowed'] = "False"
 
     if logged_in in user.followers.all():
         user.followers.remove(logged_in)
-        data['unfollowed'] = "True"
     else:    
         user.followers.add(logged_in)
-        data['followed'] = "True"
 
     user.save()
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 # returns list of recommended songs
@@ -562,6 +559,10 @@ def join_competition(request, id):
 
     profile = get_object_or_404(Profile, user=request.user)
     competition = get_object_or_404(Competition, id=id)
+
+    time = datetime.datetime
+    if (time < competition.start) or (profile in competition.participants.all()):
+        return redirect(request.META.get('HTTP_REFERER'))
 
     new_project = Project(profile=profile, status="in_progress", competition=competition)
     new_project.save()

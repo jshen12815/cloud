@@ -61,12 +61,12 @@ if not DEBUG:
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    AWS_STORAGE_BUCKET_NAME = 'clouddj'
-    AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
-    AWS_SECRET_ACCESS_KEY = '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'
-    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
-    STATIC_URL = S3_URL
+#    AWS_STORAGE_BUCKET_NAME = 'clouddj'
+ #   AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
+ #   AWS_SECRET_ACCESS_KEY = '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'
+ #   STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+ #   S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
+ #   STATIC_URL = S3_URL
 
     # Application definition
 
@@ -82,7 +82,7 @@ if not DEBUG:
         'widget_tweaks',
         'storages',
         'boto',
-        'datetimewidget'
+
     )
 
     # Database
@@ -100,11 +100,13 @@ if not DEBUG:
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/dev/howto/static-files/
+    PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+    PROJECT_DIR = os.path.join(PROJECT_ROOT,'../clouddj/')
 
-    STATIC_ROOT = 'staticfiles'
-
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles/')
+    STATIC_URL = '/static/'
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
+        os.path.join(PROJECT_DIR,'static/'),
     )
 
 else:

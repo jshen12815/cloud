@@ -8,12 +8,6 @@
 
 {% block body %}
 
-<script type="text/javascript">
-    function getWorkerPath(){
-        return "{% static 'js/recordJs/recorderWorker.js' %}";
-    }
-</script>
-
     <div class="container-fluid">
     <div class="row">
     <div class="col-sm-3 col-md-2 sidebar" style="background-color: gray">
@@ -329,8 +323,8 @@
 {% endblock body %}
 
 {% block more_scripts %}
+    <script id="recorderWorker" src="{% static 'js/recordJs/recorderWorker.js' %}"></script>
     <script src="{% static 'js/recordJs/recorder.js' %}"></script>
-    <script src="{% static 'js/recordJs/recorderWorker.js' %}"></script>
     <script src="{% static 'js/wavesurfer/src/wavesurfer.js' %}"></script>
 
     <script src="{% static 'js/wavesurfer/src/webaudio.js' %}"></script>

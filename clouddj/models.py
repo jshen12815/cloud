@@ -8,7 +8,7 @@ from django.db.models import Q, Count
 class Profile(models.Model):
     user = models.OneToOneField(User)
     followers = models.ManyToManyField('self', symmetrical=False, related_name="following")
-    photo = models.ImageField(upload_to="album-art")
+    photo = models.ImageField(upload_to="prof-pics", default='prof-pics/default.jpg')
 
     def __unicode__(self):
         return self.user.username
