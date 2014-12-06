@@ -56,7 +56,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
 STATIC_URL = S3_URL
 
-if DEBUG:
+if not DEBUG:
     import dj_database_url
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()

@@ -66,5 +66,7 @@ urlpatterns = [
     url(r'^delete/(?P<song_id>\d+)/$', 'clouddj.music_views.delete', name='delete'),
     url(r'^record/(?P<song_id>\d+)/$', 'clouddj.music_views.record', name='record'),
     url(r'^get_worker$', 'clouddj.music_views.get_worker', name='get_worker'),
+    url(r'^speed/(?P<song_id>\d+)/$', 'clouddj.music_views.speed', name='speed'),  
+    url(r'^strip-silence/(?P<song_id>\d+)/$', 'clouddj.music_views.strip_silence', name='strip-silence'),
 
 ]

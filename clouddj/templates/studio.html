@@ -137,9 +137,12 @@
                 <div class="col-md-offset-2">
                     <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase tempo and pitch" data-delay="1000">
                         <div class="shadowtext"> Speed</div>
-                        <label id="slider-label4" class="slider-label"></label>
-                        <input  class="slider-input" type="range" min="0" value="0"
-                               max="100">
+                        <form class="music_form" action="{% url 'speed' song.id %}">
+                            <label class="slider-label"></label>
+                            <input name="amplify" class="slider-input" type="range" min="-5" value="0"
+                               max="5">
+                            {% csrf_token %}
+                        </form>
                     </div>
                 </div>
             </div>
@@ -181,11 +184,14 @@
                     </div>
                 </div>
                 <div class="col-md-offset-2">
-                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Increase pitch" data-delay="1000">
-                        <div class="shadowtext"> Pitch</div>
-                        <label id="slider-label" class="slider-label isRight"></label>
-                        <input id="slider-input" class="slider-input" type="range" min="0" value="0"
-                               max="100">
+                    <div class="slider" data-toggle="tooltip" data-placement="left" data-html="true" title="Strip silence" data-delay="1000">
+                        <div class="shadowtext"> Strip Silence </div>
+                        <form class="music_form" action="{% url 'strip-silence' song.id %}">
+                            <label class="slider-label isRight"></label>
+                            <input name="amplify" class="slider-input" type="range" min="-20" value="0"
+                               max="0">
+                            {% csrf_token %}
+                        </form>
                     </div>
                 </div>
             </div>
