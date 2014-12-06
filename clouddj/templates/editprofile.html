@@ -8,7 +8,7 @@
 {% endblock bodytag %}
 
 {% block body %}
-<form enctype="multipart/form-data" class="control_form" method="post" action="">
+<form enctype="multipart/form-data" class="control_form" method="post" action="{% url 'edit-profile' %}">
     <div class="panel panel-default my-panel">
         <div class="panel-body my-panel-body">
             <h2>Edit Profile</h2>

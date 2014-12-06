@@ -44,7 +44,7 @@
         {% for profile in profiles %}
             <div class="row">
                 <div class="col-md-8">
-                    <img class="profpic" border="0" src="{% static 'images/propic.png' %}" alt="{{profile.user.username}}" width="150" height="150">
+                    <img class="profpic" border="0" src="{% url 'photo' profile.id %}" alt="{{profile.user.username}}" width="150" height="150">
                 </div>
                 <div class="col-md-3 mytext">
                     <p class="mytext username"><a href="{% url 'profile' profile.id %}" >{{profile.user.username}}</a></p>
