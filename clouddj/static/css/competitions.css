@@ -15,4 +15,14 @@
 .more {
   margin-top: 20px;
   font-size: 14px;
+  font-weight: bolder;
+}
+
+.mycompetitions {
+  margin: 10px;
+  border: solid 1px #A0A0A0;
+  font-size: 14px;
+  font-weight: bolder;
+  padding: 30px;
+  padding-bottom: 80px;
 }
