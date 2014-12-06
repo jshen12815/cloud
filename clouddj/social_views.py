@@ -378,10 +378,11 @@ def edit_profile(request):
     if form.cleaned_data['new_email'] != "":
         request.user.email = form.cleaned_data['new_email']
 
+    request.user.profile.photo = request.FILES['photo']
+
+    request.user.profile.save()
     request.user.save()
     update_session_auth_hash(request, request.user)
-
-    print "success\n"
 
     return render(request, 'editprofile.html', context)
 
@@ -599,3 +600,14 @@ def get_root(filename):
         return ''
 
     return '.'.join(L[:len(L)-1])
+
+
+@login_required
+def get_photo(request, id):
+
+    profile = get_object_or_404(Profile, id=id)
+    if not profile.photo:
+        raise Http404
+
+    content_type = guess_type(profile.photo.name)
+    return HttpResponse(profile.photo, content_type=content_type)

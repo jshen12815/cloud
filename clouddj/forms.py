@@ -212,6 +212,7 @@ class EditForm(forms.Form):
                                 widget = forms.PasswordInput(attrs = {"class": "form-control"}),
                                 required = False)
 
+    photo = forms.ImageField()
 
     # Customizes form validation for properties that apply to more
     # than one field.  Overrides the forms.Form.clean function.

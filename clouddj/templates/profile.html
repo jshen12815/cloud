@@ -13,7 +13,7 @@
 
 {% block labels %}
     <ul class="profile">
-        <img class = "propic" src="{% static 'images/propic.png' %}" >
+        <img class="profpic" border="0" src="{% url 'photo' prof_owner.id %}" alt="{{prof_owner.user.username}}" width="250" height="250">
         <p class="sidebar-username">{{prof_owner.user.username}}</p>
         <span class="glyphicon glyphicon-user sidebar-content"></span>
         <a type="button" data-toggle="modal" data-target="#follower_modal"> {{prof_owner.followers.count}}</a>
