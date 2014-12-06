@@ -139,8 +139,8 @@
                         <div class="shadowtext"> Speed</div>
                         <form class="music_form" action="{% url 'speed' song.id %}">
                             <label class="slider-label"></label>
-                            <input name="amplify" class="slider-input" type="range" min="-20" value="0"
-                               max="20">
+                            <input name="amplify" class="slider-input" type="range" min="-5" value="0"
+                               max="5">
                             {% csrf_token %}
                         </form>
                     </div>

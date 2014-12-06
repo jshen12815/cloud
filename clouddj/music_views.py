@@ -520,7 +520,10 @@ def speed(request, song_id):
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
-    amp = int(form.cleaned_data['amplify'])
+    speedx = form.cleaned_data['amplify']
+    if speedx < 0:
+        speedx = (-1.0 / speedx)
+
     start = float(form.cleaned_data['start']) * 1000
     end = float(form.cleaned_data['end']) * 1000
 
@@ -528,17 +531,9 @@ def speed(request, song_id):
     upper_seg = seg[end:]
     middle_seg = seg[start:end]
 
-    # for i in xrange(0, len(middle_seg), 40):
-    #     temp_seg += middle_seg[i]
-    chunks = AudioSegment.make_chunks(middle_seg, 5000)
-    print(":)")
-    print(chunks)
+    for i in xrange(0, len(middle_seg), 100):
+        temp_seg += middle_seg[i:i+int(speedx * 100)]
 
-
-    for i in xrange(0, len(chunks), 2):
-        temp_seg += chunks[i]
-
-    print(temp_seg)
 
     new_seg = lower_seg + temp_seg + upper_seg
 
