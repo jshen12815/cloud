@@ -353,6 +353,7 @@ def edit_profile(request):
     context = {}
     errors = []
     context['errors'] = errors
+    context['profile'] = request.user.profile
 
     if request.method == 'GET':
         context['form'] = EditForm()
@@ -406,19 +407,14 @@ def profile(request, id):
 def follow(request, id):
     user = get_object_or_404(Profile, id=id)
     logged_in = request.user.profile
-    data = {}
-    data['followed'] = "False"
-    data['unfollowed'] = "False"
 
     if logged_in in user.followers.all():
         user.followers.remove(logged_in)
-        data['unfollowed'] = "True"
     else:    
         user.followers.add(logged_in)
-        data['followed'] = "True"
 
     user.save()
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 # returns list of recommended songs
