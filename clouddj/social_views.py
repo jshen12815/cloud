@@ -486,8 +486,13 @@ def create_competition(request):
 @login_required
 def edit_competition(request, id):
     # Can only edit BEFORE the competition starts
+    context = {}
+    context['form'] = EditCompetitionForm()
+    context['judgeform'] = JudgesForm()
+    context['removejudgeform'] = RemoveJudgesForm()
+
     if request.method == 'GET':
-        return redirect(request.META.get('HTTP_REFERER'))
+        return render(request, 'editcompetition.html', context)
 
     competition = get_object_or_404(Competition, id=id)
     if request.user.profile != competition.creator or \
@@ -495,8 +500,11 @@ def edit_competition(request, id):
         return redirect(request.META.get('HTTP_REFERER'))
 
     form = EditCompetitionForm(request.POST, request.FILES)
-    if not form.is_valid():
-        return redirect(request.META.get('HTTP_REFERER'))
+    judgeform = JudgesForm(request.POST)
+    removejudgeform = RemoveJudgesForm(request.POST)
+
+    if not (form.is_valid() and addform.is_valid() and removeform.is_valid()):
+        return render(request, 'editcompetition.html', context)
 
     # don't save the new form instance
 
@@ -508,19 +516,21 @@ def edit_competition(request, id):
     if form.cleaned_data['description']:
         competition.description = form.cleaned_data['description']
 
-    aj = form.cleaned_data['addJudges'].split(' ')
+    aj = judgeform.cleaned_data['judges'].split(' ')
     for judge in aj:
         if User.objects.filter(username=judge):
             j = User.objects.get(username=judge)
             competition.judges.add(Profile.objects.get(user=j))
 
-    rj = form.cleaned_data['removeJudges'].split(' ')
+    rj = removejudgeform.cleaned_data['rjudges'].split(' ')
     for judge in rj:
         if User.objects.filter(username=judge):
             j = User.objects.get(username=judge)
             competition.judges.remove(Profile.objects.get(user=j))
 
     competition.save()
+
+    return redirect(reverse('competition', kwargs={'id':competition.id}))
 
 # just add to regular rate...
 @login_required
