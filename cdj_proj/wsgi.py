@@ -18,7 +18,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cdj_proj.settings")
 from django.core.wsgi import get_wsgi_application
 
 
-if not settings.DEBUG:
+if settings.DEBUG:
     application = Cling(get_wsgi_application())
 else:
     application = get_wsgi_application()

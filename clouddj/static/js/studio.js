@@ -177,7 +177,7 @@ function gotStream(stream) {
     analyserNode.fftSize = 2048;
     inputPoint.connect(analyserNode);
 
-    audioRecorder = new Recorder(inputPoint);
+    audioRecorder = new Recorder(inputPoint, {'workerPath':'recorderJs/recorderWorker.js');
 
     zeroGain = audioContext.createGain();
     zeroGain.gain.value = 0.0;
