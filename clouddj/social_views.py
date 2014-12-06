@@ -218,7 +218,7 @@ def stream(request):
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
-    context['suggested_friends'] = suggested_friends(request.user.profile)
+    #context['suggested_friends'] = suggested_friends(request.user.profile)
 
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")

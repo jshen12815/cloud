@@ -12,6 +12,9 @@
 <body class="backgroundcolor">
 {% endblock bodytag %}
 
+{% block labels %}
+{% endblock labels %}
+
 {% block body %}
 {{block.super}}
 <input type="hidden" value="{{ csrf_token }}" id="csrf">
