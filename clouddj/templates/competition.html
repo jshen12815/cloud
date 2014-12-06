@@ -9,7 +9,8 @@
 <p>Judges: {% for judge in competition.judges.all %} {{ judge.user.username }} {% endfor %}</p>
 <p>Description: {{ competition.description }}</p>
 
-<a href="{% url 'join_competition' competition.id %}">Join competition</a>
+<a href="{% url 'join_competition' competition.id %}">Join competition!</a>
+
 
 <p>POSTS:</p>
 <ol>

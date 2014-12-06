@@ -132,6 +132,7 @@ class Competition(models.Model):
     description = models.CharField(max_length=1000, default='')
     # add base sound file(s) to edit
     base_sound = models.FileField(upload_to='music')
+    status = models.BooleanField(default = True)
     # add status (not started, in progress, completed)
     start = models.DateTimeField(auto_now_add=False)
     end = models.DateTimeField(auto_now_add=False)
