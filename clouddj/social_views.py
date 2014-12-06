@@ -248,6 +248,7 @@ def explore(request):
     context['search_form'] = SearchForm()
     context['user'] = request.user
     context['profile'] = request.user.profile
+    context['suggested_posts'] = recommended_songs(request.user.profile)
 
     return render(request, 'explore.html', context)
 
@@ -455,7 +456,7 @@ def recommended_songs(profile):
     hts = {}
     for r in ratings.all():
         p = r.post
-        mod_rating = (r.rating**2) * r.numratings
+        mod_rating = (p.overallrating**2) * p.numratings
 
         for hashtag in p.hashtags.all():
             if hashtag in hts:
