@@ -178,7 +178,7 @@ function gotStream(stream) {
     inputPoint.connect(analyserNode);
 
     audioRecorder = new Recorder(inputPoint);
-
+    while(!audioRecorder){}
     zeroGain = audioContext.createGain();
     zeroGain.gain.value = 0.0;
     inputPoint.connect(zeroGain);
@@ -186,6 +186,7 @@ function gotStream(stream) {
 }
 
 function initAudio() {
+    getWorker();
     var el = $(".slider-input");
     el.data('oldVal',  el.val() );
     if (!navigator.getUserMedia)

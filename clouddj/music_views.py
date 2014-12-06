@@ -1,5 +1,7 @@
 # Music editing-related actions
 import os
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 from django.conf import settings
 import json
 from django.shortcuts import render, get_object_or_404, redirect
@@ -11,6 +13,8 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.files.storage import FileSystemStorage
 from clouddj.forms import *
 
+import logging
+logger = logging.getLogger('testlogger')
 
 def add_empty_forms(context):
     context['filter_form'] = FilterForm()
@@ -112,23 +116,28 @@ def delete(request, song_id):
 # ##################################
 @login_required
 def record(request, song_id):
+    logger.info('In record.')
     song = get_object_or_404(Song, id=song_id)
+
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
 
     if request.method == 'GET':
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
     form = RecordForm(request.POST)
+    logger.info('Got the form')
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
+    logger.info('form is valid')
+
     temp_file = request.FILES['recording']
     seg = song_to_audioseg(song)
+    logger.info('created seg '+ str(seg))
     recording = AudioSegment.from_file(temp_file, format='wav')
+    logger.info('created recording seg '+str(recording))
     start_time = float(form.cleaned_data['start'])
     start_time *= 1000
-    # print(start_time)
-    # print(len(seg))
     if start_time / 1000 >= len(seg) / 1000:
         # append
         silent_secs = start_time - len(seg)
@@ -139,7 +148,7 @@ def record(request, song_id):
         if len(recording) > len(seg):
             remaining = len(recording) - len(seg)
             seg += recording[remaining:]
-
+    logger.info('calling export edit')
     new_song = export_edit(seg, song)
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
 
@@ -591,7 +600,13 @@ def get_song(request, id):
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
-    return AudioSegment.from_file(song.file.path, format=ext[1:])
+    path =song.file.path
+    logger.info('Song filepath1:'+path +' ext:'+ext)
+    fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+    if fs.exists(filename):
+        path = fs.path(filename)
+    logger.info('Song filepath2:'+path +' ext:'+ext)
+    return AudioSegment.from_file(path, format=ext[1:])
 
 
 def export_edit(audio_seg, old_song):
@@ -601,7 +616,7 @@ def export_edit(audio_seg, old_song):
     if old_song.edit_number > 0:
         root = root.replace("-" + str(old_song.edit_number), "")
     new_file_path = root + "-" + str(new_edit_number) + ext
-
+    logger.info('new filename:'+new_file_path)
     #export song to new file
 
     f = audio_seg.export(new_file_path, format=ext[1:])
@@ -636,3 +651,14 @@ def delete_file(filename):
     fs = FileSystemStorage(location=settings.MEDIA_ROOT)
     if fs.exists(filename):
        fs.delete(filename)
+
+
+@login_required
+def get_worker(request):
+    conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+    bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
+    key = bucket.get_key("js/recordJs/recorderWorker.js")
+    key.make_public()
+    url = key.generate_url(expires_in=999999)
+    print url
+    return HttpResponse(json.dumps({'url': url}), content_type="application/json")

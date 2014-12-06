@@ -20,7 +20,14 @@ DEALINGS IN THE SOFTWARE.
 
 (function(window){
 
-  var WORKER_PATH = $("#recorderWorker").attr("src");
+  function getWorker(){
+    return $.ajax({
+        type: 'GET',
+        url: '/clouddj/get_worker'
+    });
+  }
+
+  var WORKER_PATH;
 
   var Recorder = function(source, cfg){
     var config = cfg || {};
@@ -31,8 +38,11 @@ DEALINGS IN THE SOFTWARE.
     } else {
        this.node = this.context.createScriptProcessor(bufferLen, 2, 2);
     }
-   
-    var worker = new Worker(config.workerPath || WORKER_PATH);
+    var promise = getWorker();
+    promise.success(function (data) {
+      alert(data);
+      WORKER_PATH= data['url'];
+      var worker = new Worker(config.workerPath || WORKER_PATH);
     worker.postMessage({
       command: 'init',
       config: {
@@ -105,9 +115,11 @@ DEALINGS IN THE SOFTWARE.
 
     source.connect(this.node);
     this.node.connect(this.context.destination);   // if the script node is not connected to an output the "onaudioprocess" event is not triggered in chrome.
+    });
   };
-
-  Recorder.setupDownload = function(blob, filename){
+    
+    
+    Recorder.setupDownload = function(blob, filename){
     var url = (window.URL || window.webkitURL).createObjectURL(blob);
     var link = document.getElementById("save");
     link.href = url;
@@ -115,5 +127,6 @@ DEALINGS IN THE SOFTWARE.
   }
 
   window.Recorder = Recorder;
+
 
 })(window);
