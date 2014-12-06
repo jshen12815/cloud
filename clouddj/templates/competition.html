@@ -60,7 +60,6 @@
 		<p>Creator: {{ competition.creator }}</p>
 
 		<p>Judges: {% for judge in competition.judges.all %} {{ judge.user.username }} {% endfor %}</p>
-		<p>Description: {{ competition.description }}</p>
 
 
     </div>
@@ -68,7 +67,22 @@
 
 	<div class="postblock">
 		<p>POSTS:</p>
+
+        {% for submission in competition.submissions.all %}
+        <div> {{submission.post}}</div>
+        {% endfor %}
 </div>
+
+<div class="postblock">
+        <p>PARTICIPANTS:</p>
+        {% for participant in competition.participants.all %}
+        <div> {{participant.user.username}}</div>
+        {% endfor %}
+</div>
+
+
+
+
 </div>
 		<ol>
 {% for post in competition.submissions.all %}
