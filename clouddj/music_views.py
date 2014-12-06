@@ -116,7 +116,7 @@ def delete(request, song_id):
 def record(request, song_id):
     logger.info('In record.')
     song = get_object_or_404(Song, id=song_id)
-    logger.info('Got song')
+
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
 
     if request.method == 'GET':
@@ -131,11 +131,11 @@ def record(request, song_id):
 
     temp_file = request.FILES['recording']
     seg = song_to_audioseg(song)
+    logger.info('created seg '+ str(seg))
     recording = AudioSegment.from_file(temp_file, format='wav')
+    logger.info('created recording seg '+str(recording))
     start_time = float(form.cleaned_data['start'])
     start_time *= 1000
-    print(start_time)
-    print(len(seg))
     if start_time / 1000 >= len(seg) / 1000:
         # append
         silent_secs = start_time - len(seg)
