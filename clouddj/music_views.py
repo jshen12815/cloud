@@ -528,7 +528,7 @@ def get_song(request, id):
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
-    logger.info('Song filename:'+filename +' ext:'+ext)
+    logger.info('Song filepath:'+song.file.path +' ext:'+ext)
     return AudioSegment.from_file(song.file.path, format=ext[1:])
 
 
@@ -552,7 +552,6 @@ def export_edit(audio_seg, old_song):
 
 
 def get_content_type(filename):
-    logger.info('Song type: ' +str(guess_type(filename)[0]))
     return guess_type(filename)[0]
 
 
