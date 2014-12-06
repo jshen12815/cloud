@@ -358,10 +358,11 @@ def edit_profile(request):
         context['form'] = EditForm()
         return render(request, 'editprofile.html', context)
 
-    form = EditForm(request.POST)
+    form = EditForm(request.POST, request.FILES)
     context['form'] = form
 
     if not form.is_valid():
+        print form.errors
         return render(request, 'editprofile.html', context)
     
 
@@ -380,6 +381,8 @@ def edit_profile(request):
 
     request.user.save()
     update_session_auth_hash(request, request.user)
+
+    print "success\n"
 
     return render(request, 'editprofile.html', context)
 

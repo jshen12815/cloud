@@ -82,6 +82,7 @@ if not DEBUG:
         'widget_tweaks',
         'storages',
         'boto',
+        'datetimewidget'
     )
 
     # Database
@@ -122,6 +123,7 @@ else:
         'django.contrib.staticfiles',
         'clouddj',
         'widget_tweaks',
+        'datetimewidget'
     )
 
     # Database
