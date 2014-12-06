@@ -11,6 +11,8 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.files.storage import FileSystemStorage
 from clouddj.forms import *
 
+import logging
+logger = logging.getLogger('testlogger')
 
 def add_empty_forms(context):
     context['filter_form'] = FilterForm()
@@ -112,15 +114,20 @@ def delete(request, song_id):
 # ##################################
 @login_required
 def record(request, song_id):
+    logger.info('In record.')
     song = get_object_or_404(Song, id=song_id)
+    logger.info('Got song')
     response_text = {'type': get_content_type(song.file.name), 'song_id': str(song.id)}
 
     if request.method == 'GET':
         return HttpResponse(json.dumps(response_text), content_type="application/json")
 
     form = RecordForm(request.POST)
+    logger.info('Got the form')
     if not form.is_valid():
         return HttpResponse(json.dumps(response_text), content_type="application/json")
+
+    logger.info('form is valid')
 
     temp_file = request.FILES['recording']
     seg = song_to_audioseg(song)
@@ -139,7 +146,7 @@ def record(request, song_id):
         if len(recording) > len(seg):
             remaining = len(recording) - len(seg)
             seg += recording[remaining:]
-
+    logger.info('calling export edit')
     new_song = export_edit(seg, song)
     response_text = {'type': get_content_type(new_song.file.name), 'song_id': str(new_song.id)}
 
@@ -521,6 +528,7 @@ def get_song(request, id):
 def song_to_audioseg(song):
     filename = song.file.name
     ext = get_ext(filename)
+    logger.info('Song filename:'+filename +' ext:'+ext)
     return AudioSegment.from_file(song.file.path, format=ext[1:])
 
 
@@ -531,7 +539,7 @@ def export_edit(audio_seg, old_song):
     if old_song.edit_number > 0:
         root = root.replace("-" + str(old_song.edit_number), "")
     new_file_path = root + "-" + str(new_edit_number) + ext
-
+    logger.info('new filename:'+new_file_path)
     #export song to new file
 
     f = audio_seg.export(new_file_path, format=ext[1:])
@@ -544,6 +552,7 @@ def export_edit(audio_seg, old_song):
 
 
 def get_content_type(filename):
+    logger.info('Song type: ' +str(guess_type(filename)[0]))
     return guess_type(filename)[0]
 
 
