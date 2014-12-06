@@ -211,6 +211,8 @@ class EditForm(forms.Form):
                                 label='Re-enter password',  
                                 widget = forms.PasswordInput(attrs = {"class": "form-control"}),
                                 required = False)
+    profile_pic = forms.ImageField(upload_to='prof-images', blank=True)
+
 
     # Customizes form validation for properties that apply to more
     # than one field.  Overrides the forms.Form.clean function.
