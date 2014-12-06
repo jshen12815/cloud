@@ -13,6 +13,23 @@
 {% endblock bodytag %}
 
 {% block labels %}
+    <div class="sug-frd-text">
+        <span class="glyphicon glyphicon-user"></span> <span>Who to follow</span>
+    </div>
+    <hr>
+    {% for suggested in suggested_friends %}
+    <div class="sug-frd-div row">
+        <div class="col-md-3">
+            <img class="profpic" border="0" src="{% url 'photo' suggested.id %}" alt="{{suggested.user.username}}" width="60" height="60">
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'profile' suggested.id %}">{{suggested.user.username}}</a>
+            <span class="glyphicon glyphicon-user"></span> {{suggested.followers.count}}
+        </div>
+        <button class="">
+        </button>
+    </div>
+    {% endfor %}
 {% endblock labels %}
 
 {% block body %}

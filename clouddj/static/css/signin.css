@@ -632,10 +632,12 @@ background-color: #eeeeee;
 
 
 a:link {
+    color: black;
     text-decoration: none;
 }
 
 a:visited {
+    color: black;
     text-decoration: none;
 }
 
@@ -672,4 +674,12 @@ a:visited {
     background-color: #6FE1D5;
     border-color: #6FE1D5;
     margin-left: 86%;
+}
+
+.sug-frd-text {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    color: gray;
+    margin-top: 20%;
+    margin-left: auto;
+    margin-right: auto;
 }
