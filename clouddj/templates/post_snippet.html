@@ -121,6 +121,13 @@
                             <span class="pull-right dim-text" style="padding-right:10px">   &#9733;  </span>
                         </p>
                     </div>
+
+
+                    <div class = "Hashtaglist">
+                        {% for hashtag in post.hashtags.all  %}
+                        <a href = #>#{{ hashtag.text }}  </a>
+                        {% endfor %}
+                    </div>
                     <br>
                 </div>
             </div>
