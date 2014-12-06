@@ -39,7 +39,7 @@
 
 {% block navbar %}
 <div class="navbar navbar-inverse navbar-fixed-top mynavbar" role="navigation">
-    <div class="container-fluid">
+    <div class="container-fluid" style = "margin: 0px;">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target=".navbar-collapse">
@@ -96,7 +96,7 @@
             </div>
             {% endif %}
         </div>
-        <div class="nav navbar-nav navbar-left">
+        <div class="nav navbar-nav navbar-right" style = "padding-right: 10px;">
             {% if user.is_authenticated %}
             <form method="get" action="{% url 'search' %}" style="margin-top:-5px">
                 <span class="glyphicon glyphicon-search search-icon"></span>

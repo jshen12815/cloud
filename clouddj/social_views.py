@@ -71,45 +71,59 @@ def rate(request,id):
     data = {}
     data['post_id'] = id
     rating=request.POST['rateval']
-   
+
+    # get the competition for the post if it exists
+    try:
+        competition = post.comp.all()[:1].get()
+        time = datetime.datetime
+        # if the user (isn't judge or creator) or (competition is over)
+        # don't let them rate it!
+        if ((request.user.profile not in competition.judges.all()) and \
+            request.user.profile != competition.creator) or \
+            time >= competition.end:
+            return redirect(request.META.get('HTTP_REFERER'))
+    except ObjectDoesNotExist:
+        pass
+
     try: 
         userrating = Rating.objects.get(profile = request.user.profile, post = post)
         print "i already rated"
-        if id:
-            numratings=int(post.numratings)
-            olduserrating = userrating.rating
-            overallrating = float(post.overallrating)
 
-            new_ratings = (numratings * overallrating) 
-            new_ratingsa = new_ratings + int(rating) - int(olduserrating)
-            new_rating = new_ratingsa/numratings
+        numratings=int(post.numratings)
+        olduserrating = userrating.rating
+        overallrating = float(post.overallrating)
 
-            post.overallrating = new_rating
-            post.showrating = int(post.overallrating)
-            post.save()
+        new_ratings = (numratings * overallrating) 
+        new_ratingsa = new_ratings + int(rating) - int(olduserrating)
+        new_rating = new_ratingsa/numratings
 
-            userrating.rating = rating
-            userrating.save()
+        post.overallrating = new_rating
+        post.showrating = int(post.overallrating)
+        post.save()
+
+        userrating.rating = rating
+        userrating.save()
 
  
     except ObjectDoesNotExist:
         print "newrating"
+
         newrating = Rating(profile=request.user.profile, rating=rating, post=post)
         newrating.save()
-        if id:
-            numratings=int(post.numratings)
-            if (post.overallrating == None):
-                overallrating = 0.0
-            else:
-                overallrating = float(post.overallrating)
-            new_ratings = (numratings * overallrating) 
-            new_ratingsa = new_ratings+ int(rating)
-            new_num_ratings = numratings + 1
-            new_rating = new_ratingsa/new_num_ratings
-            post.overallrating = new_rating
-            post.numratings = new_num_ratings
-            post.showrating = int(post.overallrating)
-            post.save()
+
+        numratings=int(post.numratings)
+        if (post.overallrating == None):
+            overallrating = 0.0
+        else:
+            overallrating = float(post.overallrating)
+        new_ratings = (numratings * overallrating) 
+        new_ratingsa = new_ratings+ int(rating)
+        new_num_ratings = numratings + 1
+        new_rating = new_ratingsa/new_num_ratings
+        post.overallrating = new_rating
+        post.numratings = new_num_ratings
+        post.showrating = int(post.overallrating)
+        post.save()
 
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -217,7 +231,6 @@ def stream(request):
         context['projects'] = projects
 
     return render(request, 'stream.html', context)
-
 
 @login_required
 def explore(request):
@@ -488,8 +501,13 @@ def create_competition(request):
 @login_required
 def edit_competition(request, id):
     # Can only edit BEFORE the competition starts
+    context = {}
+    context['form'] = EditCompetitionForm()
+    context['judgeform'] = JudgesForm()
+    context['removejudgeform'] = RemoveJudgesForm()
+
     if request.method == 'GET':
-        return redirect(request.META.get('HTTP_REFERER'))
+        return render(request, 'editcompetition.html', context)
 
     competition = get_object_or_404(Competition, id=id)
     if request.user.profile != competition.creator or \
@@ -497,8 +515,11 @@ def edit_competition(request, id):
         return redirect(request.META.get('HTTP_REFERER'))
 
     form = EditCompetitionForm(request.POST, request.FILES)
-    if not form.is_valid():
-        return redirect(request.META.get('HTTP_REFERER'))
+    judgeform = JudgesForm(request.POST)
+    removejudgeform = RemoveJudgesForm(request.POST)
+
+    if not (form.is_valid() and addform.is_valid() and removeform.is_valid()):
+        return render(request, 'editcompetition.html', context)
 
     # don't save the new form instance
 
@@ -510,19 +531,21 @@ def edit_competition(request, id):
     if form.cleaned_data['description']:
         competition.description = form.cleaned_data['description']
 
-    aj = form.cleaned_data['addJudges'].split(' ')
+    aj = judgeform.cleaned_data['judges'].split(' ')
     for judge in aj:
         if User.objects.filter(username=judge):
             j = User.objects.get(username=judge)
             competition.judges.add(Profile.objects.get(user=j))
 
-    rj = form.cleaned_data['removeJudges'].split(' ')
+    rj = removejudgeform.cleaned_data['rjudges'].split(' ')
     for judge in rj:
         if User.objects.filter(username=judge):
             j = User.objects.get(username=judge)
             competition.judges.remove(Profile.objects.get(user=j))
 
     competition.save()
+
+    return redirect(reverse('competition', kwargs={'id':competition.id}))
 
 # just add to regular rate...
 @login_required
