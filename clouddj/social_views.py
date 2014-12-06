@@ -62,35 +62,52 @@ def add_post(request, id):
 
 @login_required
 def rate(request,id):
-
+    print "rating"
 
     post = get_object_or_404(Post, id = id)
     print post.id
     data = {}
     data['post_id'] = id
     rating=request.POST['rateval']
-    #overall rating numratings
-
-    #if Rating.objects.filter(profile = request.user.profile):
-     #   newrating = 
-
-    newrating = Rating(profile=request.user.profile, rating=rating, post=post)
-    newrating.save()
-
-    if id:
-        numratings=int(post.numratings)
-        if (post.overallrating == None):
-            overallrating = 0.0
-        else:
+   
+    try: 
+        userrating = Rating.objects.get(profile = request.user.profile, post = post)
+        print "i already rated"
+        if id:
+            numratings=int(post.numratings)
+            olduserrating = userrating.rating
             overallrating = float(post.overallrating)
-        new_ratings = (numratings * overallrating) 
-        new_ratingsa = new_ratings+ int(rating)
-        new_num_ratings = numratings + 1
-        new_rating = new_ratingsa/new_num_ratings
-        post.overallrating = new_rating
-        post.numratings = new_num_ratings
-        post.showrating = int(post.overallrating)
-        post.save()
+
+            new_ratings = (numratings * overallrating) 
+            new_ratingsa = new_ratings + int(rating) - int(olduserrating)
+            new_rating = new_ratingsa/numratings
+
+            post.overallrating = new_rating
+            post.showrating = int(post.overallrating)
+            post.save()
+
+            userrating.rating = rating
+            userrating.save()
+
+ 
+    except ObjectDoesNotExist:
+        print "newrating"
+        newrating = Rating(profile=request.user.profile, rating=rating, post=post)
+        newrating.save()
+        if id:
+            numratings=int(post.numratings)
+            if (post.overallrating == None):
+                overallrating = 0.0
+            else:
+                overallrating = float(post.overallrating)
+            new_ratings = (numratings * overallrating) 
+            new_ratingsa = new_ratings+ int(rating)
+            new_num_ratings = numratings + 1
+            new_rating = new_ratingsa/new_num_ratings
+            post.overallrating = new_rating
+            post.numratings = new_num_ratings
+            post.showrating = int(post.overallrating)
+            post.save()
 
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -271,6 +288,7 @@ def search(request):
 
     form = SearchForm(request.GET)
     context['search'] = form
+    context['profile'] = request.user.profile
     context['user'] = request.user
     if not form.is_valid():
         return render(request, 'search.html', context)
