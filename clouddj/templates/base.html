@@ -131,7 +131,7 @@
         <div class="col-sm-3 col-md-3 sidebar">
             {% block labels %}
             <ul class="profile">
-                <img class="propic" src="{% static 'images/propic.png' %}">
+                <img class="profpic" border="0" src="{% url 'photo' profile.id %}" alt="{{profile.user.username}}" width="250" height="250">
             </ul>
             {% endblock %}
         </div>
@@ -141,7 +141,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
             {% for post in posts %}
             {% if post.photo %}
-            <img class="postpropic" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
+            <img class="postpropic" border="0" src="{% url 'photo' profile.id %}" alt="{{post.profile.user.username}}"
                  width="170" height="170">
             {% endif %}
             <div class="postblock" id="topblock">
