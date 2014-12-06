@@ -20,27 +20,51 @@
         {% block sidebar %}
         <div class="col-sm-3 col-md-3 sidebar dark-text">
             {% block labels %}
-            <ul class="profile">
-                my competitions
+            <ul class="more">
+                All Competitions
             </ul>
+            {% for competition in competitions %}
+
+           <div class = "mycompetitions">
+            <a href="{% url 'competition' competition.id %}"> {{ competition.title }}
+
+                <div class = "datedetails pull-right dim-text">{{competition.creator }} <br>
+                    {{competition.start}} - {{competition.end}} 
+
+            </a>
+             </div>
+             </div>
+            {% endfor %}
+
+
+
             {% endblock %}
         </div>
         {% endblock sidebar %}
-
               {% block page-posts %}
 
           <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
+           <div> <a class = "createa"  href="{% url 'create_competition' %}">{{competition.title}}</a>
+</div>
+<p> {{competition.description}} </p>
+
+
+
         <div class="postblock">
-                   
+                   <a href= "{% url 'join_competition' competition.id %}" class="btn btn-md upload-btn compbtn pull-right">
+        <span class="glyphicon glyphicon-asterisk"></span>
+         Join competition!
+        </a>
 
 
 		<p>Creator: {{ competition.creator }}</p>
+
 		<p>Judges: {% for judge in competition.judges.all %} {{ judge.user.username }} {% endfor %}</p>
 		<p>Description: {{ competition.description }}</p>
 
-		<a href="{% url 'join_competition' competition.id %}">Join competition!</a>
 
-	</div>
+    </div>
+		
 
 	<div class="postblock">
 		<p>POSTS:</p>
