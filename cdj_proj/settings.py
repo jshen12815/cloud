@@ -82,7 +82,7 @@ if DEBUG:
         'widget_tweaks',
         'storages',
         'boto',
-        'datetimewidget'
+
     )
 
     # Database
