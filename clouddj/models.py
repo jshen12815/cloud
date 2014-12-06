@@ -86,6 +86,7 @@ class Post(models.Model):
                     h = Hashtag.objects.get(text=hashtag)
                 else:
                     h = Hashtag(text=hashtag)
+                    print hashtag
                     h.save()
 
                 self.hashtags.add(h)

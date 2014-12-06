@@ -53,8 +53,11 @@ def add_post(request, id):
     if competition:
         # check if it's still in time range
         time = datetime.datetime
+        print "this is a competition!!!!!"
         if competition.start <= time and time <= competition.end and \
            (request.user.profile not in competition.participants.all()):
+            print "submissions"
+            print "participants"
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
