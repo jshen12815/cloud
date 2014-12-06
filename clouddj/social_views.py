@@ -381,7 +381,8 @@ def edit_profile(request):
     if form.cleaned_data['new_email'] != "":
         request.user.email = form.cleaned_data['new_email']
 
-    request.user.profile.photo = request.FILES['photo']
+    if request.FILES.get('photo', False):
+        request.user.profile.photo = request.FILES.get('photo', False)
 
     request.user.profile.save()
     request.user.save()
