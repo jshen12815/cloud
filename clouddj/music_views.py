@@ -1,5 +1,7 @@
 # Music editing-related actions
 import os
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 from django.conf import settings
 import json
 from django.shortcuts import render, get_object_or_404, redirect
@@ -579,3 +581,14 @@ def delete_file(filename):
     fs = FileSystemStorage(location=settings.MEDIA_ROOT)
     if fs.exists(filename):
        fs.delete(filename)
+
+
+@login_required
+def get_worker(request):
+    conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+    bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
+    key = bucket.get_key("js/recordJs/recorderWorker.js")
+    key.make_public()
+    url = key.generate_url(expires_in=999999)
+    print url
+    return HttpResponse(json.dumps({'url': url}), content_type="application/json")
