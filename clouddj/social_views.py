@@ -394,7 +394,7 @@ def profile(request, id):
     user_to_view = get_object_or_404(Profile, id=id)
 
     context['search'] = SearchForm()
-    context['prof_owner'] = user_to_view
+    context['profile'] = user_to_view
 
     context['user'] = request.user
     context['posts'] = Post.get_user_posts(user_to_view)
