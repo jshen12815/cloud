@@ -1,4 +1,4 @@
- 
+ /*
  $(document).ready(function() { 
     console.log("hellooo");
     var url = $(this).parent().attr("href");
@@ -7,13 +7,13 @@
 
    });
   });
+*/
+
+
 
 
 
 /*
-
-
-
 $(".starrate").click(function( event ) {
    // var url = "a"//$(this).parent().attr("url");
     //var csrf_name = form.find("[type=hidden]").attr("name");
