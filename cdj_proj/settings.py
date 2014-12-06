@@ -78,6 +78,7 @@ if not DEBUG:
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'clouddj',
+        'datetimewidget',
         'widget_tweaks',
         'storages',
         'boto',

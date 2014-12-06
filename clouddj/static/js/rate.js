@@ -18,7 +18,7 @@ $(".starrate").click(function( event ) {
    //     url: url,
 
    // $(".starrate").click(function( event ) {
-        print "ajaxwork!!!!"
+ 
         var form = $(".rateform");
         var url = $(this).parent().attr("href");
         var csrf_name = form.find("[type=hidden]").attr("name");
