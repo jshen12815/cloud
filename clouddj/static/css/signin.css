@@ -600,7 +600,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf7f7', end
 }
 
 #topblock {
-  height: 150px;
+  height: 260px;
+}
+#commentblock {
+background-color: #eeeeee;
 }
 
 
