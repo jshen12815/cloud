@@ -14,21 +14,44 @@
 {% block labels %}
     <h1>Search</h1>
     <ul class="nav nav-pills nav-stacked">
-        <li role="presentation" class="active">
-            <a aria-controls="tracks" role="tab" data-toggle="tab" href="#">
+        <li class="active">
+            <a id="tracks-tab">
                 <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Tracks</span>
             </a>
         </li>
-        <li role="presentation">
-            <a aria-controls="people" role="tab" data-toggle="tab" class="sidebar-text" href="#">
+        <li >
+            <a id="people-tab">
                 <span class="glyphicon glyphicon-user sidebar-text"></span> <span class="sidebar-text">People</span>
             </a>
         </li>
     </ul>
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="tracks" style="margin-left: 200px">
-        </div>
-        <div role="tabpanel" class="tab-pane active" id="people" style="margin-left: 200px">
-        </div>
-    </div>
 {% endblock %}
+
+{% block page-posts %}
+
+    <div id="post-count" class="mytext" style="margin-top: 50px; margin-left: 170px;">
+        {{posts|length}} tracks found
+    </div>
+
+    {{block.super}}
+{% endblock page-posts %}
+
+{% block body %}
+    {{block.super}}
+    <div id="users-block" class="user-div" style="display:none">
+        <p class="mytext">{{profiles|length}} people found</p>
+        <hr style="width: 200px;">
+        {% for profile in profiles %}
+            <div class="row">
+                <div class="col-md-8">
+                    <img class="profpic" border="0" src="{% static 'images/propic.png' %}" alt="{{profile.user.username}}" width="150" height="150">
+                </div>
+                <div class="col-md-3 mytext">
+                    <p class="mytext username"><a href="{% url 'profile' profile.id %}" >{{profile.user.username}}</a></p>
+                    <span class="glyphicon glyphicon-user modal-user-icon"></span> {{profile.followers.count}}
+                </div>
+            </div>
+            <hr style="width: 200px;">
+        {% endfor %}
+    </div>
+{% endblock body %}

@@ -17,6 +17,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cdj_proj.settings")
 
 from django.core.wsgi import get_wsgi_application
 
+
 if settings.DEBUG:
     application = get_wsgi_application()
 else:

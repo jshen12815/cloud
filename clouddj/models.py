@@ -12,6 +12,10 @@ class Profile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+    @staticmethod
+    def get_user_named(query):
+        return Profile.objects.filter(Q(user__username__contains=query))
+
 
 class Hashtag(models.Model): 
     text = models.CharField(max_length=200, primary_key=True)
@@ -50,15 +54,16 @@ class Post(models.Model):
     genre = models.CharField(max_length=255)
     likes = models.ManyToManyField(Profile, related_name="post_likes", blank=True)
     hashtags = models.ManyToManyField(Hashtag, related_name='posts')
-    overallrating = models.IntegerField(default=0)
-    numratings = models.IntegerField(default=0)
+    overallrating = models.FloatField(default=0, blank=True, null=True)
+    showrating = models.IntegerField(default=0, blank=True, null=True)
+    numratings = models.IntegerField(default=0, blank=True, null=True)
     
     def __unicode__(self):
         return self.profile.user.username + ": "+self.text
 
     @staticmethod
-    def get_posts_containing(user, query):
-        return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query))
+    def get_posts_containing(profile, query):
+        return Post.objects.filter(Q(text__contains=query) | Q(title__contains=query) | Q(profile__user__username__contains=query))
 
     @staticmethod
     def get_stream_posts(user):
@@ -122,7 +127,8 @@ class Competition(models.Model):
     judges = models.ManyToManyField(Profile, related_name='judging')
     participants = models.ManyToManyField(Profile, related_name='participating')
     submissions = models.ManyToManyField(Post, related_name='comp')
-    description = models.CharField(max_length=420)
+    title = models.CharField(max_length=100, default='')
+    description = models.CharField(max_length=1000, default='')
     # add base sound file(s) to edit
     base_sound = models.FileField(upload_to='music')
     # add status (not started, in progress, completed)
@@ -131,4 +137,5 @@ class Competition(models.Model):
 
     # returns posts ranked from 1 to last
     def rankings(self):
-        return Rating.objects.filter(comp=self).order_by('-rating')
+        # does this even work lol
+        return Post.objects.filter(comp=self).order_by('-overallrating')

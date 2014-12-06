@@ -551,7 +551,7 @@ def get_ext(filename):
     if len(L) == 0:
         return ''
 
-    return '.' + L[-1]
+    return '.'+L[-1]
 
 
 def get_root(filename):
