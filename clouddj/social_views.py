@@ -47,7 +47,7 @@ def add_post(request, id):
     new_post.profile = request.user.profile
     new_post.song = song
     new_post.save()
-
+    new_post.setHashtags()
     # if it's a competition post, add it to competition submissions
     competition = song.project.competition
     if competition:
@@ -468,12 +468,14 @@ def recommended_songs(profile):
     best_rating = 0
 
     for hashtag in hts:
-        if hts[hashtag] >= best_rating:
+        if hts[hashtag] > best_rating:
             best_rating = hts[hashtag]
             best_ht = hashtag
 
-    print list(Post.objects.order_by('-plays')[:num_songs])
-    return list(Post.objects.order_by('-plays')[:num_songs])
+    if best_ht:
+        return list(Post.objects.filter(hashtags=best_ht).order_by('-overallrating')[:num_songs])
+    else:
+        return list(Post.objects.order_by('-overallrating')[:num_songs])
 
 #########################
 ### Competition stuff ###

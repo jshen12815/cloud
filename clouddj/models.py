@@ -76,8 +76,8 @@ class Post(models.Model):
 
     # once the text is set, parse the hashtags from it and save them
     def setHashtags(self):
-        newhts = set([i[1:] for i in line.split() if i.startswith("#")])
-        curr = set([ht.text for ht in self.hashtags])
+        newhts = set([i[1:] for i in self.text.split() if i.startswith("#")])
+        curr = set([ht.text for ht in self.hashtags.all()])
 
         # add new hashtags to old list
         for hashtag in newhts:
