@@ -61,12 +61,12 @@ if DEBUG:
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-#    AWS_STORAGE_BUCKET_NAME = 'clouddj'
- #   AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
- #   AWS_SECRET_ACCESS_KEY = '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'
- #   STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
- #   S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
- #   STATIC_URL = S3_URL
+    AWS_STORAGE_BUCKET_NAME = 'clouddj'
+    AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
+    AWS_SECRET_ACCESS_KEY = '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'
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
+    STATIC_URL = S3_URL
 
     # Application definition
 
@@ -82,7 +82,6 @@ if DEBUG:
         'widget_tweaks',
         'storages',
         'boto',
-
     )
 
     # Database
@@ -100,6 +99,12 @@ if DEBUG:
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/dev/howto/static-files/
+
+    #STATIC_ROOT = 'staticfiles'
+
+    #STATICFILES_DIRS = (
+    #    os.path.join(BASE_DIR, 'static'),
+    #)
     PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
     PROJECT_DIR = os.path.join(PROJECT_ROOT,'../clouddj/')
 
@@ -125,7 +130,7 @@ else:
         'django.contrib.staticfiles',
         'clouddj',
         'widget_tweaks',
-        'datetimewidget'
+        'datetimewidget',
     )
 
     # Database
@@ -153,36 +158,3 @@ else:
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
-                       'pathname=%(pathname)s lineno=%(lineno)s ' +
-                       'funcname=%(funcName)s %(message)s'),
-            'datefmt': '%Y-%m-%d %H:%M:%S'
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        }
-    },
-    'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'logging.NullHandler',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
-        }
-    },
-    'loggers': {
-        'testlogger': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        }
-    }
-}
