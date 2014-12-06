@@ -13,38 +13,44 @@
 
 {% block labels %}
     <ul class="nav nav-pills nav-stacked">
-        <li role="presentation" class="active">
-            <a aria-controls="tracks" role="tab" data-toggle="tab" href="#">
-                <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Trending Tracks</span> <!--- HAVE THE MOST RATINGS -->
-            </a>
-        </li>
-        <li role="presentation">
-            <a aria-controls="people" role="tab" data-toggle="tab" class="sidebar-text" href="#">
+        <li role="presentation" sel="#suggested" class="active">
+            <a aria-controls="suggested" role="tab" data-toggle="tab" class="sidebar-text" href="#">
                 <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Suggested Tracks</span><!--- HAVE THE MOST LIKES-->
             </a>
         </li>
-        <li role="presentation">
-            <a aria-controls="people" role="tab" data-toggle="tab" class="sidebar-text" href="#">
+        <li role="presentation" sel="#trending">
+            <a aria-controls="trending" role="tab" data-toggle="tab" href="#">
+                <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Trending Tracks</span> <!--- HAVE THE MOST RATINGS -->
+            </a>
+        </li>
+        <li role="presentation" sel="#genres">
+            <a aria-controls="genres" role="tab" data-toggle="tab" class="sidebar-text" href="#">
                 <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Browse Genres</span><!--- ORDERED BY MOST TAGS AS GENRES -->
             </a>
         </li>
-        <li role="presentation">
-            <a aria-controls="people" role="tab" data-toggle="tab" class="sidebar-text" href="#">
+        <li role="presentation" sel="#tags">
+            <a aria-controls="tags" role="tab" data-toggle="tab" class="sidebar-text" href="#">
                 <span class="glyphicon glyphicon-play-circle sidebar-text"></span> <span class="sidebar-text">Browse Tags</span><!--- MOST HASHTAGGED-->
             </a>
         </li>
     </ul>
+{% endblock %}
+
+{% block page-posts %}
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="tracks" style="margin-left: 200px">
+        <div role="tabpanel" class="tab-pane" id="trending" style="margin-left: 200px">
+            aaa
         </div>
-        <div role="tabpanel" class="tab-pane active" id="people" style="margin-left: 200px">
+        <div role="tabpanel" class="tab-pane active" id="suggested" style="margin-left: 200px">
+            {% for post in suggested_posts %}
+            {% include 'post_snippet.html' %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
 
 
-
 {% block more_scripts %}
-
-
+{{ block.super }}
+<script src="{% static 'js/explore.js' %}"></script>
 {% endblock more_scripts %}

@@ -110,7 +110,7 @@ class PlaylistForm(forms.Form):
     playlist = forms.IntegerField()
 
     def clean(self):
-        cleaned_data = super(AddToPlaylistForm, self).clean()
+        cleaned_data = super(PlaylistForm, self).clean()
 
         return cleaned_data
 

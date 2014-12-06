@@ -47,7 +47,7 @@ def add_post(request, id):
     new_post.profile = request.user.profile
     new_post.song = song
     new_post.save()
-
+    new_post.setHashtags()
     # if it's a competition post, add it to competition submissions
     competition = song.project.competition
     if competition:
@@ -219,6 +219,7 @@ def stream(request):
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
+    context['suggested_friends'] = suggested_friends(request.user.profile)
 
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
@@ -233,12 +234,22 @@ def stream(request):
 
     return render(request, 'stream.html', context)
 
+
+def suggested_friends(profile):
+    suggested_friends = []
+    for following in profile.following.all():
+        for other_following in following.following.all():
+            if other_following not in profile.following.all() and other_following != profile:
+                suggested_friends.append(other_following)
+    return suggested_friends
+
 @login_required
 def explore(request):
     context = {}
     context['search_form'] = SearchForm()
     context['user'] = request.user
     context['profile'] = request.user.profile
+    context['suggested_posts'] = recommended_songs(request.user.profile)
 
     return render(request, 'explore.html', context)
 
@@ -446,7 +457,7 @@ def recommended_songs(profile):
     hts = {}
     for r in ratings.all():
         p = r.post
-        mod_rating = (r.rating**2) * r.numratings
+        mod_rating = (p.overallrating**2) * p.numratings
 
         for hashtag in p.hashtags.all():
             if hashtag in hts:
@@ -458,12 +469,14 @@ def recommended_songs(profile):
     best_rating = 0
 
     for hashtag in hts:
-        if hts[hashtag] >= best_rating:
+        if hts[hashtag] > best_rating:
             best_rating = hts[hashtag]
             best_ht = hashtag
 
-    print list(Post.objects.order_by('-plays')[:num_songs])
-    return list(Post.objects.order_by('-plays')[:num_songs])
+    if best_ht:
+        return list(Post.objects.filter(hashtags=best_ht).order_by('-overallrating')[:num_songs])
+    else:
+        return list(Post.objects.order_by('-overallrating')[:num_songs])
 
 #########################
 ### Competition stuff ###
