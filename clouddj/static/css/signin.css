@@ -683,3 +683,9 @@ a:visited {
     margin-left: auto;
     margin-right: auto;
 }
+
+
+.playlist-panel {
+    width: 500px;
+    margin-left: 20%;
+}

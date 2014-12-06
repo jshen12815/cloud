@@ -125,9 +125,9 @@ def rate(request,id):
         post.showrating = int(post.overallrating)
         post.save()
 
+    data['rating'] = rating
     return redirect(request.META.get('HTTP_REFERER'))
-
-
+    
 
 @login_required
 def delete_post(request, id):
@@ -211,6 +211,18 @@ def delete_from_playlist(request):
 
     return redirect(request.META.get('HTTP_REFERER'))
 
+
+@login_required
+def playlists(request):
+    context = {}
+    context['profile'] = request.user.profile
+    context['playlists'] = Playlist.objects.filter(profile=request.user.profile)
+    context['search_form'] = SearchForm()
+    context['playlist_form'] = PlaylistForm()
+
+    return render(request, 'playlists.html', context)
+
+
 @login_required
 def stream(request):
     context = {}
@@ -218,6 +230,7 @@ def stream(request):
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
+    context['playlists'] = Playlist.objects.filter(profile=request.user.profile)
     context['suggested_friends'] = suggested_friends(request.user.profile)
 
     profile = get_object_or_404(Profile, user=request.user)
@@ -414,7 +427,7 @@ def edit_profile(request):
     request.user.save()
     update_session_auth_hash(request, request.user)
 
-    return render(request, 'editprofile.html', context)
+    return render(request, 'profile.html', context)
 
 @login_required
 def profile(request, id):
@@ -571,8 +584,12 @@ def competition(request, id):
     # show creator, judges, description, then submissions
     # don't accept submissions, or release base music until comp starts
     # if competition is done, show like the winners and stuff
+    profiles = Profile.objects.all()
     context = {}
     competition = get_object_or_404(Competition, id=id)
+    context['competitions'] = Competition.objects.all()
+    context['user'] = request.user
+    context['profiles'] = profiles
 
     context['competition'] = competition
     context['posts'] = competition.submissions.all()
@@ -584,8 +601,11 @@ def competition(request, id):
 @login_required
 def list_competitions(request):
     # don't care if it's get or post
+    profiles = Profile.objects.all()
     context = {}
     context['competitions'] = Competition.objects.all()
+    context['user'] = request.user
+    context['profiles'] = profiles
 
     # WRITE LISTCOMPETITIONS.HTML or add this to 'explore'
     return render(request, 'listcompetitions.html', context)        

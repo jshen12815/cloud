@@ -5,6 +5,7 @@ $(".like-btn").click(function( event ) {
     var url = $(this).parent().attr("href");
     var csrf_name = form.find("[type=hidden]").attr("name");
     var like_button = $(this);
+    
 
     $.ajax({
         url: url,
