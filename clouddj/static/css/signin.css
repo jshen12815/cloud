@@ -655,8 +655,9 @@ a:visited {
 
 /* edit profile stuff */
 .my-panel {
-    width: 70%;
+    width: 150%;
     margin-top: 50px;
+    margin-left: -100px;
 }
 
 .my-panel-body {
@@ -667,5 +668,5 @@ a:visited {
 .save-prof-btn {
     background-color: #6FE1D5;
     border-color: #6FE1D5;
-    margin-left: 88%;
+    margin-left: 86%;
 }
