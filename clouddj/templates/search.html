@@ -40,7 +40,11 @@
 {% block body %}
     {{block.super}}
     <div id="users-block" class="user-div" style="display:none">
-        <p class="mytext">{{profiles|length}} people found</p>
+        {% if profiles|length == 1 %}
+            <p class="mytext">{{profiles|length}} person found</p>
+        {% else %}
+            <p class="mytext">{{profiles|length}} people found</p>
+        {% endif %}
         <hr style="width: 200px;">
         {% for profile in profiles %}
             <div class="row">

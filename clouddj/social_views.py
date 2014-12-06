@@ -218,6 +218,7 @@ def stream(request):
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
+    context['suggested_friends'] = suggested_friends(request.user.profile)
 
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
@@ -231,6 +232,15 @@ def stream(request):
         context['projects'] = projects
 
     return render(request, 'stream.html', context)
+
+
+def suggested_friends(profile):
+    suggested_friends = []
+    for following in profile.following:
+        for other_following in following.following:
+            if other_following not in profile.following:
+                suggested_friends.append(other_following)
+    return suggested_friends
 
 @login_required
 def explore(request):
