@@ -49,7 +49,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-if DEBUG:
+if not DEBUG:
     import dj_database_url
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
@@ -100,12 +100,6 @@ if DEBUG:
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/dev/howto/static-files/
-
-    #STATIC_ROOT = 'staticfiles'
-
-    #STATICFILES_DIRS = (
-    #    os.path.join(BASE_DIR, 'static'),
-    #)
     PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
     PROJECT_DIR = os.path.join(PROJECT_ROOT,'../clouddj/')
 
