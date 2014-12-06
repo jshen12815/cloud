@@ -249,6 +249,12 @@ class JudgesForm(forms.Form):
                             widget = forms.TextInput(attrs={'class':'form-control', 'placeholder':'judges'}),
                             required=False)
 
+class RemoveJudgesForm(forms.Form):
+    rjudges = forms.CharField(max_length=4200, 
+                            label = 'Judges',
+                            widget = forms.TextInput(attrs={'class':'form-control', 'placeholder':'judges'}),
+                            required=False)
+
 class CompetitionForm(forms.ModelForm):
 
     class Meta:
@@ -294,6 +300,17 @@ class EditCompetitionForm(forms.ModelForm):
     class Meta:
         model = Competition
         fields = ('description', 'start', 'end', 'base_sound')
+
+        dateTimeOptions = {
+            'format': 'mm/dd/yyyy HH:ii'
+        }
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'title'}),
+            'description': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'description'}),
+            'start': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions),
+            'end': DateTimeWidget(bootstrap_version=3, options=dateTimeOptions)
+        }
 
     def clean_base_sound(self):
         base_file = self.cleaned_data.get('base_sound')
