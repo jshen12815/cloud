@@ -427,7 +427,7 @@ def edit_profile(request):
     request.user.save()
     update_session_auth_hash(request, request.user)
 
-    return render(request, 'editprofile.html', context)
+    return render(request, 'profile.html', context)
 
 @login_required
 def profile(request, id):
@@ -584,8 +584,12 @@ def competition(request, id):
     # show creator, judges, description, then submissions
     # don't accept submissions, or release base music until comp starts
     # if competition is done, show like the winners and stuff
+    profiles = Profile.objects.all()
     context = {}
     competition = get_object_or_404(Competition, id=id)
+    context['competitions'] = Competition.objects.all()
+    context['user'] = request.user
+    context['profiles'] = profiles
 
     context['competition'] = competition
     context['posts'] = competition.submissions.all()
@@ -597,8 +601,11 @@ def competition(request, id):
 @login_required
 def list_competitions(request):
     # don't care if it's get or post
+    profiles = Profile.objects.all()
     context = {}
     context['competitions'] = Competition.objects.all()
+    context['user'] = request.user
+    context['profiles'] = profiles
 
     # WRITE LISTCOMPETITIONS.HTML or add this to 'explore'
     return render(request, 'listcompetitions.html', context)        

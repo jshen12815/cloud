@@ -24,7 +24,19 @@
                 My Competitions
             </ul>
             {% for competition in competitions %}
+            {% if competition.creator == user.profile%}
 
+           <div class = "mycompetitions">
+            <a href="{% url 'competition' competition.id %}"> {{ competition.title }}
+
+                <div class = "datedetails pull-right dim-text">{{competition.creator }} <br>
+                    {{competition.start}} - {{competition.end}} 
+
+            </a>
+             </div>
+             </div>
+            {% endif %}
+            {% endfor %}
 
 
 
@@ -84,7 +96,7 @@
 	{% endfor %}
 <br>
 <br>
-<p class = "create">PastCompetitions:</p>
+<p class = "create">Past Competitions:</p>
 <br>
 <ul>
 	{% for competition in competitions %}
