@@ -74,10 +74,14 @@ background-color: white;
 }
 
 
+.numratings {
+  margin-left: 680px;
+  font-size: 12px;
+}
 
-
-#demo {
-width: 500px;
+.rateform {
+  margin-bottom: -19px;
+  margin-right: 35px;
 }
 
 
