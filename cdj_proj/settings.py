@@ -49,7 +49,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-if DEBUG:
+if not DEBUG:
     import dj_database_url
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
@@ -81,6 +81,7 @@ if DEBUG:
         'widget_tweaks',
         'storages',
         'boto',
+        'datetimewidget'
     )
 
     # Database
@@ -121,6 +122,7 @@ else:
         'django.contrib.staticfiles',
         'clouddj',
         'widget_tweaks',
+        'datetimewidget'
     )
 
     # Database
