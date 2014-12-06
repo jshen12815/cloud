@@ -38,15 +38,6 @@ body {
   margin-top: 10px;
 }
 
-.textbox {
-    border: none;
-    overflow: auto;
-    outline: none;
-    resize: none;
-    
-    box-shadow: none;
-}
-
 .comment-box {
     width: 900px;
 }
