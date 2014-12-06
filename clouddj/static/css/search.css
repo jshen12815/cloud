@@ -38,15 +38,6 @@ body {
   margin-top: 10px;
 }
 
-.textbox {
-    border: none;
-    overflow: auto;
-    outline: none;
-    resize: none;
-    
-    box-shadow: none;
-}
-
 .comment-box {
     width: 900px;
 }
@@ -128,7 +119,7 @@ a:visited {
     font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
 }
 .username {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
 }
 

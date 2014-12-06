@@ -17,12 +17,12 @@ $(".comm-form").submit(function( event ) {
 
         success: function( data ) {
             form.find("[type=text]").val('');
-            var count = parseInt(form.parent().next().find("[data-toggle=collapse]").html());
-            form.parent().next().find("[data-toggle=collapse]").html((count + 1).toString());
+            var post_id = data['post_id'];
+            var count = parseInt($("#"+post_id).parent().parent().prev().find(".comment-count").html());
+            $("#"+post_id).parent().parent().prev().find(".comment-count").html((count + 1).toString() + "&nbsp; &nbsp;");
             var comment = data['comment'];
             var username = data['username'];
             var user_id = data['user_id'];
-            var post_id = data['post_id'];
             //$("#"+post_id).addClass("in");
             $("#"+post_id).append("\
                                   <div class='row'>\

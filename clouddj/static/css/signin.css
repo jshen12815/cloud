@@ -573,7 +573,7 @@ html {
 
 
 
-#right {
+.right {
   padding-left: 50px;
 }
 
@@ -600,7 +600,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf7f7', end
 }
 
 #topblock {
-  height: 150px;
+  height: 260px;
+}
+#commentblock {
+background-color: #eeeeee;
 }
 
 
@@ -629,10 +632,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf7f7', end
 
 
 a:link {
+    color: black;
     text-decoration: none;
 }
 
 a:visited {
+    color: black;
     text-decoration: none;
 }
 
@@ -648,15 +653,16 @@ a:visited {
 
 .search-icon {
     position: relative;
-    left: 690px;
+    left: 244px;
     color: dimgray;
 }
 
 
 /* edit profile stuff */
 .my-panel {
-    width: 70%;
+    width: 150%;
     margin-top: 50px;
+    margin-left: -100px;
 }
 
 .my-panel-body {
@@ -667,5 +673,13 @@ a:visited {
 .save-prof-btn {
     background-color: #6FE1D5;
     border-color: #6FE1D5;
-    margin-left: 88%;
+    margin-left: 86%;
+}
+
+.sug-frd-text {
+    font-family: "Interstate", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Garuda, Verdana, Tahoma, sans-serif;
+    color: gray;
+    margin-top: 20%;
+    margin-left: auto;
+    margin-right: auto;
 }

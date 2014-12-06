@@ -7,20 +7,6 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
-
-import dj_database_url
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Allow all host headers
-ALLOWED_HOSTS = []
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 import os
@@ -75,12 +61,12 @@ if not DEBUG:
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    AWS_STORAGE_BUCKET_NAME = 'clouddj'
-    AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
-    AWS_SECRET_ACCESS_KEY = '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'
-    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
-    STATIC_URL = S3_URL
+#    AWS_STORAGE_BUCKET_NAME = 'clouddj'
+ #   AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
+ #   AWS_SECRET_ACCESS_KEY = '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'
+ #   STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+ #   S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
+ #   STATIC_URL = S3_URL
 
     # Application definition
 
@@ -92,10 +78,11 @@ if not DEBUG:
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'clouddj',
+        'datetimewidget',
         'widget_tweaks',
         'storages',
         'boto',
-        'datetimewidget',
+
     )
 
     # Database
@@ -113,11 +100,13 @@ if not DEBUG:
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/dev/howto/static-files/
+    PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+    PROJECT_DIR = os.path.join(PROJECT_ROOT,'../clouddj/')
 
-    STATIC_ROOT = 'staticfiles'
-
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles/')
+    STATIC_URL = '/static/'
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
+        os.path.join(PROJECT_DIR,'static/'),
     )
 
 else:
@@ -136,6 +125,7 @@ else:
         'django.contrib.staticfiles',
         'clouddj',
         'widget_tweaks',
+        'datetimewidget'
     )
 
     # Database
@@ -161,9 +151,5 @@ else:
 
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

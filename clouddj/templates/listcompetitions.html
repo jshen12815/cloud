@@ -1,16 +1,124 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
+
+{% block stylesheets %}
+    {{block.super}}
+    <link href="{% static 'css/search.css' %}" rel="stylesheet">
+    <link href="{% static 'css/competitions.css' %}" rel="stylesheet">
+<link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+{% block bodytag %}
+<body class = "backgroundcolor">
+{% endblock bodytag %}
+
 {% load widget_tweaks %}
 
 {% block body %}
+<div class="container">
+    <div class="column">
+        {% block sidebar %}
+        <div class="col-sm-3 col-md-3 sidebar dark-text">
+            {% block labels %}
+            <ul class="profile">
+                my competitions
+            </ul>
+            {% endblock %}
+        </div>
+        {% endblock sidebar %}
 
-<a href="{% url 'create_competition' %}">Create your own competition!</a>
+        {% block page-posts %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
+            
 
-<p>Competitions:</p>
+
+
+
+<a class = "create" href="{% url 'create_competition' %}">Create your own competition!</a>
+<p> Competitions are a fun way to get connected with the community and challege your editing skills! </p>
+<br>
+<br>
+<p class= "create">Current Competitions:</p>
+<br>
+
+	{% for competition in competitions %}
+		{% if competition.status = True %}
+
+
+	       <div class="postblock">
+                <div id="content">
+                            <div class="row">
+
+	                                <div class="pull-right dim-text ">{{competition.start}} - {{competition.end}} &nbsp;&nbsp;&nbsp;</div>
+	                                <div style="width: 400px; padding-left: 20px;" class="song-title">
+	                                    <a href="{% url 'competition' competition.id %}">{{ competition.title }}</a>                            
+	                                    <span class="username-text">
+	                                    {{post.creator.profile.user.username}}
+	                                    </span>
+	                                </div>
+	                                <div style="width: 200px; padding-left: 40px;" class="song-text">
+	                                    {{competition.description}}
+	                                </div>
+                             </div>
+                         </div>
+                     </div>
+                 
+
+
+                     {% endif %}
+
+	
+	{% endfor %}
+<br>
+<br>
+<p class = "create">PastCompetitions:</p>
+<br>
 <ul>
-{% for competition in competitions %}
-<li><a href="{% url 'competition' competition.id %}">{{ competition.title }}</a></li>
-{% endfor %}
+	{% for competition in competitions %}
+	{% if competition.status = False %}
+	
+	       <div class="postblock">
+                <div id="content">
+                            <div class="row">
+
+	                                <div class="pull-right dim-text ">{{competition.start}} - {{competition.end}} &nbsp;&nbsp;&nbsp;</div>
+	                                <div style="width: 400px; padding-left: 20px;" class="song-title">
+	                                    <a href="{% url 'competition' competition.id %}">{{ competition.title }}</a>                            
+	                                    <span class="username-text">
+	                                    {{post.creator.profile.user.username}}
+	                                    </span>
+	                                </div>
+	                                <div style="width: 200px; padding-left: 40px;" class="song-text">
+	                                    {{competition.description}}
+	                                </div>
+                             </div>
+                         </div>
+                     </div>
+                 {% endif %}
+	{% endfor %}
 </ul>
+
+
+
+
+
+
+
+
+          
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        {% endblock page-posts %}
+    </div>
+</div>
+
+
+
 {% endblock body %}
+
+
+
+

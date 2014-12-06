@@ -127,7 +127,8 @@ def record(request, song_id):
     recording = AudioSegment.from_file(temp_file, format='wav')
     start_time = float(form.cleaned_data['start'])
     start_time *= 1000
-
+    print(start_time)
+    print(len(seg))
     if start_time / 1000 >= len(seg) / 1000:
         # append
         silent_secs = start_time - len(seg)

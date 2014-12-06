@@ -3,6 +3,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
@@ -19,7 +20,7 @@ import json
 from clouddj.music_views import get_root, get_content_type, delete
 import datetime
 import math
-
+from pydub import AudioSegment
 
 def home(request):
     profiles = Profile.objects.all()
@@ -46,13 +47,14 @@ def add_post(request, id):
     new_post.profile = request.user.profile
     new_post.song = song
     new_post.save()
-
+    new_post.setHashtags()
     # if it's a competition post, add it to competition submissions
     competition = song.project.competition
     if competition:
         # check if it's still in time range
         time = datetime.datetime
-        if competition.start <= time and time <= competition.end:
+        if competition.start <= time and time <= competition.end and \
+           (request.user.profile not in competition.participants.all()):
             competition.submissions.add(new_post)
             competition.participants.add(request.user.profile)
 
@@ -62,22 +64,53 @@ def add_post(request, id):
 
 @login_required
 def rate(request,id):
-
+    print "rating"
 
     post = get_object_or_404(Post, id = id)
     print post.id
     data = {}
     data['post_id'] = id
     rating=request.POST['rateval']
-    #overall rating numratings
 
-    #if Rating.objects.filter(profile = request.user.profile):
-     #   newrating = 
+    # get the competition for the post if it exists
+    try:
+        competition = post.comp.all()[:1].get()
+        time = datetime.datetime
+        # if the user (isn't judge or creator) or (competition is over)
+        # don't let them rate it!
+        if ((request.user.profile not in competition.judges.all()) and \
+            request.user.profile != competition.creator) or \
+            time >= competition.end:
+            return redirect(request.META.get('HTTP_REFERER'))
+    except ObjectDoesNotExist:
+        pass
 
-    newrating = Rating(profile=request.user.profile, rating=rating, post=post)
-    newrating.save()
+    try: 
+        userrating = Rating.objects.get(profile = request.user.profile, post = post)
+        print "i already rated"
 
-    if id:
+        numratings=int(post.numratings)
+        olduserrating = userrating.rating
+        overallrating = float(post.overallrating)
+
+        new_ratings = (numratings * overallrating) 
+        new_ratingsa = new_ratings + int(rating) - int(olduserrating)
+        new_rating = new_ratingsa/numratings
+
+        post.overallrating = new_rating
+        post.showrating = int(post.overallrating)
+        post.save()
+
+        userrating.rating = rating
+        userrating.save()
+
+ 
+    except ObjectDoesNotExist:
+        print "newrating"
+
+        newrating = Rating(profile=request.user.profile, rating=rating, post=post)
+        newrating.save()
+
         numratings=int(post.numratings)
         if (post.overallrating == None):
             overallrating = 0.0
@@ -92,7 +125,8 @@ def rate(request,id):
         post.showrating = int(post.overallrating)
         post.save()
 
-    return redirect(request.META.get('HTTP_REFERER'))
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 
 
@@ -185,6 +219,7 @@ def stream(request):
     context['user'] = request.user
     context['profile'] = request.user.profile
     context['posts'] = Post.get_stream_posts(request.user.profile)
+    context['suggested_friends'] = suggested_friends(request.user.profile)
 
     profile = get_object_or_404(Profile, user=request.user)
     projects = Project.objects.filter(profile=profile, status="in_progress").order_by("-id")
@@ -200,12 +235,21 @@ def stream(request):
     return render(request, 'stream.html', context)
 
 
+def suggested_friends(profile):
+    suggested_friends = []
+    for following in profile.following.all():
+        for other_following in following.following.all():
+            if other_following not in profile.following.all() and other_following != profile:
+                suggested_friends.append(other_following)
+    return suggested_friends
+
 @login_required
 def explore(request):
     context = {}
     context['search_form'] = SearchForm()
     context['user'] = request.user
     context['profile'] = request.user.profile
+    context['suggested_posts'] = recommended_songs(request.user.profile)
 
     return render(request, 'explore.html', context)
 
@@ -271,15 +315,18 @@ def search(request):
 
     form = SearchForm(request.GET)
     context['search'] = form
+    context['profile'] = request.user.profile
     context['user'] = request.user
     if not form.is_valid():
         return render(request, 'search.html', context)
 
     posts = Post.get_posts_containing(request.user.profile, form.cleaned_data['text'])
+    profiles = Profile.get_user_named(form.cleaned_data['text'])
 
     context['message'] = str(int(len(posts))) + " result(s) found"
 
     context['posts'] = posts
+    context['profiles'] = profiles
 
     return render(request, 'search.html', context)
 
@@ -334,15 +381,17 @@ def edit_profile(request):
     context = {}
     errors = []
     context['errors'] = errors
+    context['profile'] = request.user.profile
 
     if request.method == 'GET':
         context['form'] = EditForm()
         return render(request, 'editprofile.html', context)
 
-    form = EditForm(request.POST)
+    form = EditForm(request.POST, request.FILES)
     context['form'] = form
 
     if not form.is_valid():
+        print form.errors
         return render(request, 'editprofile.html', context)
     
 
@@ -359,6 +408,10 @@ def edit_profile(request):
     if form.cleaned_data['new_email'] != "":
         request.user.email = form.cleaned_data['new_email']
 
+    if request.FILES.get('photo', False):
+        request.user.profile.photo = request.FILES.get('photo', False)
+
+    request.user.profile.save()
     request.user.save()
     update_session_auth_hash(request, request.user)
 
@@ -371,7 +424,7 @@ def profile(request, id):
     user_to_view = get_object_or_404(Profile, id=id)
 
     context['search'] = SearchForm()
-    context['prof_owner'] = user_to_view
+    context['profile'] = user_to_view
 
     context['user'] = request.user
     context['posts'] = Post.get_user_posts(user_to_view)
@@ -383,19 +436,14 @@ def profile(request, id):
 def follow(request, id):
     user = get_object_or_404(Profile, id=id)
     logged_in = request.user.profile
-    data = {}
-    data['followed'] = "False"
-    data['unfollowed'] = "False"
 
     if logged_in in user.followers.all():
         user.followers.remove(logged_in)
-        data['unfollowed'] = "True"
     else:    
         user.followers.add(logged_in)
-        data['followed'] = "True"
 
     user.save()
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 # returns list of recommended songs
@@ -409,7 +457,7 @@ def recommended_songs(profile):
     hts = {}
     for r in ratings.all():
         p = r.post
-        mod_rating = (r.rating**2) * r.numratings
+        mod_rating = (p.overallrating**2) * p.numratings
 
         for hashtag in p.hashtags.all():
             if hashtag in hts:
@@ -421,12 +469,14 @@ def recommended_songs(profile):
     best_rating = 0
 
     for hashtag in hts:
-        if hts[hashtag] >= best_rating:
+        if hts[hashtag] > best_rating:
             best_rating = hts[hashtag]
             best_ht = hashtag
 
-    print list(Post.objects.order_by('-plays')[:num_songs])
-    return list(Post.objects.order_by('-plays')[:num_songs])
+    if best_ht:
+        return list(Post.objects.filter(hashtags=best_ht).order_by('-overallrating')[:num_songs])
+    else:
+        return list(Post.objects.order_by('-overallrating')[:num_songs])
 
 #########################
 ### Competition stuff ###
@@ -465,8 +515,13 @@ def create_competition(request):
 @login_required
 def edit_competition(request, id):
     # Can only edit BEFORE the competition starts
+    context = {}
+    context['form'] = EditCompetitionForm()
+    context['judgeform'] = JudgesForm()
+    context['removejudgeform'] = RemoveJudgesForm()
+
     if request.method == 'GET':
-        return redirect(request.META.get('HTTP_REFERER'))
+        return render(request, 'editcompetition.html', context)
 
     competition = get_object_or_404(Competition, id=id)
     if request.user.profile != competition.creator or \
@@ -474,8 +529,11 @@ def edit_competition(request, id):
         return redirect(request.META.get('HTTP_REFERER'))
 
     form = EditCompetitionForm(request.POST, request.FILES)
-    if not form.is_valid():
-        return redirect(request.META.get('HTTP_REFERER'))
+    judgeform = JudgesForm(request.POST)
+    removejudgeform = RemoveJudgesForm(request.POST)
+
+    if not (form.is_valid() and addform.is_valid() and removeform.is_valid()):
+        return render(request, 'editcompetition.html', context)
 
     # don't save the new form instance
 
@@ -487,19 +545,21 @@ def edit_competition(request, id):
     if form.cleaned_data['description']:
         competition.description = form.cleaned_data['description']
 
-    aj = form.cleaned_data['addJudges'].split(' ')
+    aj = judgeform.cleaned_data['judges'].split(' ')
     for judge in aj:
         if User.objects.filter(username=judge):
             j = User.objects.get(username=judge)
             competition.judges.add(Profile.objects.get(user=j))
 
-    rj = form.cleaned_data['removeJudges'].split(' ')
+    rj = removejudgeform.cleaned_data['rjudges'].split(' ')
     for judge in rj:
         if User.objects.filter(username=judge):
             j = User.objects.get(username=judge)
             competition.judges.remove(Profile.objects.get(user=j))
 
     competition.save()
+
+    return redirect(reverse('competition', kwargs={'id':competition.id}))
 
 # just add to regular rate...
 @login_required
@@ -540,6 +600,10 @@ def join_competition(request, id):
     profile = get_object_or_404(Profile, user=request.user)
     competition = get_object_or_404(Competition, id=id)
 
+    time = datetime.datetime
+    if (time < competition.start) or (profile in competition.participants.all()):
+        return redirect(request.META.get('HTTP_REFERER'))
+
     new_project = Project(profile=profile, status="in_progress", competition=competition)
     new_project.save()
 
@@ -578,3 +642,14 @@ def get_root(filename):
         return ''
 
     return '.'.join(L[:len(L)-1])
+
+
+@login_required
+def get_photo(request, id):
+
+    profile = get_object_or_404(Profile, id=id)
+    if not profile.photo:
+        raise Http404
+
+    content_type = guess_type(profile.photo.name)
+    return HttpResponse(profile.photo, content_type=content_type)

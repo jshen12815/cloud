@@ -8,6 +8,7 @@ from django.db.models import Q, Count
 class Profile(models.Model):
     user = models.OneToOneField(User)
     followers = models.ManyToManyField('self', symmetrical=False, related_name="following")
+    photo = models.ImageField(upload_to="prof-pics", default='prof-pics/default.jpg')
 
     def __unicode__(self):
         return self.user.username
@@ -75,8 +76,8 @@ class Post(models.Model):
 
     # once the text is set, parse the hashtags from it and save them
     def setHashtags(self):
-        newhts = set([i[1:] for i in line.split() if i.startswith("#")])
-        curr = set([ht.text for ht in self.hashtags])
+        newhts = set([i[1:] for i in self.text.split() if i.startswith("#")])
+        curr = set([ht.text for ht in self.hashtags.all()])
 
         # add new hashtags to old list
         for hashtag in newhts:
@@ -113,7 +114,7 @@ class Rating(models.Model):
 
     profile= models.ForeignKey(Profile)
     post = models.ForeignKey(Post)
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=0)
 
 class Playlist(models.Model):
     posts = models.ManyToManyField(Post, related_name="playlist")
@@ -131,6 +132,7 @@ class Competition(models.Model):
     description = models.CharField(max_length=1000, default='')
     # add base sound file(s) to edit
     base_sound = models.FileField(upload_to='music')
+    status = models.BooleanField(default = True)
     # add status (not started, in progress, completed)
     start = models.DateTimeField(auto_now_add=False)
     end = models.DateTimeField(auto_now_add=False)

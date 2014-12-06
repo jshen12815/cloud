@@ -13,18 +13,24 @@
 
 {% block labels %}
     <ul class="profile">
-        <img class = "propic" src="{% static 'images/propic.png' %}" >
-        <p class="sidebar-username">{{prof_owner.user.username}}</p>
+        <img class="profpic" border="0" src="{% url 'photo' profile.id %}" alt="{{profile.user.username}}" width="250" height="250">
+        <p class="sidebar-username">{{profile.user.username}}</p>
         <span class="glyphicon glyphicon-user sidebar-content"></span>
-        <a type="button" data-toggle="modal" data-target="#follower_modal"> {{prof_owner.followers.count}}</a>
-        {% if user.profile != prof_owner %}
-            <form action="{% url 'follow' prof_owner.id %}">
-                <button id="follow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn">
-                    <span class="glyphicon glyphicon-ok-circle"></span> Follow
+        <a type="button" data-toggle="modal" data-target="#follower_modal"> {{profile.followers.count}}</a>
+        {% if user.profile != profile %}
+            <form action="{% url 'follow' profile.id %}">
+                {% if user.profile in  profile.followers.all %}
+                <button id="unfollow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text unfollow-btn fu-btn">
+                    <span class="glyphicon glyphicon-ok-circle"></span> <span class="btn-text">Unfollow</span>
                 </button>
+                {% else %}
+                <button id="follow-btn" type="submit" class="btn btn-default btn-sm my-btn dark-text follow-btn fu-btn">
+                    <span class="glyphicon glyphicon-ok-circle"></span> <span class="btn-text">Follow</span>
+                </button>
+                {% endif %}
             </form>
         {% endif %}
-        {% if user.profile == prof_owner %}
+        {% if user.profile == profile %}
             <form action="{% url 'edit-profile' %}">
                 <button type="submit" class="btn btn-default btn-sm my-btn dark-text">
                     <span class="glyphicon glyphicon-edit"></span> Edit
@@ -50,22 +56,18 @@
                     <div role="tabpanel">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active">
-                                <a href="#followers" aria-controls="followers" role="tab" data-toggle="tab">Followers {{prof_owner.followers.count}}</a>
+                                <a href="#followers" aria-controls="followers" role="tab" data-toggle="tab">Followers {{profile.followers.count}}</a>
                             </li>
                             <li role="presentation">
-                                <a href="#following" aria-controls="following" role="tab" data-toggle="tab">Following {{prof_owner.following.count}}</a>
+                                <a href="#following" aria-controls="following" role="tab" data-toggle="tab">Following {{profile.following.count}}</a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="followers">
-                                {% for follower in prof_owner.followers.all %}
+                                {% for follower in profile.followers.all %}
                                     <div class="row follow-div">
                                         <div class="col-md-1">
-                                            {% if follower.about.picture %}
-                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.id %}" alt="{{follower.username}}" width="40" height="40">
-                                            {% else %}
-                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{follower.username}}" width="40" height="40">
-                                            {% endif %}
+                                            <img class="profpic img-rounded" border="0" src="{% url 'photo' follower.id %}" alt="{{follower.user.username}}" width="40" height="40">
                                         </div>
                                         <div style="width:500px" class="col-md-2">
                                             <a style="color: black" href="{% url 'profile' follower.id %}">
@@ -77,14 +79,10 @@
                                 {% endfor %}
                             </div>
                             <div role="tabpanel" class="tab-pane active" id="following">
-                                {% for following in prof_owner.following.all %}
+                                {% for following in profile.following.all %}
                                     <div class="row follow-div">
                                         <div class="col-md-1">
-                                            {% if following.picture %}
-                                                <img class="profpic img-rounded" border="0" src="{% url 'photo' following.id %}" alt="{{following.username}}" width="40" height="40">
-                                            {% else %}
-                                                <img class="profpic img-rounded" border="0" src="{% static 'images/propic.png' %}" alt="{{following.username}}" width="40" height="40">
-                                            {% endif %}
+                                            <img class="profpic img-rounded" border="0" src="{% url 'photo' following.id %}" alt="{{following.user.username}}" width="40" height="40">
                                         </div>
                                         <div style="width:500px" class="col-md-2">
                                             <a style="color: black" href="{% url 'profile' following.id %}">
@@ -102,3 +100,7 @@
         </div>
     </div>
 {% endblock body %}
+
+{% block more_scripts %}
+{{block.super}}
+{% endblock %}

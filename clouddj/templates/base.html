@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -39,7 +40,7 @@
 
 {% block navbar %}
 <div class="navbar navbar-inverse navbar-fixed-top mynavbar" role="navigation">
-    <div class="container-fluid">
+    <div class="container-fluid" style = "margin: 0px;">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target=".navbar-collapse">
@@ -96,7 +97,7 @@
             </div>
             {% endif %}
         </div>
-        <div class="nav navbar-nav navbar-left">
+        <div class="nav navbar-nav navbar-right" style = "padding-right: 10px;">
             {% if user.is_authenticated %}
             <form method="get" action="{% url 'search' %}" style="margin-top:-5px">
                 <span class="glyphicon glyphicon-search search-icon"></span>
@@ -131,7 +132,7 @@
         <div class="col-sm-3 col-md-3 sidebar">
             {% block labels %}
             <ul class="profile">
-                <img class="propic" src="{% static 'images/propic.png' %}">
+                <img class="profpic" border="0" src="{% url 'photo' profile.id %}" alt="{{profile.user.username}}" width="250" height="250">
             </ul>
             {% endblock %}
         </div>
@@ -139,177 +140,18 @@
 
         {% block page-posts %}
         <div class="col-sm-9 col-sm-offset-3 col-md-11 col-md-offset-3 main float-left" id="post-block">
+
+
             {% for post in posts %}
-            {% if post.photo %}
-            <img class="postpropic" border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
-                 width="170" height="170">
-            {% endif %}
-            <div class="postblock" id="topblock">
-                <div id="content">
-                    <div id="left">
-                        <div class="photo">
-                            {% if post.photo %}
-                            <img border="0" src="{% url 'post_photo' post.id %}" alt="{{post.profile.user.username}}"
-                                 width="120" height="120">
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div id="right">
-                        {% with post.id|stringformat:"s" as post_id %}
-                        <button id="{{ 'play-'|add:post_id }}" class="pause" data-action="play">
-                            <i class="glyphicon glyphicon-play"></i>|
-                            <i class="glyphicon glyphicon-pause"></i>
-                        </button>
-                        <div class="row">
-                            <div id="demo">
-                                <div class="waveform" id="{{ 'waveform-'|add:post_id }}">
-                                    <div class="progress progress-striped active" id="{{ 'progressbar-'|add:post_id }}">
-                                        <div class="progress-bar progress-bar-info"></div>
-                                    </div>
-                                    <!-- Here be the waveform -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="postblock">
-                <div class="photo">
-                    <div class="row">
-                        <div class="username-text col-md-2">
-                            {{post.profile.user.username}}
-                        </div>
-                        <div class="pull-right dim-text col-md-8">{{post.date}}</div>
-                    </div>
-                    <div style="width: 200px" class="song-title">
-                        {{post.title}}
-                    </div>
-                    <div style="width: 200px" class="song-text">
-                        {{post.text}}
-                    </div>
-                    <audio controls style="display:none" id="audio_controls">
-                        <source id="{{ 'audiosrc-'|add:post_id }}" src="{% url 'get_song' post.song.id %}"
-                                type="{{ type }}">
-                        Your browser does not support the audio element.
-                    </audio>
+            {% include "post_snippet.html" %}
 
-                    <div class="comment-box">
-                        <form class="comm-form" action="{% url 'add_comment' post.id %}" method="post">
-                            <div class="textbox-wrapper">
-                                <label style="display:none" for="{{ 'comment-'|add:post_id }}"></label>
-                                <input id="{{ 'comment-'|add:post_id }}" type="text" name="comm"
-                                       class="textbox song-text" placeholder=" Comment...">
-                            </div>
-                            {% csrf_token %}
-                        </form>
-<!--
-id="rate" class="rating"-->
-                        
-
-                    
-
-
-                         
-                      
-                    </span>
-
-
-
-                    </div>
-                    {% endwith %}
-                    <p style="margin-top: 10px; width: 590px">
-                        {% if profile not in post.likes.all %}
-                        <a href="{% url 'like' post.id %}">
-                            <button type="button" class="btn btn-default btn-xs my-btn dark-text like-btn"> &#10084;
-                                Like
-                            </button>
-                        </a>
-                        {% else %}
-                        <a href="{% url 'like' post.id %}">
-                            <button type="button" class="btn btn-default btn-xs lit-like dark-text like-btn"> &#10084;
-                                Unlike
-                            </button>
-                        </a>
-                        {% endif %}
-                        {% if post.profile.user == user %}
-                        <a href="{% url 'delete_post' post.id %}">
-                            <button type="button" class="btn btn-default btn-xs my-btn dark-text del-btn"> &#10006;
-                                Delete
-                            </button>
-                        </a>
-                        {% endif %}
-
-                        <a href="{% url 'get_song' post.song.id %}" download="{{ post.title|slugify|add:'.mp3' }}">
-                            <button type="button" class="btn btn-default btn-xs my-btn dark-text">
-                                <span class="glyphicon glyphicon-download"></span> Download
-                            </button>
-                        </a>
-
-                        <!-- comment related -->
-                        <a class="dim-text pull-right" data-toggle="collapse" data-target="#{{post.id}}">
-                            {{post.comment_set.count}}</a>
-                        <span class="dim-text pull-right">   &#9998; &nbsp;</span>
-                        <!-- like related -->
-                        <span class="pull-right dim-text">   &nbsp; | &nbsp;</span>
-                        <span class="pull-right dim-text like-count">{{post.likes.count}}</span>
-
-                   
-
-
-
-                        <span class="pull-right dim-text">   &#10084; &nbsp;  </span>
-
-                        <!-- RATE -->
-                    
-
-
-
-
-
-
-
-                        {{post.id}}
-                     <form class = "rateform" id = "rateform" action = "{% url 'rate' post.id %}" method="post">
-
-                        {% csrf_token %}
-                        <span class="rate" post-id="{{ post.id }}">
-                            {{post.id}}
-                          <input type="radio" class = "starrate" id="star_5{{ post.id }}" name="rateval" onclick = "this.form.submit();" value="5"{% if post.showrating = 5 %} checked {% endif %}/>
-                            <label for="star_5{{ post.id }}" title="Five">&#9733;</label>
-                          <!-- FOURTH STAR -->
-                          <input type="radio" class = "starrate" id="star_4{{ post.id }}"  name="rateval"  onclick = "this.form.submit();" value="4" {% if post.showrating = 4 %} checked {% endif %} />                     <label for="star_4{{ post.id }}" title="Four">&#9733;</label>
-                          <!-- THIRD STAR -->
-                          <input type="radio" class = "starrate" id="star_3{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="3" {% if post.showrating = 3 %} checked {% endif %}/>
-                          <label for="star_3{{ post.id }}" title="Three">&#9733;</label>
-                          <!-- SECOND STAR -->
-                          <input type="radio" class = "starrate" id="star_2{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="2" {% if post.showrating = 2 %} checked {% endif %}/>
-                          <label for="star_2{{ post.id }}" title="Two">&#9733;</label>
-                          <!-- FIRST STAR -->
-                          <input type="radio" class = "starrate" id="star_1{{ post.id }}" name="rateval"  onclick = "this.form.submit();" value="1" {% if post.showrating = 1 %} checked {% endif %}/>
-                          <label for="star_1{{ post.id }}" title="One">&#9733;</label>
-
-                      </span>
-                      <span title="number of ratings"> {{ post.numratings }} ratings</span>
-                        </form>
-                    </p>
-                    <div id="{{post.id}}" class="collapse">
-                        {% for comment in post.comment_set.all reversed %}
-                        <div class="comment-username">
-                            {{comment.profile.user.username}}
-                        </div>
-                        <div style="width: 200px" class="comment-text">
-                            {{comment.text}}
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
             {% endfor %}
+            
         </div>
         {% endblock page-posts %}
     </div>
 </div>
-
+<input type="hidden" value="{{ csrf_token }}" id="csrf">
 {% endblock body %}
 
 <!-- Bootstrap core JavaScript
@@ -317,7 +159,6 @@ id="rate" class="rating"-->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/follow-unfollow.js' %}" type="text/javascript"></script>
 
 {% block more_scripts %}
 <script src="{% static 'js/wavesurfer/src/wavesurfer.js' %}"></script>
@@ -336,6 +177,7 @@ id="rate" class="rating"-->
 <script src="{% static 'js/playpause.js' %}" type="text/javascript"></script>
 
 <script src="{% static 'js/postwave.js' %}"></script>
+<script src="{% static 'js/editprofile.js' %}"></script>
 
 <script src="{% static 'js/rate.js' %}"></script>
 
