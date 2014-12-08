@@ -48,14 +48,14 @@ LOGIN_REDIRECT_URL = '/'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
-
+'''
 AWS_STORAGE_BUCKET_NAME = 'clouddj'
 AWS_ACCESS_KEY_ID = 'AKIAJ5ELVALE5EFUVQJA'
 AWS_SECRET_ACCESS_KEY = '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'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 S3_URL = 'http://%s.s3.amazonaws.com/' % 'clouddj'
 STATIC_URL = S3_URL
-
+'''
 if not DEBUG:
     import dj_database_url
 
@@ -154,9 +154,9 @@ else:
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/dev/howto/static-files/
 
-    #STATIC_URL = '/static/'
+    STATIC_URL = '/static/'
 
-    #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

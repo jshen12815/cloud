@@ -129,7 +129,8 @@ def rate(request,id):
         post.save()
 
     data['rating'] = rating
-    return redirect(request.META.get('HTTP_REFERER'))
+    return HttpResponse(json.dumps(data), content_type= "application/json")
+    #return redirect(request.META.get('HTTP_REFERER'))
     
 
 @login_required
